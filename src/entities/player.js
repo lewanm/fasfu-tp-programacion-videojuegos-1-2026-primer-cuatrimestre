@@ -6,6 +6,8 @@ export class Player extends Character{
     constructor(animations){
         super(animations)
         this.speed = PLAYER.SPEED
+        this.x = PLAYER.INITIAL_POSITION.x
+        this.y = PLAYER.INITIAL_POSITION.y
     }
 
     update(delta){
@@ -19,8 +21,7 @@ export class Player extends Character{
             dy /= lenght
         }
 
-        this.x += dx * this.speed * delta
-        this.y += dy * this.speed * delta
+        this.moveWithCollision(dx, dy, this.speed, delta)
 
         this.view.x = this.x
         this.view.y = this.y

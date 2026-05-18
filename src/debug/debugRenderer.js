@@ -18,15 +18,6 @@ export function createDebugSystem(app, enabled = false){
     return {
         layer: debugLayer,
 
-        drawKitchen(bounds){
-            const g = new PIXI.Graphics()
-            g.rect(bounds.x , bounds.y, bounds.width, bounds.height)
-            .fill({color: 0x00ff00, alpha: 0.2})
-            .stroke({color: 0x00ff00, width: 2})
-
-            debugLayer.addChild(g)
-        },
-
         drawAtlas(frames, sheet){
             frames.forEach((frame,i) => {
                 const rect = frame.frame
@@ -52,6 +43,35 @@ export function createDebugSystem(app, enabled = false){
             s.y = y
             debugLayer.addChild(s)
             return s
+        },
+
+        
+        drawColliders(objects){
+            objects.forEach(obj => {
+                const g = new PIXI.Graphics();
+
+                g.rect(obj.x, obj.y, obj.width, obj.height)
+                .fill({ color: 0xff0000, alpha: 0.2 })
+                .stroke({ color: 0xff0000 });
+
+                this.layer.addChild(g);
+            });
+        },
+
+        drawHitbox(entity){
+            const g = new PIXI.Graphics();
+            debugLayer.addChild(g);
+
+            return {
+                update(){
+                    const bounds = entity.getBounds();
+                    g.clear()
+                    g.rect(bounds.x, bounds.y, bounds.width, bounds.height)
+                    .fill({ color: 0x00ff00, alpha: 0.2 })
+                    .stroke({ color: 0x00ff00 });
+                }
+            }
         }
+
     }
 }

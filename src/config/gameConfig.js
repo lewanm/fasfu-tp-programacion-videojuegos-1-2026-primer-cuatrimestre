@@ -2,12 +2,18 @@ export const GAME = {
     WIDTH: 640,
     HEIGHT: 360,
     BACKGROUND_COLOR: 0x444444,
+    DEBUG_MODE: false,
+    HITBOX_Y_OFFSET: 3
 }
 
 export const PLAYER = {
     SPEED: 2.5,
     SIZE: 32,
     COLOR: 0x0000AA,
+    INITIAL_POSITION: {
+        x: 330,
+        y: 160
+    }
 }
 
 export const WORLD = {
@@ -22,8 +28,8 @@ export const KITCHEN = {
 }
 
 export const INPUT = {
-    UP: "KeyW",
-    LEFT: "KeyA",
-    DOWN: "KeyS",
-    RIGHT: "KeyD"
+    UP: ["KeyW", "ArrowUp"],
+    LEFT: ["KeyA", "ArrowLeft"],
+    DOWN: ["KeyS", "ArrowDown"],
+    RIGHT: ["KeyD", "ArrowRight"]
 }

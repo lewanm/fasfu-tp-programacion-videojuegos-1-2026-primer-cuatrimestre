@@ -5,6 +5,7 @@ import { getMovementInput } from "./systems/movementInput.js";
 import { createPlayerAtlas } from "./assets/atlas/playerAtlas.js";
 import { createPlayerAnimations } from "./systems/animationStstem.js"
 import { createDebugSystem } from "./debug/debugRenderer.js"
+import { WORLD_OBJECTS } from "./world/worldObjects.js";
 
 export async function createGame() {
     const app = new PIXI.Application()
@@ -17,7 +18,7 @@ export async function createGame() {
 
     //##### ASSETS #####
 
-    //MAPA - TEMPORAL
+    //MAPA - TEMPORAL, ver si lo paso a un archivo "world" en la carpeta "world"
     const mapTexture = await PIXI.Assets.load("./src/assets/images/map.png")
     const mapSprite = new PIXI.Sprite(mapTexture)
     mapSprite.label = "map"
@@ -31,18 +32,21 @@ export async function createGame() {
     const playerAnimations = createPlayerAnimations(playerFrames)
 
     const player = new Player(playerAnimations)
+    player.colliders = WORLD_OBJECTS
     const keyboard = createKeyboard()
 
     //Scene
     app.stage.addChild(mapSprite)
     app.stage.addChild(player.view)
    
-    const DEBUG = false;
-    const debug = createDebugSystem(app, DEBUG);
+    const debug = createDebugSystem(app, GAME.DEBUG_MODE);
+    const debugEntities = GAME.DEBUG_MODE ? [debug.drawHitbox(player)] : null
 
-    if (DEBUG) {
-        const sheet = debug.showSpriteSheet(playerTexture, 0, 0);
-        debug.drawAtlas(playerFrames, sheet);
+    if (GAME.DEBUG_MODE) {
+        //const sheet = debug.showSpriteSheet(playerTexture, 0, 0);
+        //debug.drawAtlas(playerFrames, sheet);
+        debug.drawColliders(WORLD_OBJECTS)
+        //debug.drawHitbox(player)
         //debug.drawKitchen(KITCHEN);
     }
 
@@ -54,6 +58,7 @@ export async function createGame() {
         player.dirY = input.y
 
         player.update(delta)
+        debugEntities?.forEach(debugEntity => debugEntity.update())
     }
 
     app.ticker.add((ticker) => {

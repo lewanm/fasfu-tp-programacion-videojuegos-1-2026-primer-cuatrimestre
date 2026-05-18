@@ -1,3 +1,6 @@
+import { isColliding } from "../systems/collisionSystem.js"
+import { GAME } from "../config/gameConfig.js"
+
 export class Character{
     constructor(animations){
         this.animations = animations
@@ -11,11 +14,50 @@ export class Character{
         this.dirX = 0
         this.dirY = 0
 
+        this.speed = 0
+
+        //para la hitbox
+        this.width = 12
+        this.height = 18
+
+        this.colliders = []
+
         this.currentAnimation = animations.down
         this.frameIndex = 0
         this.animationTimer = 0
     }
-    
+
+    getBounds(x = this.x, y = this.y){
+        this.hitboxOffsetY = GAME.HITBOX_Y_OFFSET
+        return {
+            x: x - this.width / 2,
+            y: y + this.hitboxOffsetY - this.height / 2,
+            width: this.width,
+            height: this.height
+        };
+    }
+       
+    moveWithCollision(dx, dy, speed, delta){
+        const nextX = this.x + dx * speed * delta;
+        const nextY = this.y + dy * speed * delta;
+
+        const boundsX = this.getBounds(nextX, this.y)
+
+        const collidesX = this.colliders.some(collider => isColliding(boundsX, collider))
+
+        if (!collidesX) {
+            this.x = nextX
+        }
+
+        const boundsY = this.getBounds(this.x, nextY)
+
+        const collidesY = this.colliders.some(collider => isColliding(boundsY, collider))
+
+        if (!collidesY) {
+            this.y = nextY
+        }
+    }
+
     updateAnimation(delta){
         const length = Math.hypot(this.dirX, this.dirY)
 
@@ -56,4 +98,7 @@ export class Character{
             }
         }
     }
+
+
+
 };
