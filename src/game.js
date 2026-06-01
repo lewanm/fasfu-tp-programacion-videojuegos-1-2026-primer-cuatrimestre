@@ -2,10 +2,11 @@ import { GAME } from "./config/gameConfig.js"
 import { Player } from "./entities/player.js";
 import { createKeyboard } from "./systems/keyboard.js";
 import { getMovementInput } from "./systems/movementInput.js";
-import { createPlayerAtlas } from "./assets/atlas/playerAtlas.js";
-import { createPlayerAnimations } from "./systems/animationStstem.js"
-import { createDebugSystem } from "./debug/debugRenderer.js"
 import { WORLD_OBJECTS } from "./world/worldObjects.js";
+import { createNPCSystem } from "./systems/npcSystem.js";
+import { createMap } from "./world/createMap.js";
+import { createPlayer } from "./entities/createPlayer.js";
+import { createGameDebug } from "./debug/createDebug.js";
 
 export async function createGame() {
     const app = new PIXI.Application()
@@ -18,47 +19,45 @@ export async function createGame() {
 
     //##### ASSETS #####
 
-    //MAPA - TEMPORAL, ver si lo paso a un archivo "world" en la carpeta "world"
-    const mapTexture = await PIXI.Assets.load("./src/assets/images/map.png")
-    const mapSprite = new PIXI.Sprite(mapTexture)
-    mapSprite.label = "map"
-    mapSprite.width = GAME.WIDTH
-    mapSprite.height = GAME.HEIGHT
+    const mapSprite = await createMap(app.screen)
 
-    //Player
-    const playerTexture = await PIXI.Assets.load("./src/assets/characters/16x32-walk-sheet.png")
+    //##### PLAYER #####
 
-    const playerFrames = createPlayerAtlas(playerTexture)
-    const playerAnimations = createPlayerAnimations(playerFrames)
-
-    const player = new Player(playerAnimations)
+    const player = await createPlayer()
     player.colliders = WORLD_OBJECTS
+
     const keyboard = createKeyboard()
 
-    //Scene
-    app.stage.addChild(mapSprite)
-    app.stage.addChild(player.view)
-   
-    const debug = createDebugSystem(app, GAME.DEBUG_MODE);
-    const debugEntities = GAME.DEBUG_MODE ? [debug.drawHitbox(player)] : null
+    //##### NPCs #####
 
-    if (GAME.DEBUG_MODE) {
-        //const sheet = debug.showSpriteSheet(playerTexture, 0, 0);
-        //debug.drawAtlas(playerFrames, sheet);
-        debug.drawColliders(WORLD_OBJECTS)
-        //debug.drawHitbox(player)
-        //debug.drawKitchen(KITCHEN);
-    }
+    const npcSystem = createNPCSystem(
+        app, 
+        player.animations, 
+        WORLD_OBJECTS, 
+        app.screen
+    )
+    
+    npcSystem.init(GAME.NPC_CUANTITY)
+
+    //##### SCENES #####
+    app.stage.addChild(mapSprite)
+    app.stage.addChild(npcSystem.container)
+    app.stage.addChild(player.view)
+
+    const debug = createGameDebug(app, player, npcSystem)
 
     //##### GAME LOOP #####
     function update(delta){
-        const input = getMovementInput(keyboard)
+        const input = getMovementInput(keyboard) // pasar esto al player directamente
 
         player.dirX = input.x
         player.dirY = input.y
 
         player.update(delta)
-        debugEntities?.forEach(debugEntity => debugEntity.update())
+
+        npcSystem.update(delta)
+        
+        debug?.update()
     }
 
     app.ticker.add((ticker) => {

@@ -1,8 +1,7 @@
 import { isColliding } from "../systems/collisionSystem.js"
-import { GAME } from "../config/gameConfig.js"
 
 export class Character{
-    constructor(animations){
+    constructor(animations, options = {}){
         this.animations = animations
         
         this.view = new PIXI.Sprite(animations.down[0])
@@ -17,8 +16,10 @@ export class Character{
         this.speed = 0
 
         //para la hitbox
-        this.width = 12
-        this.height = 18
+        this.width = options.width ?? 12
+        this.height = options.height ?? 18
+
+        this.hitboxOffsetY = options.hitboxOffsetY ?? 3
 
         this.colliders = []
 
@@ -28,13 +29,16 @@ export class Character{
     }
 
     getBounds(x = this.x, y = this.y){
-        this.hitboxOffsetY = GAME.HITBOX_Y_OFFSET
         return {
             x: x - this.width / 2,
             y: y + this.hitboxOffsetY - this.height / 2,
             width: this.width,
             height: this.height
         };
+    }
+
+    collides(bounds){
+        return this.colliders.some(collider => isColliding(bounds, collider))
     }
        
     moveWithCollision(dx, dy, speed, delta){
@@ -45,15 +49,16 @@ export class Character{
 
         const collidesX = this.colliders.some(collider => isColliding(boundsX, collider))
 
-        if (!collidesX) {
+        if (!this.collides(boundsX)) {
             this.x = nextX
         }
+
 
         const boundsY = this.getBounds(this.x, nextY)
 
         const collidesY = this.colliders.some(collider => isColliding(boundsY, collider))
 
-        if (!collidesY) {
+        if (!this.collides(boundsY)) {
             this.y = nextY
         }
     }
@@ -70,7 +75,7 @@ export class Character{
         }
 
         //cambio de animacion
-        if (newAnimation && this.currentAnimation !== newAnimation) {
+        if (this.currentAnimation !== newAnimation) {
             this.currentAnimation = newAnimation
             this.frameIndex = 0
             this.animationTimer = 0

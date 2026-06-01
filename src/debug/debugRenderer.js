@@ -1,3 +1,5 @@
+import { DEBUG_STATE_COLORS } from "../config/debugConfig.js"
+
 export function createDebugSystem(app, enabled = false){
     const debugLayer = new PIXI.Container()
     debugLayer.label = "debugLayer"
@@ -17,6 +19,7 @@ export function createDebugSystem(app, enabled = false){
 
     return {
         layer: debugLayer,
+        debugEntities : [],
 
         drawAtlas(frames, sheet){
             frames.forEach((frame,i) => {
@@ -69,6 +72,29 @@ export function createDebugSystem(app, enabled = false){
                     g.rect(bounds.x, bounds.y, bounds.width, bounds.height)
                     .fill({ color: 0x00ff00, alpha: 0.2 })
                     .stroke({ color: 0x00ff00 });
+                }
+            }
+        },
+
+        drawTrigger(trigger){
+            const g = new PIXI.Graphics();
+
+            g.rect(trigger.x, trigger.y, trigger.width, trigger.height)
+            .stroke({ color: 0xFFFF00 });
+
+            this.layer.addChild(g);
+        },
+
+        drawEntityState(entity){
+            return {
+                update(){
+                    let color = DEBUG_STATE_COLORS[entity.state] ?? 0xffffff
+                
+                    if (entity.isHungry()){
+                        entity.view.tint = 0xff0000
+                    }
+
+                    entity.view.tint = color
                 }
             }
         }

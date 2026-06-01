@@ -1,4 +1,4 @@
-export function createPlayerAnimations(frames){
+export function createAnimations(frames){
     return {
         //obviamente tendriamos que tener todos los atlas/spritesheet del mismo tipo
         down: frames.slice(0,4),

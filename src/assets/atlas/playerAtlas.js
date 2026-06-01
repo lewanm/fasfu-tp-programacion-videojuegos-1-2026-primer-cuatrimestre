@@ -1,4 +1,4 @@
-export function createPlayerAtlas(texture){
+export function createAtlas(texture){
     const FRAME_WIDTH = 17
     const FRAME_HEIGHT = 26
 
