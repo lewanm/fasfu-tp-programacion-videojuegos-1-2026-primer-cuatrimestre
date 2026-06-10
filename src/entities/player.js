@@ -9,17 +9,17 @@ export class Player extends Character{
         this.speed = PLAYER.SPEED
         this.x = PLAYER.INITIAL_POSITION.x
         this.y = PLAYER.INITIAL_POSITION.y
+        this.view.label = "Player"
     }
 
     update(delta){
 
         const { x: dx, y: dy } = normalize(this.dirX, this.dirY)
 
-        this.moveWithCollision(dx, dy, this.speed, delta)
+        this.moveWithCollision(dx, dy, delta)
 
-        this.view.x = this.x
-        this.view.y = this.y
+        this.updateAnimation()
 
-        this.updateAnimation(delta)
+        super.update(delta); 
     }
 }

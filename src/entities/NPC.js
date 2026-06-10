@@ -3,129 +3,123 @@ import { normalize } from "../utils/math.js";
 import { isInsideTrigger } from "../utils/trigger.js";
 import { getRandomInBetween } from "../utils/math.js";
 import { NPC_CONFIG } from "../config/gameConfig.js";
-import { STATES } from "../systems/states.js";
+import { STATES } from "../systems/states.js"; // Importamos las instancias de los estados
 
-const NPC_OFFSET = 0 //para modificar la hitbox
+const NPC_OFFSET = 0;
 
-export class NPC extends Character{
-    constructor(animations, initialX = 0, initialY = 0){
-        super(animations)
-        this.name = `NPC_${Math.floor(Math.random() * 1000)}`
-        this.state = 
+export class NPC extends Character {
+    constructor(animations, initialX = 0, initialY = 0) {
+        super(animations);
 
-        this.speed = NPC_CONFIG.SPEED
+        this.name = `NPC_${Math.floor(Math.random() * 1000)}`;
+        this.speed = NPC_CONFIG.SPEED;
+        this.x = initialX;
+        this.y = initialY;
+        this.active = false;
+        this.lastDir = {x: 0, y: 0}
+        
+        // CAMBIO 1: El estado inicial ahora es la referencia al objeto directo, no un string
+        this.state = STATES.walking; 
+        this.hasEnteredDoor = false;
 
-        this.x = initialX
-        this.y = initialY
-
-        this.active = false
-
-        this.hasEnteredDoor = false
-
-        this.hunger = getRandomInBetween(NPC_CONFIG.INITIAL_HUNGER_MIN, NPC_CONFIG.INITIAL_HUNGER_MAX)
+        this.hunger = getRandomInBetween(NPC_CONFIG.INITIAL_HUNGER_MIN, NPC_CONFIG.INITIAL_HUNGER_MAX);
     }
 
-    reset(spawnLeft, gameWidth){
-        if(spawnLeft){
-            this.x = -NPC_OFFSET
-            this.dirX = 1
+    reset(spawnLeft, gameWidth) {
+        if (spawnLeft) {
+            this.x = -NPC_OFFSET;
+            this.dirX = 1;
         } else {
-            this.x = gameWidth + NPC_OFFSET
-            this.dirX = -1
+            this.x = gameWidth + NPC_OFFSET;
+            this.dirX = -1;
+        }
+        this.dirY = 0;
+        this.hasEnteredDoor = false;
+
+        // CAMBIO 2: Usamos el método formal para inicializar el estado al resetear
+        this.changeState(STATES.walking);
+        this.activate();
+    }
+
+    activate() {
+        this.active = true;
+        this.view.visible = true;
+        this.view.play()
+    }
+
+    deactivate() {
+        this.active = false;
+        this.view.visible = false;
+        this.view.stop(); // Buenas prácticas: si se va al pool, que no gaste CPU animándose
+    }
+
+    // CAMBIO 3: Máquina de estados formal (FSM) con Enter y Exit
+    changeState(nextState) {
+        if (this.state === nextState) return;
+
+        // 1. Ejecutamos la salida del estado actual (si existe)
+        if (this.state && typeof this.state.exit === "function") {
+            this.state.exit(this);
         }
 
-        this.dirY = 0
+        // 2. Cambiamos la referencia al nuevo objeto estado
+        this.state = nextState;
 
-        this.state = "walking"
-        this.hasEnteredDoor = false
-
-        this.activate()
-    }
-
-    activate(){
-        this.active = true
-        this.view.visible = true
-    }
-
-    deactivate(){
-        this.active = false
-        this.view.visible = false
-    }
-
-    increaseHunger(delta){
-        this.hunger += NPC_CONFIG.HUNGER_RATE * delta
-
-        if (this.hunger > 100) this.hunger = 100
-    }
-
-    eat(amount){
-        this.hunger -= amount
-        if (this.hunger < 0) this.hunger = 0
-    }
-
-    isHungry(){
-        return this.hunger > 50
-    }
-
-    updateWalking(delta){
-        const { x: dx, y: dy } = normalize(this.dirX, this.dirY)
-
-        this.moveWithCollision(dx, dy, this.speed, delta)
-
-        this.view.x = this.x
-        this.view.y = this.y
-
-        this.updateAnimation(delta)
-    }
-
-    updateQueue(delta){
-        //placeholder
-        this.dirX = 0
-        this.dirY = 0
-    }
-
-    
-    changeState(newState){
-        this.state?.exit?.(this)
-        this.state = newState
-        this.state?.enter?.(this)
-    }
-
-    enterState(state){
-
-        if (state === "queue"){
-            this.dirX = 0
-            this.dirY = 0
-
-            console.log("NPC entro en la fila")
-        }
-
-        if (state === "walking"){
-            console.log("NPC empezo a caminar")
+        // 3. Ejecutamos la entrada del nuevo estado
+        if (this.state && typeof this.state.enter === "function") {
+            this.state.enter(this);
         }
     }
 
-    handleDoorTrigger(trigger){
-        if (this.hasEnteredDoor) return
+    isHungry() {
+        return this.hunger > 50;
+    }
 
-        if (!isInsideTrigger(this, trigger)) return
+    increaseHunger(delta) {
+        this.hunger += NPC_CONFIG.HUNGER_RATE * delta;
+        if (this.hunger > 100) this.hunger = 100;
+    }
 
-        this.hasEnteredDoor = true
+    handleDoorTrigger(trigger) {
+        if (this.hasEnteredDoor) return;
+        if (!isInsideTrigger(this, trigger)) return;
 
-        console.log(`NPC ${this.name} llego a la puerta, su hambre es: ${this.hunger}`)
+        this.hasEnteredDoor = true;
+        console.log(`NPC ${this.name} llegó a la puerta, su hambre es: ${this.hunger.toFixed(1)}`);
 
-        if (this.isHungry()){
-            this.changeState("queue")
+        if (this.isHungry()) {
+            // CAMBIO 4: Pasamos el objeto de estado de la fila
+            this.changeState(STATES.queue); 
         }
     }
 
-    update(delta){
+    // CAMBIO 5: Unificado y centralizado
+    update(delta) {
+        if (!this.active) return;
 
-        if (!this.active) return
+        this.increaseHunger(delta);
 
-        this.increaseHunger(delta)
+        // Ejecuta el update del objeto estado actual (WalkingState o QueueState)
+        this.state.update(this, delta);
 
-        STATES[this.state].update(this, delta)
+        // Delegamos TODA la actualización de físicas finales, posiciones de la vista 
+        // y control reactivo de la animación nativa de PixiJS a la clase padre (Character)
+        super.update(delta); 
     }
 
+    eat(amount) {
+        this.hunger -= amount;
+        if (this.hunger < 0) this.hunger = 0;
+    }
+
+    // Métodos internos que llaman los estados correspondientes
+    updateWalking(delta) {
+        const { x: dx, y: dy } = normalize(this.dirX, this.dirY);
+        this.moveWithCollision(dx, dy, delta);
+    }
+
+    updateQueue(delta) {
+        // Por ahora se queda quieto en su lugar. 
+        // El enter() del QueueState ya puso dirX y dirY en 0.
+    }
 }

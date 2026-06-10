@@ -5,11 +5,11 @@ export const DEBUG_STATE_COLORS = {
 }
 
 export const DEBUG_OPTIONS = {
-    enabled: true,
+    enabled: false,
 
-    colliders: false,
-    triggers: false,
+    colliders: true,
+    triggers: true,
     playerHitbox: true,
-    npcHitboxes: false,
-    npcState: false,
+    npcHitboxes: true,
+    npcState: true,
 }

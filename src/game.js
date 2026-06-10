@@ -1,4 +1,4 @@
-import { GAME } from "./config/gameConfig.js"
+import { GAME, NPC_CONFIG } from "./config/gameConfig.js"
 import { Player } from "./entities/player.js";
 import { createKeyboard } from "./systems/keyboard.js";
 import { getMovementInput } from "./systems/movementInput.js";
@@ -7,6 +7,7 @@ import { createNPCSystem } from "./systems/npcSystem.js";
 import { createMap } from "./world/createMap.js";
 import { createPlayer } from "./entities/createPlayer.js";
 import { createGameDebug } from "./debug/createDebug.js";
+import { createNPCTypes } from "./entities/createNPCTypes.js";
 
 export async function createGame() {
     const app = new PIXI.Application()
@@ -24,20 +25,22 @@ export async function createGame() {
     //##### PLAYER #####
 
     const player = await createPlayer()
-    player.colliders = WORLD_OBJECTS
+    player.colliders = WORLD_OBJECTS // ver si lo paso por parametros en createPlayer
 
     const keyboard = createKeyboard()
 
     //##### NPCs #####
-
+    
+    
+    const npcTypes = await createNPCTypes()
     const npcSystem = createNPCSystem(
         app, 
-        player.animations, 
+        npcTypes,
         WORLD_OBJECTS, 
         app.screen
     )
-    
-    npcSystem.init(GAME.NPC_CUANTITY)
+
+    npcSystem.init(NPC_CONFIG.NPC_QUANTITY)
 
     //##### SCENES #####
     app.stage.addChild(mapSprite)
@@ -57,7 +60,7 @@ export async function createGame() {
 
         npcSystem.update(delta)
         
-        debug?.update()
+       debug?.update()
     }
 
     app.ticker.add((ticker) => {

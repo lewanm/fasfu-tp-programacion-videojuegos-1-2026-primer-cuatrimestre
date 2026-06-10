@@ -5,6 +5,8 @@ async function main(){
     const app = await createGame()
 
     window.__PIXI_APP__ = app;
+    window.app = app
+    
     document.body.appendChild(app.canvas);
 }
 

@@ -1,3 +1,5 @@
+import { ASSETS } from "../config/assets.js"
+
 export const GAME = {
     WIDTH: 640,
     HEIGHT: 360,
@@ -10,7 +12,7 @@ export const NPC_CONFIG = {
     INITIAL_HUNGER_MIN : 0,
     INITIAL_HUNGER_MAX : 50,
     HUNGER_RATE: 0.02,
-    NPC_QUANTITY: 5
+    NPC_QUANTITY: 1
 }
 
 export const PLAYER = {
@@ -21,10 +23,10 @@ export const PLAYER = {
         x: 330,
         y: 160
     }, //estos 3 son para la hitbox
-    HITBOX_Y_OFFSET: 3,
-    WIDTH: 12,
-    HEIGHT: 18,
-    TEXTURE: "./src/assets/characters/16x32-walk-sheet.png"
+    HITBOX_Y_OFFSET: 8,
+    HITBOX_X_OFFSET: 2, //en realidad aca tendria que estar bien centrado el sprite, pero mientras tanto lo hago asi
+    WIDTH: 20,
+    HEIGHT: 22,
 }
 
 export const WORLD = {

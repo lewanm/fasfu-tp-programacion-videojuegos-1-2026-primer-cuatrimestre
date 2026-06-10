@@ -1,18 +1,19 @@
-import { Player } from "./player.js"
-import { createAtlas } from "../assets/atlas/playerAtlas.js"
-import { createAnimations } from "../systems/animationSystem.js"
+import { Player } from "/src/entities/player.js"
 import { PLAYER } from "../config/gameConfig.js"
+import { loadCharacterAnimations } from "../assets/loadCharacterAnimations.js"
+import { ASSETS } from "../config/assets.js"
 
 //poner como parametro
 export async function createPlayer(){
 
-    const texture = await PIXI.Assets.load(PLAYER.TEXTURE)
-    const frames = createAtlas(texture)
-    const animations = createAnimations(frames)
+    const animations = await loadCharacterAnimations(ASSETS.PLAYER, "player")
 
     const player = new Player(animations, 
         {
-            hitboxOffsetY: PLAYER.HITBOX_Y_OFFSET,
+            hitboxOffset: {
+                x: PLAYER.HITBOX_X_OFFSET,
+                y: PLAYER.HITBOX_Y_OFFSET
+            },
             width: PLAYER.WIDTH,
             height: PLAYER.HEIGHT
         }

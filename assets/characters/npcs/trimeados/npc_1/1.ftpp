@@ -1,0 +1,96 @@
+{
+  "meta": {
+    "version": "0.6.7"
+  },
+  "savePath": "C:\\Users\\Lewan\\OneDrive\\Facultad\\Prog Videojuegos I\\fasfu-tp-programacion-videojuegos-1-2026-primer-cuatrimestre\\src\\assets\\characters\\npcs",
+  "images": [
+    {
+      "name": "down_0.png",
+      "path": "C:/Users/Lewan/OneDrive/Facultad/Prog Videojuegos I/fasfu-tp-programacion-videojuegos-1-2026-primer-cuatrimestre/src/assets/characters/npcs/trimeados/npc_1/down_0.png",
+      "folder": ""
+    },
+    {
+      "name": "down_1.png",
+      "path": "C:/Users/Lewan/OneDrive/Facultad/Prog Videojuegos I/fasfu-tp-programacion-videojuegos-1-2026-primer-cuatrimestre/src/assets/characters/npcs/trimeados/npc_1/down_1.png",
+      "folder": ""
+    },
+    {
+      "name": "down_2.png",
+      "path": "C:/Users/Lewan/OneDrive/Facultad/Prog Videojuegos I/fasfu-tp-programacion-videojuegos-1-2026-primer-cuatrimestre/src/assets/characters/npcs/trimeados/npc_1/down_2.png",
+      "folder": ""
+    },
+    {
+      "name": "down_3.png",
+      "path": "C:/Users/Lewan/OneDrive/Facultad/Prog Videojuegos I/fasfu-tp-programacion-videojuegos-1-2026-primer-cuatrimestre/src/assets/characters/npcs/trimeados/npc_1/down_3.png",
+      "folder": ""
+    },
+    {
+      "name": "right_0.png",
+      "path": "C:/Users/Lewan/OneDrive/Facultad/Prog Videojuegos I/fasfu-tp-programacion-videojuegos-1-2026-primer-cuatrimestre/src/assets/characters/npcs/trimeados/npc_1/right_0.png",
+      "folder": ""
+    },
+    {
+      "name": "right_1.png",
+      "path": "C:/Users/Lewan/OneDrive/Facultad/Prog Videojuegos I/fasfu-tp-programacion-videojuegos-1-2026-primer-cuatrimestre/src/assets/characters/npcs/trimeados/npc_1/right_1.png",
+      "folder": ""
+    },
+    {
+      "name": "right_2.png",
+      "path": "C:/Users/Lewan/OneDrive/Facultad/Prog Videojuegos I/fasfu-tp-programacion-videojuegos-1-2026-primer-cuatrimestre/src/assets/characters/npcs/trimeados/npc_1/right_2.png",
+      "folder": ""
+    },
+    {
+      "name": "right_3.png",
+      "path": "C:/Users/Lewan/OneDrive/Facultad/Prog Videojuegos I/fasfu-tp-programacion-videojuegos-1-2026-primer-cuatrimestre/src/assets/characters/npcs/trimeados/npc_1/right_3.png",
+      "folder": ""
+    },
+    {
+      "name": "up_0.png",
+      "path": "C:/Users/Lewan/OneDrive/Facultad/Prog Videojuegos I/fasfu-tp-programacion-videojuegos-1-2026-primer-cuatrimestre/src/assets/characters/npcs/trimeados/npc_1/up_0.png",
+      "folder": ""
+    },
+    {
+      "name": "up_1.png",
+      "path": "C:/Users/Lewan/OneDrive/Facultad/Prog Videojuegos I/fasfu-tp-programacion-videojuegos-1-2026-primer-cuatrimestre/src/assets/characters/npcs/trimeados/npc_1/up_1.png",
+      "folder": ""
+    },
+    {
+      "name": "up_2.png",
+      "path": "C:/Users/Lewan/OneDrive/Facultad/Prog Videojuegos I/fasfu-tp-programacion-videojuegos-1-2026-primer-cuatrimestre/src/assets/characters/npcs/trimeados/npc_1/up_2.png",
+      "folder": ""
+    },
+    {
+      "name": "up_3.png",
+      "path": "C:/Users/Lewan/OneDrive/Facultad/Prog Videojuegos I/fasfu-tp-programacion-videojuegos-1-2026-primer-cuatrimestre/src/assets/characters/npcs/trimeados/npc_1/up_3.png",
+      "folder": ""
+    }
+  ],
+  "folders": [],
+  "packOptions": {
+    "textureName": "texture",
+    "textureFormat": "png",
+    "removeFileExtension": true,
+    "prependFolderName": true,
+    "base64Export": false,
+    "tinify": false,
+    "tinifyKey": "",
+    "scale": 1,
+    "filter": "none",
+    "exporter": "pixi.js",
+    "fileName": "pack-result",
+    "savePath": "C:\\Users\\Lewan\\OneDrive\\Facultad\\Prog Videojuegos I\\fasfu-tp-programacion-videojuegos-1-2026-primer-cuatrimestre\\src\\assets\\characters\\npcs",
+    "width": 169,
+    "height": 140,
+    "fixedSize": false,
+    "powerOfTwo": false,
+    "padding": 0,
+    "extrude": 1,
+    "allowRotation": false,
+    "allowTrim": true,
+    "trimMode": "trim",
+    "alphaThreshold": "0",
+    "detectIdentical": true,
+    "packer": "MaxRectsBin",
+    "packerMethod": "BestShortSideFit"
+  }
+}
