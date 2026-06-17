@@ -4,42 +4,25 @@ import { isColliding } from "../systems/collisionSystem.js"
 export class Character extends Entity {
 
     constructor(animations, options = {}) { 
-        // Inicializamos el AnimatedSprite con la animación por defecto (down)
         const view = new PIXI.AnimatedSprite(animations.down);
+
+        super(view,options)
+
+        this.animations = animations
         
-        super(view);
-
-        this.animations = animations;
-
-        // Configuraciones nativas de PixiJS (autoUpdate queda en true por defecto)
         this.view.animationSpeed = 0.15; // TODO: Mover a gameConfig.js en el futuro
-        this.view.anchor.set(0.5, 0.5);
-        this.view.gotoAndStop(0); // Nacen quietos en el frame inicial (Idle)
+        this.view.gotoAndStop(0); // Empiezan quietos en el frame inicial (Idle)
 
-        this.dirX = 0;
-        this.dirY = 0;
-        this.speed = 0;
+        this.dirX = 0
+        this.dirY = 0
+        this.speed = 0
 
-        // Configuración de la Hitbox para las colisiones
-        this.width = options.width ?? 12;
-        this.height = options.height ?? 18;
-        this.hitboxOffset = options.hitboxOffset ?? {x: 0, y: 0};
+        this.colliders = []
 
-        this.colliders = [];
-
-        this.currentAnimation = animations.down;
+        this.currentAnimation = animations.down
         
-        // FLAG CLAVE: Guarda el estado de movimiento del frame anterior para detectar cambios
-        this.isCurrentlyMoving = false; 
-    }
-
-    getBounds(x = this.x, y = this.y) {
-        return {
-            x: x + this.hitboxOffset.x - this.width / 2, //este en realidad seria lo ideal que el sprite este centrado, pero por ahora
-            y: y + this.hitboxOffset.y - this.height / 2,
-            width: this.width,
-            height: this.height
-        };
+        // lo uso para detectar el movimiento corretametne
+        this.isCurrentlyMoving = false
     }
 
     collides(bounds) {

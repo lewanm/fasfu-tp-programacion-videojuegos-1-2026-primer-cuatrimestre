@@ -1,16 +1,21 @@
 import { loadCharacterAnimations } from "../assets/loadCharacterAnimations.js"
-import { ASSETS } from "../config/assets.js"
+import { NPC_TYPES } from "../config/npcConfig.js"
 
 export async function createNPCTypes(){
 
-    const npcEntries = Object.entries(ASSETS.NPCS)
+    const npcEntries = Object.entries(NPC_TYPES)
+    const npcTypes = {}
 
-    const allNPCsAnimations = {}
+    for (const [id, config] of npcEntries){
 
-    for (const [characterId, jsonPath] of npcEntries) {
-        const animations = await loadCharacterAnimations(jsonPath)
-        allNPCsAnimations[characterId] = animations
+        const animations = await loadCharacterAnimations(config.asset);
+
+        npcTypes[id] = {
+            id,
+            animations,
+            options: config.options
+        };
     }
 
-    return allNPCsAnimations
+    return npcTypes
 }

@@ -1,9 +1,8 @@
 import { createDebugSystem } from "./debugRenderer.js"
 import { DEBUG_OPTIONS } from "../config/debugConfig.js"
-import { WORLD_OBJECTS } from "../world/worldObjects.js"
 import { DOOR_TRIGGER } from "../world/triggers.js"
 
-export function createGameDebug(app, player, npcSystem){
+export function createGameDebug(app, player, npcSystem, colliders){
 
     if (!DEBUG_OPTIONS.enabled) return null
 
@@ -12,7 +11,7 @@ export function createGameDebug(app, player, npcSystem){
     const debugEntities = []
 
     if (DEBUG_OPTIONS.colliders) {
-        debug.drawColliders(WORLD_OBJECTS)
+        debug.drawColliders(colliders)
     }
 
     if (DEBUG_OPTIONS.triggers) {
@@ -23,6 +22,7 @@ export function createGameDebug(app, player, npcSystem){
         debugEntities.push(debug.drawHitbox(player))
     }
 
+    console.log(npcSystem.NPCpool)
     npcSystem.NPCpool.forEach(npc => {
 
         if (DEBUG_OPTIONS.npcHitboxes) {

@@ -12,6 +12,8 @@ export class Player extends Character{
         this.view.label = "Player"
     }
 
+    
+
     update(delta){
 
         const { x: dx, y: dy } = normalize(this.dirX, this.dirY)

@@ -1,17 +1,17 @@
-import { GAME, NPC_CONFIG } from "./config/gameConfig.js"
-import { Player } from "./entities/player.js";
+import { GAME } from "./config/gameConfig.js"
 import { createKeyboard } from "./systems/keyboard.js";
 import { getMovementInput } from "./systems/movementInput.js";
-import { WORLD_OBJECTS } from "./world/worldObjects.js";
 import { createNPCSystem } from "./systems/npcSystem.js";
 import { createMap } from "./world/createMap.js";
 import { createPlayer } from "./entities/createPlayer.js";
 import { createGameDebug } from "./debug/createDebug.js";
-import { createNPCTypes } from "./entities/createNPCTypes.js";
+import { createWorldObjects } from "./world/createWorldObjects.js"
+import { WALLS } from "./world/worldObjects.js";
 
 export async function createGame() {
     const app = new PIXI.Application()
-    
+    window.app = app
+
     await app.init({
         width: GAME.WIDTH,
         height: GAME.HEIGHT,
@@ -21,37 +21,48 @@ export async function createGame() {
     //##### ASSETS #####
 
     const mapSprite = await createMap(app.screen)
+    const worldObjects = await createWorldObjects()
+
+    //##### COLLIDERS #####
+
+    const colliders = [
+        ... WALLS,
+        ... worldObjects.objects
+            .filter(obj => obj.isSolid)
+            .map(obj => obj.getBounds())
+    ]
 
     //##### PLAYER #####
 
-    const player = await createPlayer()
-    player.colliders = WORLD_OBJECTS // ver si lo paso por parametros en createPlayer
+    const player = await createPlayer(colliders)
 
     const keyboard = createKeyboard()
 
     //##### NPCs #####
     
     
-    const npcTypes = await createNPCTypes()
     const npcSystem = createNPCSystem(
-        app, 
-        npcTypes,
-        WORLD_OBJECTS, 
+        colliders, 
         app.screen
     )
 
-    npcSystem.init(NPC_CONFIG.NPC_QUANTITY)
+    await npcSystem.init()
 
     //##### SCENES #####
     app.stage.addChild(mapSprite)
     app.stage.addChild(npcSystem.container)
     app.stage.addChild(player.view)
+    app.stage.addChild(worldObjects.container)
 
-    const debug = createGameDebug(app, player, npcSystem)
-
+    const debug = createGameDebug(app, player, npcSystem, colliders) //aca se agrega en el stage al contenedor de debuf
+    // para ver en consola
+    window.debug = {
+        player: player,
+        npcs: npcSystem.NPCpool
+    }
     //##### GAME LOOP #####
     function update(delta){
-        const input = getMovementInput(keyboard) // pasar esto al player directamente
+        const input = getMovementInput(keyboard) // pasar esto al player directamente o ver que ondeu
 
         player.dirX = input.x
         player.dirY = input.y
@@ -60,7 +71,7 @@ export async function createGame() {
 
         npcSystem.update(delta)
         
-       debug?.update()
+        debug?.update()
     }
 
     app.ticker.add((ticker) => {

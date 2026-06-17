@@ -1,15 +1,39 @@
 export class Entity{
 
-    constructor(view){
+    constructor(view, options = {}){
         
         this.view = view
-
         this.x = 0
         this.y = 0
+        this.view.anchor.set(0.5, 0.5);
+        this.width = options.width ?? 12;
+        this.height = options.height ?? 18;
+        this.hitboxOffset = options.hitboxOffset ?? {x: 0, y: 0};
     }
 
     updateTransform(){
         this.view.x = this.x
         this.view.y = this.y
+        this.view.zIndex = this.view.y
     }
+
+    getBounds(x = this.x, y = this.y) {
+        return {
+            x: x + this.hitboxOffset.x - this.width / 2, //este en realidad seria lo ideal que el sprite este centrado, pero por ahora
+            y: y + this.hitboxOffset.y - this.height / 2,
+            width: this.width,
+            height: this.height
+        };
+    }
+
+    //no quiero pensar, voy a ver que hago despues, esto solo lo tengo para obtener el rango del collider para los trigger.
+    getBoundsWithOffset(width, height, offset = {x: 0, y: 0}, x = this.x, y = this.y){
+        return {
+            x: x + offset.x - width / 2,
+            y: y + offset.y - height / 2,
+            width,
+            height
+        };
+    }
+
 }

@@ -2,28 +2,26 @@ import { NPC } from "../entities/NPC.js"
 import { getRandomInBetween } from "../utils/math.js"
 import { isOutOfScreen } from "../utils/screen.js"
 import { DOOR_TRIGGER }  from "../world/triggers.js" //aca va a recibir despues todos los triggers juntos y revisar en la FSM por cada trigger
-import { NPC_CONFIG } from "../config/gameConfig.js"
+import { NPC_CONFIG, NPC_TYPES } from "../config/npcConfig.js"
+import { createNPCTypes } from "../entities/createNPCTypes.js"
 
-export function createNPCSystem(app, npcTypes, colliders, screen){
+export function createNPCSystem(colliders, screen){
 
     const NPCpool = []
-    window.npcs = NPCpool
+
     const container = new PIXI.Container()
     container.label = "NPCs"
 
     const width = screen.width
     const height = screen.height
 
-    function init(poolSize = 5){
-        for (let i = 0; i < poolSize; i++){
+    async function init(){
+        for (let i = 0; i < NPC_CONFIG.NPC_QUANTITY; i++){
 
-            const randomY = getRandomInBetween(280,340) //esto es para que spawneen abajo
+            const randomType = await getRandomNPCType()
+            const initialPosition = {x: 0, y: getRandomInBetween(312,340)}//esto es para que spawneen abajo, despues ponerlo en NPC_CONFIG
 
-            const keys = Object.keys(npcTypes)
-            const randomKey = keys[Math.floor(Math.random() * keys.length)]
-            const randomType = npcTypes[randomKey]
-
-            const npc = new NPC(randomType, 0, randomY)
+            const npc = new NPC(randomType, initialPosition)
     
             npc.colliders = colliders
             npc.view.label = `${npc.name}`
@@ -33,6 +31,14 @@ export function createNPCSystem(app, npcTypes, colliders, screen){
             container.addChild(npc.view)
             NPCpool.push(npc)
         }
+    }
+
+    async function getRandomNPCType(){
+        const allTypes = await createNPCTypes()
+        const keys = Object.keys(allTypes)
+        const randomKey = keys[Math.floor(Math.random() * keys.length)]
+        
+        return allTypes[randomKey]
     }
 
     function getInactive(){

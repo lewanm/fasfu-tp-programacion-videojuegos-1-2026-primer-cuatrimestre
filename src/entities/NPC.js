@@ -2,23 +2,26 @@ import { Character } from "./Character.js";
 import { normalize } from "../utils/math.js";
 import { isInsideTrigger } from "../utils/trigger.js";
 import { getRandomInBetween } from "../utils/math.js";
-import { NPC_CONFIG } from "../config/gameConfig.js";
+import { NPC_CONFIG } from "../config/npcConfig.js";
 import { STATES } from "../systems/states.js"; // Importamos las instancias de los estados
 
 const NPC_OFFSET = 0;
 
 export class NPC extends Character {
-    constructor(animations, initialX = 0, initialY = 0) {
-        super(animations);
+    constructor(type, initialPosition = {}) {
+        super(type.animations,type.options);
+
+        this.type = type
 
         this.name = `NPC_${Math.floor(Math.random() * 1000)}`;
         this.speed = NPC_CONFIG.SPEED;
-        this.x = initialX;
-        this.y = initialY;
+
+        this.x = initialPosition.x ?? 0;
+        this.y = initialPosition.y ?? 0;
+
         this.active = false;
         this.lastDir = {x: 0, y: 0}
         
-        // CAMBIO 1: El estado inicial ahora es la referencia al objeto directo, no un string
         this.state = STATES.walking; 
         this.hasEnteredDoor = false;
 

@@ -1,7 +1,6 @@
 const cache = new Map()
 
 export async function loadCharacterAnimations(jsonPath){
-
     if(cache.has(jsonPath)){
         return cache.get(jsonPath)
     }
@@ -10,27 +9,12 @@ export async function loadCharacterAnimations(jsonPath){
     const textures = sheet.textures
 
     const animations = {
-        down: [
-            textures["down_0"],
-            textures["down_1"],
-            textures["down_2"],
-            textures["down_3"],
-        ],        up: [
-            textures["up_0"],
-            textures["up_1"],
-            textures["up_2"],
-            textures["up_3"],
-        ],
-        right: [
-            textures["right_0"],
-            textures["right_1"],
-            textures["right_2"],
-            textures["right_3"],
-        ],
-        idle: [textures["down_0"]]
+        down:  [textures["down_0"],  textures["down_1"],  textures["down_2"],  textures["down_3"]],
+        up:    [textures["up_0"],    textures["up_1"],    textures["up_2"],    textures["up_3"]],
+        right: [textures["right_0"], textures["right_1"], textures["right_2"], textures["right_3"]],
+        idle:  [textures["down_0"]]
     }
 
-    cache.set(jsonPath, animations)
-
+    cache.set(jsonPath, animations) //intento de solucionar el warning de cache, despues veo como arreglarlo
     return animations
 }
