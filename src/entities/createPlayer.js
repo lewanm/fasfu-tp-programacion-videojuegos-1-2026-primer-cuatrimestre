@@ -5,7 +5,7 @@ import { loadCharacterAnimations } from "../assets/loadCharacterAnimations.js"
 //poner como parametro
 export async function createPlayer(worldObjects){
 
-    const animations = await loadCharacterAnimations(PLAYER.ASSET, "player")
+    const animations = await loadCharacterAnimations(PLAYER.ASSET)
 
     const player = new Player(animations, PLAYER.OPTIONS)
     player.colliders = worldObjects 

@@ -3,7 +3,7 @@ setlocal enabledelayedexpansion
 chcp 65001 > nul
 
 echo ===================================================
-echo   Renombrador de Spritesheets por Ruta
+echo   Renombrador de Spritesheets Dinámico por Carpeta
 echo ===================================================
 echo.
 
@@ -13,8 +13,14 @@ set /p "folder=Introduce o arrastra la carpeta donde están los tiles: "
 :: Limpiar comillas por si el usuario arrastró la carpeta a la consola
 set "folder=%folder:"=%"
 
-:: Asegurar que la ruta termine en barra invertida si no la tiene
-if not "%folder:~-1%"=="\" set "folder=%folder%\"
+:: Quitar la barra invertida del final si la tiene (para obtener bien el nombre)
+if "%folder:~-1%"=="\" set "folder=%folder:~0,-1%"
+
+:: Obtener el nombre de la carpeta actual como prefijo
+for %%A in ("%folder%") do set "prefijo=%%~nxA"
+
+:: Ahora sí, asegurar que la ruta termine en barra invertida para buscar los archivos
+set "folder=%folder%\"
 
 :: Verificar si la carpeta existe
 if not exist "%folder%" (
@@ -42,38 +48,36 @@ if "%ext%"=="" (
 
 echo.
 echo Carpeta detectada: %folder%
+echo Nombre asignado (Prefijo): %prefijo%
 echo Extensión detectada: %ext%
 echo Procesando...
 echo ---------------------------------------------------
 
-:: --- ANIMACIÓN ABAJO (000 al 003) ---
-for /l %%i in (0,1,3) do (
+:: Iterar del 0 al 11 (los 12 frames del personaje)
+for /l %%i in (0,1,11) do (
+    
+    :: Formatear el número actual a 3 dígitos (000, 001, 010, etc.)
     set "num=00%%i"
     set "num=!num:~-3!"
-    if exist "%folder%tile!num!%ext%" (
-        echo Renombrando tile!num!%ext% a down_%%i%ext%
-        ren "%folder%tile!num!%ext%" "down_%%i%ext%"
+    
+    :: Definir la animación y el índice interno según el rango
+    if %%i geq 0 if %%i lss 4 (
+        set "anim=down"
+        set /a "frame=%%i"
     )
-)
-
-:: --- ANIMACIÓN DERECHA (004 al 007) ---
-for /l %%i in (4,1,7) do (
-    set "num=00%%i"
-    set "num=!num:~-3!"
-    set /a "nuevo_num=%%i - 4"
-    if exist "%folder%tile!num!%ext%" (
-        echo Renombrando tile!num!%ext% a right_!nuevo_num!%ext%
-        ren "%folder%tile!num!%ext%" "right_!nuevo_num!%ext%"
+    if %%i geq 4 if %%i lss 8 (
+        set "anim=right"
+        set /a "frame=%%i - 4"
     )
-)
-
-:: --- ANIMACIÓN ARRIBA (008 al 011) ---
-for /l %%i in (8,1,11) do (
-    if %%i lss 10 (set "num=00%%i") else (set "num=0%%i")
-    set /a "nuevo_num=%%i - 8"
+    if %%i geq 8 if %%i lss 12 (
+        set "anim=up"
+        set /a "frame=%%i - 8"
+    )
+    
+    :: Renombrar si el archivo existe
     if exist "%folder%tile!num!%ext%" (
-        echo Renombrando tile!num!%ext% a up_!nuevo_num!%ext%
-        ren "%folder%tile!num!%ext%" "up_!nuevo_num!%ext%"
+        echo Renombrando tile!num!%ext% a %prefijo%_!anim!_!frame!%ext%
+        ren "%folder%tile!num!%ext%" "%prefijo%_!anim!_!frame!%ext%"
     )
 )
 

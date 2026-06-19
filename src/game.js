@@ -7,6 +7,9 @@ import { createPlayer } from "./entities/createPlayer.js";
 import { createGameDebug } from "./debug/createDebug.js";
 import { createWorldObjects } from "./world/createWorldObjects.js"
 import { WALLS } from "./world/worldObjects.js";
+import { createNPCTypes } from "./entities/createNPCTypes.js";
+import { preloadAssets } from "./assets/preloadAssets.js";
+
 
 export async function createGame() {
     const app = new PIXI.Application()
@@ -19,7 +22,8 @@ export async function createGame() {
     })
 
     //##### ASSETS #####
-
+    
+    await preloadAssets()
     const mapSprite = await createMap(app.screen)
     const worldObjects = await createWorldObjects()
 
@@ -40,19 +44,21 @@ export async function createGame() {
 
     //##### NPCs #####
     
+    const npcTypes = await createNPCTypes()
     
     const npcSystem = createNPCSystem(
         colliders, 
-        app.screen
+        app.screen,
+        npcTypes
     )
 
     await npcSystem.init()
 
     //##### SCENES #####
     app.stage.addChild(mapSprite)
+    app.stage.addChild(worldObjects.container)
     app.stage.addChild(npcSystem.container)
     app.stage.addChild(player.view)
-    app.stage.addChild(worldObjects.container)
 
     const debug = createGameDebug(app, player, npcSystem, colliders) //aca se agrega en el stage al contenedor de debuf
     // para ver en consola

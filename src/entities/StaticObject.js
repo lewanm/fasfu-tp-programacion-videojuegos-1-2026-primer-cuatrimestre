@@ -9,10 +9,10 @@ class StaticObject extends Entity{
 
     static async loadTexture(){
         if (!this.texture){
-            this.texture = await PIXI.Assets.load(ASSETS.STATIC_OBJECTS[this.assetKey])
+            this.texture = await PIXI.Assets.get(ASSETS.STATIC_OBJECTS[this.assetKey])
         }
     }
-
+    //MODIFIQUE
     constructor(texture, position = {}, options = {}) {
         super(new PIXI.Sprite(texture), options);
         

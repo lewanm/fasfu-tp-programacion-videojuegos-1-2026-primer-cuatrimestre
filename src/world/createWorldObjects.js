@@ -28,7 +28,6 @@ export async function createWorldObjects(){
         }
 
         const instance = new ObjClass(obj);
-        console.log(instance)
         container.addChild(instance.view);
         objects.push(instance);
     }
