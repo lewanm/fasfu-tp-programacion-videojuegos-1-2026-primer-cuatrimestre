@@ -46,6 +46,7 @@ export class Character extends Entity {
         }
     }
 
+    //le pedi esto a la IA para que me lo haga bonito y sin errores o que contemple todas las posibilidades
     updateAnimation() {
         // 1. Evaluamos el estado de movimiento actual según las direcciones lógicas
         const isMovingNow = this.dirX !== 0 || this.dirY !== 0;

@@ -88,8 +88,7 @@ export class NPC extends Character {
         if (!isInsideTrigger(this, trigger)) return;
 
         this.hasEnteredDoor = true;
-        console.log(`NPC ${this.name} llegó a la puerta, su hambre es: ${this.hunger.toFixed(1)}`);
-
+     
         if (this.isHungry()) {
             // CAMBIO 4: Pasamos el objeto de estado de la fila
             this.changeState(STATES.queue); 

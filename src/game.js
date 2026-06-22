@@ -9,7 +9,7 @@ import { createWorldObjects } from "./world/createWorldObjects.js"
 import { WALLS } from "./world/worldObjects.js";
 import { createNPCTypes } from "./entities/createNPCTypes.js";
 import { preloadAssets } from "./assets/preloadAssets.js";
-
+import { createInteractionSystem } from "./systems/interactionSystem.js";
 
 export async function createGame() {
     const app = new PIXI.Application()
@@ -42,6 +42,8 @@ export async function createGame() {
 
     const keyboard = createKeyboard()
 
+    const interactionSystem = createInteractionSystem(player, worldObjects, keyboard)
+    
     //##### NPCs #####
     
     const npcTypes = await createNPCTypes()
@@ -60,15 +62,18 @@ export async function createGame() {
     app.stage.addChild(npcSystem.container)
     app.stage.addChild(player.view)
 
-    const debug = createGameDebug(app, player, npcSystem, colliders) //aca se agrega en el stage al contenedor de debuf
+    const debug = createGameDebug(app, player, npcSystem, colliders, worldObjects) //aca se agrega en el stage al contenedor de debuf
     // para ver en consola
     window.debug = {
         player: player,
-        npcs: npcSystem.NPCpool
+        npcs: npcSystem.NPCpool,
+        worldObjects: worldObjects.objects,
     }
     //##### GAME LOOP #####
     function update(delta){
         const input = getMovementInput(keyboard) // pasar esto al player directamente o ver que ondeu
+
+        interactionSystem.update()
 
         player.dirX = input.x
         player.dirY = input.y
@@ -77,7 +82,7 @@ export async function createGame() {
 
         npcSystem.update(delta)
         
-        debug?.update()
+        debug?.update()        
     }
 
     app.ticker.add((ticker) => {
@@ -86,3 +91,4 @@ export async function createGame() {
 
     return app
 }
+

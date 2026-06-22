@@ -1,4 +1,4 @@
-export async function loadCharacterAnimations(jsonPath){
+export async function getCharacterAnimations(jsonPath){
 
     const sheet = await PIXI.Assets.get(jsonPath)
     

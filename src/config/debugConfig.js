@@ -5,7 +5,7 @@ export const DEBUG_STATE_COLORS = {
 }
 
 export const DEBUG_OPTIONS = {
-    enabled: false,
+    enabled: true,
 
     colliders: true,
     triggers: true,

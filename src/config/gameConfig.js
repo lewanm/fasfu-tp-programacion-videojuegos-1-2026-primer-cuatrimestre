@@ -30,5 +30,7 @@ export const INPUT = {
     UP: ["KeyW", "ArrowUp"],
     LEFT: ["KeyA", "ArrowLeft"],
     DOWN: ["KeyS", "ArrowDown"],
-    RIGHT: ["KeyD", "ArrowRight"]
+    RIGHT: ["KeyD", "ArrowRight"],
+
+    ACTION: ["KeyE"]
 }

@@ -1,5 +1,3 @@
-import { Fridge } from "../entities/StaticObject.js"
-
 //despues modificar el array con cada objeto, por un diccionario tipo pared_inferio : { x: 366, y:126, width: 39, height: 118 } y llamo a pared inferior.
 export const WALLS = [
     //pared_derecha
@@ -12,12 +10,28 @@ export const WALLS = [
     { x: 69, y: 242, width: width(69,380), height: height(242,256) },
 ]
 
+//esto no me gusta para nada, lo ignoro y lo voy a poner en cada clase del objeto.
 export const WORLD_OBJECTS = [
     {
         type: "fridge",
+        x: 181,
+        y: 124
+    },
+    {
+        type: "fryer",
+        x: 83,
+        y: 140
+    },
+    {
+        type: "oven",
         x: 72,
         y: 140
-    }
+    },
+    {
+        type: "soda",
+        x: 83,
+        y: 113
+    },
 
 ]
 

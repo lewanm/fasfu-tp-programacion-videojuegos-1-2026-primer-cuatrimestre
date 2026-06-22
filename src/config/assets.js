@@ -1,4 +1,5 @@
 const BASE_NPC_PATH = "/assets/characters/npcs/"
+const BASE_STATIC_OBJECTS = "/assets/staticObjects/"
 
 
 export const ASSETS = {
@@ -9,6 +10,9 @@ export const ASSETS = {
     },
     PLAYER: "/assets/characters/player/player.json",
     STATIC_OBJECTS:{
-        fridge: "/assets/staticObjects/heladera.png"
+        fridge: BASE_STATIC_OBJECTS +"heladera.png",
+        fryer: BASE_STATIC_OBJECTS +"freidora.png",
+        oven: BASE_STATIC_OBJECTS +"cocina.png",
+        soda: BASE_STATIC_OBJECTS +"expendedora_gaseosas.png"
     }
 }
