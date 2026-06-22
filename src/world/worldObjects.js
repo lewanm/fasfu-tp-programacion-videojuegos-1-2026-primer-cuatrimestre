@@ -3,37 +3,77 @@ export const WALLS = [
     //pared_derecha
     { x: 380, y: 112, width: width(380,408), height: height(112, 240) },
     //pared_superior
-    { x: 70, y: 92, width: width(70,380), height: height(92,112) },
+    { x: 70, y: 92, width: width(70,380), height: height(92,125) },
     //pared_izquierda
     { x: 54, y: 114, width: width(54, 70), height: height(114,240) },
     //pared_inferior
     { x: 69, y: 242, width: width(69,380), height: height(242,256) },
 ]
 
-//esto no me gusta para nada, lo ignoro y lo voy a poner en cada clase del objeto.
-export const WORLD_OBJECTS = [
-    {
-        type: "fridge",
-        x: 181,
-        y: 124
+export const OBJECT_TEMPLATES = {
+    fridge: {
+        name: "fridge",
+        width: 36,
+        height: 76,
+        hitboxOffset: { x: 0, y: -3 },
+        isSolid: true,
+        trigger: {
+            type: "interact",
+            width: 36,
+            height: 30,
+            offset: { x: 0, y: 0 }
+        }
     },
-    {
-        type: "fryer",
-        x: 83,
-        y: 140
+    fryer: {
+        name: "fryer",
+        width: 70, 
+        height: 40,
+        hitboxOffset: { x: 0, y: -3 },
+        isSolid: true,
+        trigger: {
+            type: "interact",
+            width: 70,
+            height: 30,
+            offset: { x: 0, y: 0 }
+        }
     },
-    {
-        type: "oven",
-        x: 72,
-        y: 140
+    oven: {
+        name: "oven",
+        width: 70,
+        height: 36,
+        hitboxOffset: { x: 0, y: -3 },
+        isSolid: true,
+        trigger: {
+            type: "interact",
+            width: 70,
+            height: 30,
+            offset: { x: 0, y: 0 }
+        }
     },
-    {
-        type: "soda",
-        x: 83,
-        y: 113
-    },
+    soda: {
+        name: "soda",
+        width: 72,
+        height: 42,
+        hitboxOffset: { x: 0, y: 0 },
+        isSolid: true,
+        trigger: {
+            type: "interact",
+            width: 72,
+            height: 30,
+            offset: { x: 0, y: 13 }
+        }
+    }
+};
 
-]
+//aca es para instanciar nuevos objetos, indicando el tipo, que tiene que coincidir con el nombre
+//Y asigno el X y el Y, como estoy usando de pivote 0,1 con hacer click en el juego en modo de debug
+//y usa las coordenadas que da.
+export const WORLD_OBJECTS = [
+    { type: "fridge", position: { x: 160, y: 128 } },
+    { type: "fryer", position: { x: 284, y: 128 } },
+    { type: "oven", position: { x: 206, y: 128 } },
+    { type: "soda", position: { x: 79, y: 113 } },
+];
 
 function width(initialX, finalX){
     return finalX - initialX

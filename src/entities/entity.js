@@ -29,8 +29,8 @@ export class Entity{
     //no quiero pensar, voy a ver que hago despues, esto solo lo tengo para obtener el rango del collider para los trigger.
     getBoundsWithOffset(width, height, offset = {x: 0, y: 0}, x = this.x, y = this.y){
         return {
-            x: x + offset.x - width / 2,
-            y: y + offset.y - height / 2,
+            x: x + offset.x,
+            y: y + offset.y,
             width,
             height
         };
