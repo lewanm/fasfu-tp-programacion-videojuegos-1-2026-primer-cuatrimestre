@@ -6,7 +6,7 @@ import { createMap } from "./world/createMap.js";
 import { createPlayer } from "./entities/createPlayer.js";
 import { createGameDebug } from "./debug/createDebug.js";
 import { createWorldObjects } from "./world/createWorldObjects.js"
-import { WALLS } from "./world/worldObjects.js";
+import { WALLS } from "./config/worldObjects.js";
 import { createNPCTypes } from "./entities/createNPCTypes.js";
 import { preloadAssets } from "./assets/preloadAssets.js";
 import { createInteractionSystem } from "./systems/interactionSystem.js";
@@ -82,6 +82,8 @@ export async function createGame() {
 
         npcSystem.update(delta)
         
+        worldObjects.update(delta)
+
         debug?.update()        
     }
 

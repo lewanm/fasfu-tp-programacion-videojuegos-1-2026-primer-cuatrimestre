@@ -301,19 +301,19 @@
     "scale": 1
   },
   "animations": {
-    "down": [
+    "down_empty": [
       "player_down_0",
       "player_down_1",
       "player_down_2",
       "player_down_3"
     ],
-    "up": [
+    "up_empty": [
       "player_up_0",
       "player_up_1",
       "player_up_2",
       "player_up_3"
     ],
-    "right": [
+    "right_empty": [
       "player_right_0",
       "player_right_1",
       "player_right_2",

@@ -44,7 +44,6 @@ class QueueState extends State {
         npc.lastDir = {x: npc.dirX, y: npc.dirY}
         npc.dirX = 0;
         npc.dirY = 0;
-        console.log(`NPC ${npc.name} entró en la fila.`);
     }
 
     update(npc, delta){
@@ -62,5 +61,3 @@ export const STATES = {
     walking: new WalkingState(),
     queue: new QueueState()
 };
-
-window.states = STATES

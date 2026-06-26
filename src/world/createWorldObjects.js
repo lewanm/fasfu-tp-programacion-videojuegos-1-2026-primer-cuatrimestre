@@ -1,12 +1,12 @@
-import { WORLD_OBJECTS } from "./worldObjects.js"
-import { StaticObject, WORK_STATIONS } from "../entities/StaticObject.js"
+import { WORLD_OBJECTS } from "../config/worldObjects.js"
+import { WorkStation, WORK_STATIONS } from "../entities/staticObject.js"
 
 export async function createWorldObjects(){
     const objects = []
     const container = new PIXI.Container()
     container.label = "work_stations"
 
-    await StaticObject.loadTextures()
+    await WorkStation.loadTextures()
 
     for (const obj of WORLD_OBJECTS) {
         const ObjClass = WORK_STATIONS[obj.type];
@@ -26,6 +26,9 @@ export async function createWorldObjects(){
     
     return {
         objects,
-        container
+        container,
+        update(delta){
+            objects.forEach(obj => obj.update?.(delta))
+        }
     }
 }

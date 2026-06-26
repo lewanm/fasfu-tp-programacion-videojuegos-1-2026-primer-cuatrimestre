@@ -1,4 +1,4 @@
-import { getCharacterAnimations } from "../assets/loadCharacterAnimations.js"
+import { getCharacterAnimations } from "../assets/getCharacterAnimations.js"
 import { NPC_TYPES } from "../config/npcConfig.js"
 
 export async function createNPCTypes(){

@@ -21,35 +21,7 @@ export function createDebugSystem(app, enabled = false){
     return {
         layer: debugLayer,
         debugEntities : [],
-
-        drawAtlas(frames, sheet){
-            frames.forEach((frame,i) => {
-                const rect = frame.frame
-                const g = new PIXI.Graphics()
-                g.rect(
-                    rect.x + sheet.x,
-                    rect.y + sheet.y,
-                    rect.width,
-                    rect.height
-                )
-                .stroke({color: 0xff0000})
-
-                g.label = `atlas_${i}`
-
-                debugLayer.addChild(g)
-
-            })
-        },
-
-        showSpriteSheet(texture, x = 0, y = 0){
-            const s = new PIXI.Sprite(texture)
-            s.x = x
-            s.y = y
-            debugLayer.addChild(s)
-            return s
-        },
-
-        
+     
         drawColliders(objects){
             objects.forEach(obj => {
                 const g = new PIXI.Graphics();

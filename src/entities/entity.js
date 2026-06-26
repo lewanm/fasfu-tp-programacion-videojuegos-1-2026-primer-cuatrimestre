@@ -5,7 +5,6 @@ export class Entity{
         this.view = view
         this.x = 0
         this.y = 0
-        this.view.anchor.set(0.5, 0.5);
         this.width = options.width ?? 12;
         this.height = options.height ?? 18;
         this.hitboxOffset = options.hitboxOffset ?? {x: 0, y: 0};
