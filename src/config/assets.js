@@ -13,6 +13,7 @@ export const ASSETS = {
         fridge: BASE_STATIC_OBJECTS +"heladera.png",
         fryer: BASE_STATIC_OBJECTS +"freidora.png",
         oven: BASE_STATIC_OBJECTS +"cocina.png",
-        soda: BASE_STATIC_OBJECTS +"expendedora_gaseosas.png"
+        soda: BASE_STATIC_OBJECTS +"expendedora_gaseosas.png",
+        tray: BASE_STATIC_OBJECTS +"bandejas.png"
     }
 }

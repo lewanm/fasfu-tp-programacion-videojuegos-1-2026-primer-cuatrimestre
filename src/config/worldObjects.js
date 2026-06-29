@@ -10,6 +10,7 @@ export const WALLS = [
     { x: 69, y: 242, width: width(69,380), height: height(242,256) },
 ]
 
+//el type del triger no lo termine usando
 export const OBJECT_TEMPLATES = {
     fridge: {
         name: "fridge",
@@ -74,7 +75,21 @@ export const OBJECT_TEMPLATES = {
             type: "soda",
             variant: "cola"
         })
-    }
+    },
+    tray: {
+        name: "tray",
+        width: 90,
+        height: 40,
+        hitboxOffset: { x: 4, y: -8 },
+        isSolid: true,
+        trigger: {
+            type: "interact",
+            width: 130,
+            height: 40,
+            offset: { x: -15, y: -45 }
+        },
+        maxSlots: 3,
+    },
 };
 
 export const ITEM_TEMPLATES = {
@@ -116,6 +131,7 @@ export const WORLD_OBJECTS = [
     { type: "fryer", position: { x: 284, y: 128 } },
     { type: "oven", position: { x: 206, y: 128 } },
     { type: "soda", position: { x: 79, y: 113 } },
+    { type: "tray", position: { x: 164, y: 220 } },
 ];
 
 function width(initialX, finalX){
