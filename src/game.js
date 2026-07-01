@@ -10,6 +10,7 @@ import { WALLS } from "./config/worldObjects.js";
 import { createNPCTypes } from "./entities/createNPCTypes.js";
 import { preloadAssets } from "./assets/preloadAssets.js";
 import { createInteractionSystem } from "./systems/interactionSystem.js";
+import { createQueueSystem } from "./systems/queueSystem.js";
 
 export async function createGame() {
     const app = new PIXI.Application()
@@ -46,12 +47,16 @@ export async function createGame() {
     
     //##### NPCs #####
     
+    const queueSystem = createQueueSystem() 
+
     const npcTypes = await createNPCTypes()
     
     const npcSystem = createNPCSystem(
         colliders, 
         app.screen,
-        npcTypes
+        npcTypes,
+        queueSystem,
+        keyboard // esto solo lo estoy pasando a modo de debug para probar algunas cosas.
     )
 
     await npcSystem.init()
@@ -62,12 +67,23 @@ export async function createGame() {
     app.stage.addChild(npcSystem.container)
     app.stage.addChild(player.view)
 
-    const debug = createGameDebug(app, player, npcSystem, colliders, worldObjects) //aca se agrega en el stage al contenedor de debuf
+    const debug = createGameDebug(
+        app, 
+        player, 
+        npcSystem, 
+        colliders, 
+        worldObjects,
+        queueSystem
+    ) //aca se agrega en el stage al contenedor de debug
     // para ver en consola
+    
     window.debug = {
         player: player,
         npcs: npcSystem.NPCpool,
+        activeNPCs: ()=> npcSystem.NPCpool.filter(npc => npc.active),
+        colliders: colliders,
         worldObjects: worldObjects.objects,
+        queueSystem: queueSystem
     }
     //##### GAME LOOP #####
     function update(delta){

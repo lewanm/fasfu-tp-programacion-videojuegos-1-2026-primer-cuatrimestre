@@ -2,7 +2,7 @@ import { createDebugSystem } from "./debugRenderer.js"
 import { DEBUG_OPTIONS } from "../config/debugConfig.js"
 import { DOOR_TRIGGER } from "../world/triggers.js"
 
-export function createGameDebug(app, player, npcSystem, colliders, worldObjects){
+export function createGameDebug(app, player, npcSystem, colliders, worldObjects, queueSystem){
 
     if (!DEBUG_OPTIONS.enabled) return null
 
@@ -35,6 +35,24 @@ export function createGameDebug(app, player, npcSystem, colliders, worldObjects)
 
     if (DEBUG_OPTIONS.playerHitbox) {
         debugEntities.push(debug.drawHitbox(player))
+    }
+
+    if (DEBUG_OPTIONS.queueWaypoints){
+
+        debug.drawPath(queueSystem.queueEntryPath)
+
+        queueSystem.queueEntryPath.forEach(point => {
+            debug.drawWaypoint(point)
+        });
+    }
+
+    if (DEBUG_OPTIONS.queuePositions){
+
+        const allPositions = [...queueSystem.queuePositions, ...queueSystem.waitingPositions]
+        allPositions.forEach(point => {
+            debug.drawQueuePosition(point);
+        });
+
     }
 
     npcSystem.NPCpool.forEach(npc => {

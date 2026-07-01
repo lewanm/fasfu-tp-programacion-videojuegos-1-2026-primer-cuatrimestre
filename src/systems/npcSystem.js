@@ -3,8 +3,10 @@ import { getRandomInBetween } from "../utils/math.js"
 import { isOutOfScreen } from "../utils/screen.js"
 import { DOOR_TRIGGER }  from "../world/triggers.js" //aca va a recibir despues todos los triggers juntos y revisar en la FSM por cada trigger
 import { NPC_CONFIG } from "../config/npcConfig.js"
+import { getRandomOrder } from "../utils/randomOrder.js"
+import { getDebugInput } from "./debugInput.js"
 
-export function createNPCSystem(colliders, screen, npcTypes){
+export function createNPCSystem(colliders, screen, npcTypes, queueSystem,keyboard){
 
     const NPCpool = []
 
@@ -20,7 +22,7 @@ export function createNPCSystem(colliders, screen, npcTypes){
         for (let i = 0; i < NPC_CONFIG.NPC_QUANTITY; i++){
 
             const randomType = getRandomNPCType()
-            const initialPosition = {x: 0, y: getRandomInBetween(312,340)}//esto es para que spawneen abajo, despues ponerlo en NPC_CONFIG
+            const initialPosition = {x: 0, y: getRandomInBetween(314,350)}//esto es para que spawneen abajo, despues ponerlo en NPC_CONFIG
 
             const npc = new NPC(randomType, initialPosition)
     
@@ -53,6 +55,7 @@ export function createNPCSystem(colliders, screen, npcTypes){
         npc.reset(spanwLeft, width)
     }
 
+
     function update(delta){
 
         NPCpool.forEach(npc => {
@@ -60,12 +63,35 @@ export function createNPCSystem(colliders, screen, npcTypes){
 
             npc.update(delta)
 
-            npc.handleDoorTrigger(DOOR_TRIGGER)
+            const enteredQueue = npc.handleDoorTrigger(DOOR_TRIGGER)
+
+            if (queueSystem.hasSpace() && enteredQueue) queueSystem.add(npc)
 
             if (isOutOfScreen(npc, screen, 100)){
                 npc.deactivate()
             }
         })
+
+        const firstNpc = queueSystem.getFirst()
+        const debugPressed = getDebugInput(keyboard)
+
+        if (
+            firstNpc &&
+            !firstNpc.hasOrdered &&
+            firstNpc.queueIndex === 0 &&
+            firstNpc.isAtTargetPosition() && 
+            queueSystem.hasWaitingSpace() &&
+            debugPressed //obviamente quitar esto despues, seria para tomar el pedido mientras no pueda hacerlo el player
+        ){
+
+            firstNpc.order = getRandomOrder()
+
+            firstNpc.hasOrdered = true
+
+            console.log(`${firstNpc.name} pidió:`, firstNpc.order)
+
+            queueSystem.moveToWaiting(firstNpc)
+        }
 
         spawn()
     }

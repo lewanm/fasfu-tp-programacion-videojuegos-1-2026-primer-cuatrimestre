@@ -12,4 +12,6 @@ export const DEBUG_OPTIONS = {
     playerHitbox: true,
     npcHitboxes: true,
     npcState: true,
+    queueWaypoints: true,
+    queuePositions: true
 }

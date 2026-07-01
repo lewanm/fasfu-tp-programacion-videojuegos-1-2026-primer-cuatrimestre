@@ -7,7 +7,8 @@ export const WALLS = [
     //pared_izquierda
     { x: 54, y: 114, width: width(54, 70), height: height(114,240) },
     //pared_inferior
-    { x: 69, y: 242, width: width(69,380), height: height(242,256) },
+    { x: 55, y: 242, width: width(55,552), height: height(242,310) },
+
 ]
 
 //el type del triger no lo termine usando

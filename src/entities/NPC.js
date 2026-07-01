@@ -3,7 +3,7 @@ import { normalize } from "../utils/math.js";
 import { isInsideTrigger } from "../utils/trigger.js";
 import { getRandomInBetween } from "../utils/math.js";
 import { NPC_CONFIG } from "../config/npcConfig.js";
-import { STATES } from "../systems/states.js"; // Importamos las instancias de los estados
+import { STATES } from "../systems/states.js";
 
 const NPC_OFFSET = 0;
 
@@ -25,6 +25,15 @@ export class NPC extends Character {
         this.state = STATES.walking; 
         this.hasEnteredDoor = false;
 
+        this.order = null
+        this.hasOrdered = false
+
+        this.path = []
+        this.currentWaypoint = 0
+
+        this.queueIndex = -1
+        this.queueTargutPosition = null
+
         this.hunger = getRandomInBetween(NPC_CONFIG.INITIAL_HUNGER_MIN, NPC_CONFIG.INITIAL_HUNGER_MAX);
     }
 
@@ -38,6 +47,15 @@ export class NPC extends Character {
         }
         this.dirY = 0;
         this.hasEnteredDoor = false;
+
+        this.order = null
+        this.hasOrdered = false
+
+        this.path = []
+        this.currentWaypoint = 0
+
+        this.queueIndex = -1
+        this.queueTargetPosition = null
 
         // CAMBIO 2: Usamos el método formal para inicializar el estado al resetear
         this.changeState(STATES.walking);
@@ -84,15 +102,19 @@ export class NPC extends Character {
     }
 
     handleDoorTrigger(trigger) {
-        if (this.hasEnteredDoor) return;
-        if (!isInsideTrigger(this, trigger)) return;
+        if (this.hasEnteredDoor) return false;
+        if (!isInsideTrigger(this, trigger)) return false;
 
         this.hasEnteredDoor = true;
      
         if (this.isHungry()) {
             // CAMBIO 4: Pasamos el objeto de estado de la fila
             this.changeState(STATES.queue); 
+
+            return true
         }
+
+        return false
     }
 
     // CAMBIO 5: Unificado y centralizado
@@ -114,14 +136,73 @@ export class NPC extends Character {
         if (this.hunger < 0) this.hunger = 0;
     }
 
+    moveToTarget(target, delta){
+        const dx = target.x - this.x;
+        const dy = target.y - this.y;
+
+        const distance = Math.hypot(dx, dy);
+
+        if (distance < 2){
+            return true;
+        }
+
+        const dir = normalize(dx, dy);
+
+        this.dirX = dir.x;
+        this.dirY = dir.y;
+
+        this.moveWithCollision(
+            dir.x,
+            dir.y,
+            delta
+        );
+
+        return false;
+    }
+
     // Métodos internos que llaman los estados correspondientes
     updateWalking(delta) {
         const { x: dx, y: dy } = normalize(this.dirX, this.dirY);
         this.moveWithCollision(dx, dy, delta);
     }
 
+    isAtTargetPosition(){
+
+        if (!this.queueTargetPosition) return false;
+
+        const dx = this.queueTargetPosition.x - this.x;
+        const dy = this.queueTargetPosition.y - this.y;
+
+        return Math.hypot(dx, dy) < 5;
+    }
+
     updateQueue(delta) {
-        // Por ahora se queda quieto en su lugar. 
-        // El enter() del QueueState ya puso dirX y dirY en 0.
+        if (this.currentWaypoint < this.path.length){
+            const target = this.path[this.currentWaypoint]
+
+            const arrived = this.moveToTarget(
+                target,
+                delta
+            )
+
+            if (arrived){
+                this.currentWaypoint++
+            }
+
+            return
+        }
+
+        if (!this.queueTargetPosition) return
+
+        const arrived = this.moveToTarget(
+            this.queueTargetPosition,
+            delta
+        )
+
+        if (arrived){
+            this.dirX = 0
+            this.dirY = 0
+        }
+        
     }
 }

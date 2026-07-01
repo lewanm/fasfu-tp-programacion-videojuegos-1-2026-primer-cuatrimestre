@@ -70,7 +70,38 @@ export function createDebugSystem(app, enabled = false){
                     entity.view.tint = color
                 }
             }
-        }
+        },
 
+        drawWaypoint(position){
+            const g = new PIXI.Graphics();
+
+            g.circle(position.x, position.y, 6)
+            .fill({ color: 0xffff00 });
+
+            this.layer.addChild(g);
+        },
+
+        drawQueuePosition(position){
+            const g = new PIXI.Graphics();
+
+            g.circle(position.x, position.y, 6)
+            .fill({ color: 0x00aaff });
+
+            this.layer.addChild(g);
+        },
+
+        drawPath(path){
+
+            const g = new PIXI.Graphics();
+
+            for(let i = 0; i < path.length - 1; i++){
+
+                g.moveTo(path[i].x, path[i].y)
+                .lineTo(path[i + 1].x, path[i + 1].y)
+                .stroke({ color: 0xffff00, width: 2 });
+            }
+
+            this.layer.addChild(g);
+        }
     }
 }
