@@ -1,10 +1,12 @@
 import { NPC } from "../entities/NPC.js"
 import { getRandomInBetween } from "../utils/math.js"
 import { isOutOfScreen } from "../utils/screen.js"
-import { DOOR_TRIGGER }  from "../world/triggers.js" //aca va a recibir despues todos los triggers juntos y revisar en la FSM por cada trigger
+import { TRIGGERS }  from "../config/triggers.js" 
 import { NPC_CONFIG } from "../config/npcConfig.js"
 import { getRandomOrder } from "../utils/randomOrder.js"
 import { getDebugInput } from "./debugInput.js"
+import { STATES } from "../systems/states.js";
+import { isInsideTrigger } from "../utils/trigger.js";
 
 export function createNPCSystem(colliders, screen, npcTypes, queueSystem,keyboard){
 
@@ -63,9 +65,17 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem,keyboar
 
             npc.update(delta)
 
-            const enteredQueue = npc.handleDoorTrigger(DOOR_TRIGGER)
+            const canEnterQueue = 
+                !npc.hasOrdered &&
+                npc.isHungry() &&
+                queueSystem.hasSpace() &&
+                isInsideTrigger(npc, TRIGGERS.entrance)
 
-            if (queueSystem.hasSpace() && enteredQueue) queueSystem.add(npc)
+            if (canEnterQueue){
+                npc.hasEnteredDoor = true
+                npc.changeState(STATES.queue)
+                queueSystem.add(npc)
+            }
 
             if (isOutOfScreen(npc, screen, 100)){
                 npc.deactivate()

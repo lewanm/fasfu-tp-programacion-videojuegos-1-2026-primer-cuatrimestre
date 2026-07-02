@@ -23,7 +23,7 @@ export const PLAYER = {
 }
 
 export const WORLD = {
-    TILE_SIZE: 32,
+    TILE_SIZE: 32
 }
 
 export const INPUT = {

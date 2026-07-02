@@ -1,6 +1,6 @@
 import { createDebugSystem } from "./debugRenderer.js"
 import { DEBUG_OPTIONS } from "../config/debugConfig.js"
-import { DOOR_TRIGGER } from "../world/triggers.js"
+import { TRIGGERS } from "../config/triggers.js"
 
 export function createGameDebug(app, player, npcSystem, colliders, worldObjects, queueSystem){
 
@@ -13,13 +13,15 @@ export function createGameDebug(app, player, npcSystem, colliders, worldObjects,
     function getAllTriggers(){
         const triggers = []
 
+        //los triggers de los objetos
         worldObjects.objects.forEach(obj => {
             const trigger = obj.getTriggerBounds?.()
             if (trigger) triggers.push(trigger)
         })
 
-        //agrego manualmente los globales
-        triggers.push(DOOR_TRIGGER)
+        for (const trigger in TRIGGERS){
+            triggers.push(TRIGGERS[trigger])
+        }
 
         return triggers
     }

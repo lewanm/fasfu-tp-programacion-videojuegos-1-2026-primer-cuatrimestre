@@ -43,6 +43,7 @@ export async function createGame() {
 
     const keyboard = createKeyboard()
 
+    //aca se cotnrola el player
     const interactionSystem = createInteractionSystem(player, worldObjects, keyboard)
     
     //##### NPCs #####

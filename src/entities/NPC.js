@@ -1,6 +1,5 @@
 import { Character } from "./Character.js";
 import { normalize } from "../utils/math.js";
-import { isInsideTrigger } from "../utils/trigger.js";
 import { getRandomInBetween } from "../utils/math.js";
 import { NPC_CONFIG } from "../config/npcConfig.js";
 import { STATES } from "../systems/states.js";
@@ -99,22 +98,6 @@ export class NPC extends Character {
     increaseHunger(delta) {
         this.hunger += NPC_CONFIG.HUNGER_RATE * delta;
         if (this.hunger > 100) this.hunger = 100;
-    }
-
-    handleDoorTrigger(trigger) {
-        if (this.hasEnteredDoor) return false;
-        if (!isInsideTrigger(this, trigger)) return false;
-
-        this.hasEnteredDoor = true;
-     
-        if (this.isHungry()) {
-            // CAMBIO 4: Pasamos el objeto de estado de la fila
-            this.changeState(STATES.queue); 
-
-            return true
-        }
-
-        return false
     }
 
     // CAMBIO 5: Unificado y centralizado
