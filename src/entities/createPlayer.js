@@ -1,4 +1,4 @@
-import { Player } from "./src/entities/player.js"
+import { Player } from "./player.js"
 import { PLAYER } from "../config/gameConfig.js"
 import { getCharacterAnimations } from "../assets/getCharacterAnimations.js"
 //poner como parametro
