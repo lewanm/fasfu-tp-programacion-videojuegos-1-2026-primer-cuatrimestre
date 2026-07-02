@@ -1,4 +1,4 @@
-import { Entity } from "./Entity.js"
+import { Entity } from "./entity.js"
 import { isColliding } from "../systems/collisionSystem.js"
 
 export class Character extends Entity {

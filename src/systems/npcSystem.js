@@ -5,7 +5,7 @@ import { TRIGGERS }  from "../config/triggers.js"
 import { NPC_CONFIG } from "../config/npcConfig.js"
 import { getRandomOrder } from "../utils/randomOrder.js"
 import { getDebugInput } from "./debugInput.js"
-import { STATES } from "../systems/states.js";
+import { STATES } from "./states.js";
 import { isInsideTrigger } from "../utils/trigger.js";
 
 export function createNPCSystem(colliders, screen, npcTypes, queueSystem,keyboard){

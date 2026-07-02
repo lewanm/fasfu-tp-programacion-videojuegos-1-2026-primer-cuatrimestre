@@ -1,4 +1,4 @@
-import { ASSETS } from "../config/assets.js"
+import { ASSETS } from "./assets.js"
 
 export const GAME = {
     WIDTH: 640,

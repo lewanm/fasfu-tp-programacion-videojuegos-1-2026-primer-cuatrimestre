@@ -1,4 +1,4 @@
-import { Character } from "./Character.js";
+import { Character } from "./character.js";
 import { normalize } from "../utils/math.js";
 import { getRandomInBetween } from "../utils/math.js";
 import { NPC_CONFIG } from "../config/npcConfig.js";
