@@ -5,8 +5,8 @@ export class Character extends Entity {
 
     constructor(animations, options = {}) { 
         const initialAnimation = 
-            animations["down_empty"] ??
-            animations["down"]
+            animations["down"] ??
+            animations["walking_down"]
 
         const view = new PIXI.AnimatedSprite(initialAnimation);
 
@@ -26,7 +26,7 @@ export class Character extends Entity {
 
         this.colliders = []
 
-        this.currentAnimation = animations.down
+        this.currentAnimation = initialAnimation
         
         // lo uso para detectar el movimiento corretametne
         this.isCurrentlyMoving = false
@@ -60,8 +60,36 @@ export class Character extends Entity {
         return direction
     }
 
+    setIdle(direction){
+
+        const animationDirection =
+            direction === "left"
+                ? "right"
+                : direction
+
+        const animation =
+            this.animations[`walking_${animationDirection}`] ??
+            this.animations[animationDirection]
+
+        if (!animation) return
+
+        this.currentAnimation = animation
+        this.view.textures = animation
+        this.view.gotoAndStop(0)
+
+        this.view.scale.x =
+            direction === "left"
+                ? -1
+                : 1
+    }
+
     //le pedi esto a la IA para que me lo haga bonito y sin errores o que contemple todas las posibilidades
     updateAnimation() {
+        if (this.idleDirection){
+            this.setIdle(this.idleDirection)
+            return
+        }
+        
         // 1. Evaluamos el estado de movimiento actual según las direcciones lógicas
         const isMovingNow = this.dirX !== 0 || this.dirY !== 0;
         let direction = this.lastDirection
@@ -83,7 +111,7 @@ export class Character extends Entity {
         //esto es para evitar error mientras no estan las animaciones
         if (!targetAnimation){
             targetAnimation = 
-                this.animations[`${direction}_empty`] ??
+                this.animations[`walking_${direction}`] ??
                 this.animations[direction]
         }
 

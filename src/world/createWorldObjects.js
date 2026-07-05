@@ -18,7 +18,7 @@ export async function createWorldObjects(){
 
         // Instanciamos pasándole solo la posición, la subclase sabe qué tipo es internamente
         const instance = new ObjClass(obj.position);
-        
+        instance.view.label = obj.type
         container.addChild(instance.view);
         objects.push(instance);
     }

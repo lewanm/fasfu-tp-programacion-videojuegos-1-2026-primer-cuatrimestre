@@ -1,13 +1,13 @@
 //despues modificar el array con cada objeto, por un diccionario tipo pared_inferio : { x: 366, y:126, width: 39, height: 118 } y llamo a pared inferior.
 export const WALLS = [
-    //pared_derecha
-    { x: 380, y: 112, width: width(380,408), height: height(112, 240) },
     //pared_superior
-    { x: 70, y: 92, width: width(70,380), height: height(92,125) },
+    { x: 162, y: 214, width: width(162,792), height: height(214, 269) },
     //pared_izquierda
-    { x: 54, y: 114, width: width(54, 70), height: height(114,240) },
+    { x: 138, y: 214, width: width(138, 162), height: height(214, 544) },
+    //pared_derecha
+    { x: 792, y: 214, width: width(792,851), height: height(214,438) },
     //pared_inferior
-    { x: 55, y: 242, width: width(55,552), height: height(242,310) },
+    { x: 163, y: 438, width: width(163,1093), height: height(438, 545) },
 
 ]
 
@@ -15,15 +15,15 @@ export const WALLS = [
 export const OBJECT_TEMPLATES = {
     fridge: {
         name: "fridge",
-        width: 36,
-        height: 76,
-        hitboxOffset: { x: 0, y: -3 },
+        width: 52,
+        height: 115,
+        hitboxOffset: { x: 2, y: -3 },
         isSolid: true,
         trigger: {
             type: "interact",
-            width: 36,
-            height: 30,
-            offset: { x: 0, y: 0 }
+            width: 52,
+            height: 26,
+            offset: { x: 2, y: 0 }
         },        
         itemFactory: () => ({
             type: "burger",
@@ -32,45 +32,45 @@ export const OBJECT_TEMPLATES = {
     },
     fryer: {
         name: "fryer",
-        width: 70, 
+        width: 52, 
         height: 40,
-        hitboxOffset: { x: 0, y: -3 },
+        hitboxOffset: { x: 2, y: -3 },
         isSolid: true,
         trigger: {
             type: "interact",
-            width: 70,
-            height: 30,
-            offset: { x: 0, y: 0 }
+            width: 52,
+            height: 26,
+            offset: { x: 2, y: 0 }
         },
         cookTime: 200,
         acceptedTypes: ["fries"]
     },
     oven: {
         name: "oven",
-        width: 70,
+        width: 48,
         height: 36,
-        hitboxOffset: { x: 0, y: -3 },
+        hitboxOffset: { x: 2, y: -3 },
         isSolid: true,
         trigger: {
             type: "interact",
-            width: 70,
-            height: 30,
-            offset: { x: 0, y: 0 }
+            width: 48,
+            height: 26,
+            offset: { x: 2, y: 0 }
         },
         cookTime: 200,
         acceptedTypes: ["burger"]
     },
     soda: {
         name: "soda",
-        width: 72,
+        width: 104,
         height: 42,
-        hitboxOffset: { x: 0, y: 0 },
+        hitboxOffset: { x: 2, y: 0 },
         isSolid: true,
         trigger: {
             type: "interact",
-            width: 72,
-            height: 30,
-            offset: { x: 0, y: 13 }
+            width: 88,
+            height: 26,
+            offset: { x: 10, y: 26 }
         },
         itemFactory: () => ({
             type: "soda",
@@ -79,15 +79,29 @@ export const OBJECT_TEMPLATES = {
     },
     tray: {
         name: "tray",
-        width: 90,
-        height: 40,
-        hitboxOffset: { x: 4, y: -8 },
+        width: 84,
+        height: 60,
+        hitboxOffset: { x: 2, y: -10 },
         isSolid: true,
         trigger: {
             type: "interact",
-            width: 130,
-            height: 40,
-            offset: { x: -15, y: -45 }
+            width: 136,
+            height: 54,
+            offset: { x: -24, y: -60 }
+        },
+        maxSlots: 3,
+    },
+    thrash: {
+        name: "thrash",
+        width: 40,
+        height: 56,
+        hitboxOffset: { x: 8, y: -2 },
+        isSolid: true,
+        trigger: {
+            type: "interact",
+            width: 68,
+            height: 42,
+            offset: { x: -8, y: -36 }
         },
         maxSlots: 3,
     },
@@ -127,12 +141,19 @@ export const ITEM_TEMPLATES = {
 //aca es para instanciar nuevos objetos, indicando el tipo, que tiene que coincidir con el nombre
 //Y asigno el X y el Y, como estoy usando de pivote 0,1 con hacer click en el juego en modo de debug
 //y usa las coordenadas que da.
+
+const bottom = 270
+//aca se instancian
+//pa hacerlo facil esto, lo mejor es usar la herramienda de debug que te da el click, pero despues revisar con las pixidevtolls y moverlo ahi
 export const WORLD_OBJECTS = [
-    { type: "fridge", position: { x: 160, y: 128 } },
-    { type: "fryer", position: { x: 284, y: 128 } },
-    { type: "oven", position: { x: 206, y: 128 } },
-    { type: "soda", position: { x: 79, y: 113 } },
-    { type: "tray", position: { x: 164, y: 220 } },
+    { type: "soda", position: { x: 180, y: 243 } },
+    { type: "fridge", position: { x: 320, y: bottom } },
+    { type: "oven", position: { x: 400, y: bottom } },
+    { type: "oven", position: { x: 475 , y: bottom } },
+    { type: "fryer", position: { x: 549, y: bottom } },
+    { type: "fryer", position: { x: 625, y: bottom } },
+    { type: "tray", position: { x: 456, y: 394 } },
+    { type: "thrashCan", position: { x: 320, y: 400 } },
 ];
 
 function width(initialX, finalX){

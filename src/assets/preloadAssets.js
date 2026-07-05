@@ -4,11 +4,14 @@ export async function preloadAssets(){
 
     const npcPaths = Object.values(ASSETS.NPCS)
     const staticObjects = Object.values(ASSETS.STATIC_OBJECTS)
+    const mapAssets = Object.values(ASSETS.MAP)
+    const props = Object.values(ASSETS.PROPS)
 
     await PIXI.Assets.load([
         ASSETS.PLAYER,
-        ASSETS.MAP,
-        ... npcPaths,
-        ... staticObjects
+        ...mapAssets,
+        ...npcPaths,
+        ...staticObjects,
+        ...props,
     ])
 }

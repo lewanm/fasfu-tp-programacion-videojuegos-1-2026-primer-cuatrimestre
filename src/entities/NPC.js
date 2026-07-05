@@ -47,6 +47,8 @@ export class NPC extends Character {
         this.dirY = 0;
         this.hasEnteredDoor = false;
 
+        this.idleDirection = null
+
         this.order = null
         this.hasOrdered = false
 

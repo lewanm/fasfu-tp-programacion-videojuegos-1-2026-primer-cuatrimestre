@@ -1,0 +1,323 @@
+{
+  "frames": {
+    "npc_4_up_3": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 50,
+        "h": 81
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 50,
+        "h": 81
+      },
+      "sourceSize": {
+        "w": 50,
+        "h": 81
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "npc_4_up_1": {
+      "frame": {
+        "x": 0,
+        "y": 81,
+        "w": 52,
+        "h": 79
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 52,
+        "h": 79
+      },
+      "sourceSize": {
+        "w": 52,
+        "h": 79
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "npc_4_down_1": {
+      "frame": {
+        "x": 50,
+        "y": 0,
+        "w": 50,
+        "h": 78
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 50,
+        "h": 78
+      },
+      "sourceSize": {
+        "w": 50,
+        "h": 78
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "npc_4_down_3": {
+      "frame": {
+        "x": 0,
+        "y": 160,
+        "w": 50,
+        "h": 78
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 50,
+        "h": 78
+      },
+      "sourceSize": {
+        "w": 50,
+        "h": 78
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "npc_4_down_0": {
+      "frame": {
+        "x": 0,
+        "y": 238,
+        "w": 46,
+        "h": 78
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 46,
+        "h": 78
+      },
+      "sourceSize": {
+        "w": 46,
+        "h": 78
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "npc_4_down_2": {
+      "frame": {
+        "x": 0,
+        "y": 316,
+        "w": 46,
+        "h": 78
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 46,
+        "h": 78
+      },
+      "sourceSize": {
+        "w": 46,
+        "h": 78
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "npc_4_right_0": {
+      "frame": {
+        "x": 0,
+        "y": 394,
+        "w": 46,
+        "h": 78
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 46,
+        "h": 78
+      },
+      "sourceSize": {
+        "w": 46,
+        "h": 78
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "npc_4_right_1": {
+      "frame": {
+        "x": 0,
+        "y": 472,
+        "w": 51,
+        "h": 77
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 51,
+        "h": 77
+      },
+      "sourceSize": {
+        "w": 51,
+        "h": 77
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "npc_4_right_2": {
+      "frame": {
+        "x": 46,
+        "y": 238,
+        "w": 46,
+        "h": 77
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 46,
+        "h": 77
+      },
+      "sourceSize": {
+        "w": 46,
+        "h": 77
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "npc_4_up_0": {
+      "frame": {
+        "x": 50,
+        "y": 160,
+        "w": 46,
+        "h": 77
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 46,
+        "h": 77
+      },
+      "sourceSize": {
+        "w": 46,
+        "h": 77
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "npc_4_up_2": {
+      "frame": {
+        "x": 92,
+        "y": 78,
+        "w": 46,
+        "h": 77
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 46,
+        "h": 77
+      },
+      "sourceSize": {
+        "w": 46,
+        "h": 77
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "npc_4_right_3": {
+      "frame": {
+        "x": 100,
+        "y": 0,
+        "w": 46,
+        "h": 75
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 46,
+        "h": 75
+      },
+      "sourceSize": {
+        "w": 46,
+        "h": 75
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  },
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.7",
+    "image": "npc_4.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 146,
+      "h": 549
+    },
+    "scale": 1
+  },
+  "animations": {
+    "up": [
+      "npc_4_up_0",
+      "npc_4_up_1",
+      "npc_4_up_2",
+      "npc_4_up_3"
+    ],
+    "down": [
+      "npc_4_down_0",
+      "npc_4_down_1",
+      "npc_4_down_2",
+      "npc_4_down_3"
+    ],
+    "right": [
+      "npc_4_right_0",
+      "npc_4_right_1",
+      "npc_4_right_2",
+      "npc_4_right_3"
+    ]
+  }
+}

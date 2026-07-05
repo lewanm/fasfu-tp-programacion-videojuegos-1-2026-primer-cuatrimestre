@@ -1,0 +1,8 @@
+para usarlo poner todos los assets recortados desde https://ezgif.com/sprite-cutter
+adjuntar la imagen del spritesheet de 4x3
+
+Por ahora la config es top 0 left 0
+hspacing 20
+vspacing 12
+output tile001 
+start 0

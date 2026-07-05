@@ -25,7 +25,7 @@ export async function createGame() {
     //##### ASSETS #####
     
     await preloadAssets()
-    const mapSprite = await createMap(app.screen)
+    const map = await createMap(app.screen)
     const worldObjects = await createWorldObjects()
 
     //##### COLLIDERS #####
@@ -63,7 +63,7 @@ export async function createGame() {
     await npcSystem.init()
 
     //##### SCENES #####
-    app.stage.addChild(mapSprite)
+    app.stage.addChild(map)
     app.stage.addChild(worldObjects.container)
     app.stage.addChild(npcSystem.container)
     app.stage.addChild(player.view)
@@ -74,7 +74,7 @@ export async function createGame() {
         npcSystem, 
         colliders, 
         worldObjects,
-        queueSystem
+        queueSystem,
     ) //aca se agrega en el stage al contenedor de debug
     // para ver en consola
     
@@ -84,7 +84,8 @@ export async function createGame() {
         activeNPCs: ()=> npcSystem.NPCpool.filter(npc => npc.active),
         colliders: colliders,
         worldObjects: worldObjects.objects,
-        queueSystem: queueSystem
+        queueSystem: queueSystem,
+        map: map
     }
     //##### GAME LOOP #####
     function update(delta){

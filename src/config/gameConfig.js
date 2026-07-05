@@ -1,8 +1,8 @@
 import { ASSETS } from "./assets.js"
 
 export const GAME = {
-    WIDTH: 640,
-    HEIGHT: 360,
+    WIDTH: 1280,
+    HEIGHT: 720,
     BACKGROUND_COLOR: 0x444444,
 }
 
@@ -12,13 +12,13 @@ export const PLAYER = {
     COLOR: 0x0000AA,
     ASSET:ASSETS.PLAYER,
     INITIAL_POSITION: {
-        x: 330,
-        y: 160
+        x: 430,
+        y: 300
     }, //estos 3 son para la hitbox
     OPTIONS: {
-            hitboxOffset: {x: 2, y: 8},
-            width: 20,
-            height: 22
+            hitboxOffset: {x: 1, y: 20},
+            width: 28,
+            height: 32
     }
 }
 
