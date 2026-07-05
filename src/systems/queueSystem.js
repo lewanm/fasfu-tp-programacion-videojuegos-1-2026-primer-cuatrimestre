@@ -4,33 +4,47 @@ export function createQueueSystem(){
     const waitingQueue = []
 
     //Esto tendria que mandarlo a otro archivo pero... no tengo ganas :(
-    const ORDER_QUEUE_Y_POSITION = 160
-    const WAITING_QUEUE_Y_POSITION = 210
-    const QUEUE_X_POSITION = 440
-    const SLOT_SPACING  = 35 //no se que palabra usar para espacio entre personas
+    const ORDER_QUEUE_Y_POSITION = 314
+    const WAITING_QUEUE_Y_POSITION = 397
+    const QUEUE_X_POSITION = 892
+    const SLOT_SPACING  = 60 //no se que palabra usar para espacio entre personas
+    const MAX_QUEUE_SIZE = 6
+    //podria reemplazar esto por un for a si dejo de repetir todo... comente esto
+    //y la ia que completa cosas me sugirio de una que lo haga, grande la IA
+    const queuePositions = []
+    for (let i = 0; i < MAX_QUEUE_SIZE; i++) {
+        queuePositions.push({x: QUEUE_X_POSITION + SLOT_SPACING * i, y: ORDER_QUEUE_Y_POSITION})
+    }
 
-    const queuePositions = [
-        {x: QUEUE_X_POSITION, y: ORDER_QUEUE_Y_POSITION},
-        {x: QUEUE_X_POSITION + SLOT_SPACING  * 1, y: ORDER_QUEUE_Y_POSITION},
-        {x: QUEUE_X_POSITION + SLOT_SPACING  * 2, y: ORDER_QUEUE_Y_POSITION},
-        {x: QUEUE_X_POSITION + SLOT_SPACING  * 3, y: ORDER_QUEUE_Y_POSITION},
-        {x: QUEUE_X_POSITION + SLOT_SPACING  * 4, y: ORDER_QUEUE_Y_POSITION}
-    ]
+    const waitingPositions = []
+    for (let i = 0; i < MAX_QUEUE_SIZE; i++) {
+        waitingPositions.push({x: QUEUE_X_POSITION + SLOT_SPACING * i, y: WAITING_QUEUE_Y_POSITION})
+    }
 
-    const waitingPositions = [
-        {x: QUEUE_X_POSITION, y: WAITING_QUEUE_Y_POSITION},
-        {x: QUEUE_X_POSITION + SLOT_SPACING  * 1, y: WAITING_QUEUE_Y_POSITION},
-        {x: QUEUE_X_POSITION + SLOT_SPACING  * 2, y: WAITING_QUEUE_Y_POSITION},
-        {x: QUEUE_X_POSITION + SLOT_SPACING  * 3, y: WAITING_QUEUE_Y_POSITION},
-        {x: QUEUE_X_POSITION + SLOT_SPACING  * 4, y: WAITING_QUEUE_Y_POSITION}
-    ]
-
-    const queueEntryPath = [
-        {x: 590, y: 326},
-        {x: 590, y: 226}
-    ]
-
-    const MAX_QUEUE_SIZE = queuePositions.length
+    //esto es para que sigan un caimnito al entrar y no se queden trabados, tambien podria servir para salir solo que lo transitarian al reves
+    /*
+        {x: 1164, y: 570},
+        {x: 1164, y: 510},
+        {x: 1164, y: 450},
+    */
+    
+    //no creo que sirva para otras cosas tonces lo dejo aca (mentira mientras lo pensaba se que va a servir para los autos)
+    //despues lo muevo a utils
+    //TODO:
+    function generarWaypointsY(startX, startY, incrementY, count) {
+        const waypoints = [];
+        
+        for (let i = 0; i < count; i++) {
+            waypoints.push({
+                x: startX,
+                // Restamos porque en tu ejemplo Y disminuye de 60 en 60
+                y: startY - (i * incrementY) 
+            });
+        }
+        
+        return waypoints;
+    }
+    const queueEntryPath = generarWaypointsY(1164, 570, 60, 3)
 
     function hasSpace() {
         return orderQueue.length < MAX_QUEUE_SIZE
@@ -92,7 +106,7 @@ export function createQueueSystem(){
 
         npc.path = []
         npc.currentWaypoint = 0
-    
+
         updateOrderPositions()
         updateWaitingPositions()
     }

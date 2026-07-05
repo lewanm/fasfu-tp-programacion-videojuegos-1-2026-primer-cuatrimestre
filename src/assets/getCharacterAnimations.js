@@ -1,12 +1,14 @@
-export async function getCharacterAnimations(jsonPath){
+export function getCharacterAnimations(jsonPath){
 
-    const sheet = await PIXI.Assets.get(jsonPath)
+    if (!jsonPath) {
+        throw new Error("No se proporcionó la ruta del asset JSON.");
+    }
+
+    const sheet = PIXI.Assets.get(jsonPath)
     
     if (!sheet) {
             throw new Error(`Asset no cargado: ${jsonPath}`);
     }
-
-    const animations = sheet.animations
     
-    return animations
+    return sheet.animations
 }

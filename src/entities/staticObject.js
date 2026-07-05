@@ -359,6 +359,12 @@ class Oven extends ItemProcessor {
     }
 }
 
+class ThrashCan extends ItemProcessor {
+    constructor(position) {
+        super("thrash", position);
+    }
+}
+
 class Fryer extends ItemProcessor {
     constructor(position) {
         super("fryer", position);
@@ -369,5 +375,6 @@ export const WORK_STATIONS = {
     fryer: Fryer,
     oven: Oven,
     soda: SodaDispenser,
-    tray: TrayStation
+    tray: TrayStation,
+    thrashCan: ThrashCan
 }

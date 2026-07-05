@@ -47,13 +47,18 @@ export class Player extends Character{
             return `${type}_${variant}`
         }
 
+        console.log(type)
         return type
     }
 
     //overide del metodo para que pueda cambiar de animacion dependiendo del item.
     getCurrentAnimationKey(direction){
         const itemKey = this.getHeldItemKey()
-        return `${direction}_${itemKey}`
+
+        if (itemKey === "empty") 
+            return `walking_${direction}`
+
+        return `${itemKey}_${direction}`
     }
     
 

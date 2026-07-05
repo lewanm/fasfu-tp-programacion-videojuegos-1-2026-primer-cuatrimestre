@@ -8,6 +8,10 @@ export async function createNPCTypes(){
 
     for (const [id, config] of npcEntries){
 
+        if (!config.asset) {
+            throw new Error(`No se encontró el asset para el NPC con id: ${id}`);
+        }
+
         const animations = await getCharacterAnimations(config.asset);
 
         npcTypes[id] = {

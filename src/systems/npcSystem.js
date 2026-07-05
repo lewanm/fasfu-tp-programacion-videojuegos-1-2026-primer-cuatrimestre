@@ -24,7 +24,7 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem,keyboar
         for (let i = 0; i < NPC_CONFIG.NPC_QUANTITY; i++){
 
             const randomType = getRandomNPCType()
-            const initialPosition = {x: 0, y: getRandomInBetween(314,350)}//esto es para que spawneen abajo, despues ponerlo en NPC_CONFIG
+            const initialPosition = {x: 0, y: getRandomInBetween(NPC_CONFIG.minY,NPC_CONFIG.maxY)}//esto es para que spawneen abajo, despues ponerlo en NPC_CONFIG
 
             const npc = new NPC(randomType, initialPosition)
     
@@ -82,6 +82,7 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem,keyboar
             }
         })
 
+        // esto me gustaria moverlo a otra funcion
         const firstNpc = queueSystem.getFirst()
         const debugPressed = getDebugInput(keyboard)
 
