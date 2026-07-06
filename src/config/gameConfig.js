@@ -16,9 +16,9 @@ export const PLAYER = {
         y: 300
     }, //estos 3 son para la hitbox
     OPTIONS: {
-            hitboxOffset: {x: 1, y: 20},
-            width: 28,
-            height: 32
+            hitboxOffset: {x: 1, y: 24},
+            width: 22,
+            height: 22
     }
 }
 

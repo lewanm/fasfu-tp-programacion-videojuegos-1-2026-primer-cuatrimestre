@@ -60,7 +60,7 @@ export class Character extends Entity {
         return direction
     }
 
-    setIdle(direction){
+    faceDirection(direction){
 
         const animationDirection =
             direction === "left"
@@ -74,7 +74,9 @@ export class Character extends Entity {
         if (!animation) return
 
         this.currentAnimation = animation
+
         this.view.textures = animation
+
         this.view.gotoAndStop(0)
 
         this.view.scale.x =

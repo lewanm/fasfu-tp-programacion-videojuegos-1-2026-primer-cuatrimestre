@@ -57,52 +57,94 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem,keyboar
         npc.reset(spanwLeft, width)
     }
 
+    function updateQueuedNPCs(){
 
-    function update(delta){
+        queueSystem.orderQueue.forEach(npc => {
 
-        NPCpool.forEach(npc => {
-            if (!npc.active) return
+            if (npc.isAtTargetPosition()){
 
-            npc.update(delta)
-
-            const canEnterQueue = 
-                !npc.hasOrdered &&
-                npc.isHungry() &&
-                queueSystem.hasSpace() &&
-                isInsideTrigger(npc, TRIGGERS.entrance)
-
-            if (canEnterQueue){
-                npc.hasEnteredDoor = true
-                npc.changeState(STATES.queue)
-                queueSystem.add(npc)
-            }
-
-            if (isOutOfScreen(npc, screen, 100)){
-                npc.deactivate()
+                npc.faceDirection("left")
             }
         })
 
-        // esto me gustaria moverlo a otra funcion
-        const firstNpc = queueSystem.getFirst()
-        const debugPressed = getDebugInput(keyboard)
+        queueSystem.waitingQueue.forEach(npc => {
+
+            if (npc.isAtTargetPosition()){
+
+                npc.faceDirection("left")
+            }
+        })
+    }
+
+    function processOrders(){
+
+        const firstNpc =
+            queueSystem.getFirst()
+
+        const debugPressed =
+            getDebugInput(keyboard)
 
         if (
             firstNpc &&
             !firstNpc.hasOrdered &&
             firstNpc.queueIndex === 0 &&
-            firstNpc.isAtTargetPosition() && 
+            firstNpc.isAtTargetPosition() &&
             queueSystem.hasWaitingSpace() &&
-            debugPressed //obviamente quitar esto despues, seria para tomar el pedido mientras no pueda hacerlo el player
+            debugPressed
         ){
 
-            firstNpc.order = getRandomOrder()
+            firstNpc.order =
+                getRandomOrder()
 
             firstNpc.hasOrdered = true
 
-            console.log(`${firstNpc.name} pidió:`, firstNpc.order)
+            console.log(
+                `${firstNpc.name} pidió:`,
+                firstNpc.order
+            )
 
             queueSystem.moveToWaiting(firstNpc)
         }
+    }
+
+    function update(delta){
+
+        NPCpool.forEach(npc => {
+
+            if (!npc.active) return
+
+            npc.update(delta)
+
+            const canEnterQueue =
+                !npc.hasOrdered &&
+                npc.isHungry() &&
+                queueSystem.hasSpace() &&
+                isInsideTrigger(
+                    npc,
+                    TRIGGERS.entrance
+                )
+
+            if (canEnterQueue){
+
+                npc.hasEnteredDoor = true
+
+                npc.changeState(STATES.queue)
+
+                queueSystem.add(npc)
+            }
+
+            if (isOutOfScreen(
+                npc,
+                screen,
+                100
+            )){
+                npc.deactivate()
+            }
+        })
+
+        updateQueuedNPCs()
+
+        processOrders()
 
         spawn()
     }

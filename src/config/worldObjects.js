@@ -1,3 +1,5 @@
+import { ITEMS } from "../config/items.js";
+
 //despues modificar el array con cada objeto, por un diccionario tipo pared_inferio : { x: 366, y:126, width: 39, height: 118 } y llamo a pared inferior.
 export const WALLS = [
     //pared_superior
@@ -25,10 +27,7 @@ export const OBJECT_TEMPLATES = {
             height: 26,
             offset: { x: 2, y: 0 }
         },        
-        itemFactory: () => ({
-            type: "burger",
-            state: "raw"
-        })
+        itemFactory: () => ({...ITEMS.RAW_BURGER})
     },
     fryer: {
         name: "fryer",
@@ -43,7 +42,9 @@ export const OBJECT_TEMPLATES = {
             offset: { x: 2, y: 0 }
         },
         cookTime: 200,
-        acceptedTypes: ["fries"]
+        acceptedTypes: ["fries"],
+        foodPosition: { x: 27, y: -38 },
+        foodScale: 0.7
     },
     oven: {
         name: "oven",
@@ -58,7 +59,9 @@ export const OBJECT_TEMPLATES = {
             offset: { x: 2, y: 0 }
         },
         cookTime: 200,
-        acceptedTypes: ["burger"]
+        acceptedTypes: ["burger"],
+        foodPosition: { x: 25, y: -38 },
+        foodScale: 0.7
     },
     soda: {
         name: "soda",
@@ -72,10 +75,7 @@ export const OBJECT_TEMPLATES = {
             height: 26,
             offset: { x: 10, y: 26 }
         },
-        itemFactory: () => ({
-            type: "soda",
-            variant: "cola"
-        })
+        itemFactory: () => ({...ITEMS.YELLOW_SODA})
     },
     tray: {
         name: "tray",
@@ -90,6 +90,12 @@ export const OBJECT_TEMPLATES = {
             offset: { x: -24, y: -60 }
         },
         maxSlots: 3,
+        itemScale: 0.7,
+        itemSlots: [
+            { x: 26, y: -33 },
+            { x: 57, y: -62 },
+            { x: 59, y: -33 }
+        ]
     },
     thrash: {
         name: "thrash",
@@ -106,37 +112,6 @@ export const OBJECT_TEMPLATES = {
         maxSlots: 3,
     },
 };
-
-export const ITEM_TEMPLATES = {
-    burger: {
-        type: "burger",
-
-        states:{
-            raw: { color: 0xFFC0CB }, // rosita
-            cooked: { color: 0x8b4513 }
-        },
-
-        cookTime: 200
-    },
-    fries: {
-        type: "fries",
-
-        states:{
-            raw: { color: 0xffd700 },     // amarillo
-            cooked: { color: 0xffa500 }  // naranja
-        },
-
-        cookTime: 150
-    },
-    soda: {
-        type: "soda",
-
-        variants: {
-            cola: { color: 0x000000 },
-            orange: { color: 0xff6600 }
-        }
-    }
-}
 
 //aca es para instanciar nuevos objetos, indicando el tipo, que tiene que coincidir con el nombre
 //Y asigno el X y el Y, como estoy usando de pivote 0,1 con hacer click en el juego en modo de debug

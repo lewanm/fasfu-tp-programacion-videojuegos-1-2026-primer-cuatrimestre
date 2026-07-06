@@ -44,7 +44,7 @@ export function createQueueSystem(){
         
         return waypoints;
     }
-    const queueEntryPath = generarWaypointsY(1164, 570, 60, 3)
+    const queueEntryPath = generarWaypointsY(1164, 570, 80, 3)
 
     function hasSpace() {
         return orderQueue.length < MAX_QUEUE_SIZE

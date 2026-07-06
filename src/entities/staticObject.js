@@ -1,8 +1,8 @@
 import { Entity } from "./entity.js";
 import { ASSETS } from "../config/assets.js";
-import { OBJECT_TEMPLATES, ITEM_TEMPLATES } from "../config/worldObjects.js";
+import { OBJECT_TEMPLATES } from "../config/worldObjects.js";
 import { ProgressBar } from "../UI/progressBar.js";
-
+import { ITEMS } from "../config/items.js";
 
 const PLACEHOLDER_NAME = "static_object"
 
@@ -98,22 +98,26 @@ class ItemProcessor extends WorkStation {
     constructor(type, position) {
         super(type, position)
 
-        const g = new PIXI.Graphics()
-        g.visible = false
+        const sprite = new PIXI.Sprite()
+        sprite.visible = false
+        sprite.anchor.set(0.5, 0.5)
 
         const bar = new ProgressBar({width: 18, height: 3})
 
-        this.view.addChild(g)
+        this.view.addChild(sprite)
         this.view.addChild(bar.view)
 
         this.slot = {
             item: null,
             progress: 0,
-            view: g,
-            bar: bar
+            view: sprite,
+            bar
         };
 
         const config = OBJECT_TEMPLATES[type] || {}
+
+        this.foodPosition = config.foodPosition ?? { x: 25, y: -38 }
+        this.foodScale = config.foodScale ?? 0.7
         this.acceptedTypes = config.acceptedTypes ?? []
     }
 
@@ -163,31 +167,36 @@ class ItemProcessor extends WorkStation {
     }
 
     update(delta) {
+
         const slot = this.slot
 
         if (!slot.item) return
 
         if (!this.canProcess(slot.item)) return
 
-        const itemData = ITEM_TEMPLATES[slot.item.type];
-
-        if (!itemData) return
-
         if (slot.item.state !== "raw") return
+
+        if (!slot.item.cookTime) return
 
         slot.progress += delta
 
-        const ratio = slot.progress / itemData.cookTime
+        const ratio = slot.progress / slot.item.cookTime
 
         slot.bar.setProgress(ratio)
 
-        if (slot.progress >= itemData.cookTime && slot.item.state !== "cooked") {
+        if (slot.progress < slot.item.cookTime) return
 
-            slot.item.state = "cooked"
+        slot.item = this.getProcessedItem()
 
-            console.log(`${slot.item.type} listo`)
+        console.log(`${slot.item.type} listo`)
 
-            this.updateView()
+        this.updateView()
+    }
+
+    
+    getProcessedItem() {
+        return {
+            ...this.processedItem
         }
     }
 
@@ -198,43 +207,37 @@ class ItemProcessor extends WorkStation {
     }
 
     updateView() {
+
         const slot = this.slot
-        const g = slot.view;
+        const sprite = slot.view
         const bar = slot.bar.view
 
-        const FOOD_POS = { x: 20, y: -25 }
-
-        g.clear()
+        const FOOD_POS = {
+            x: this.foodPosition.x,
+            y: this.foodPosition.y
+        }
 
         if (!slot.item) {
-            g.visible = false
+
+            sprite.visible = false
             bar.visible = false
+
             return
         }
 
-        g.visible = true
+        const texture = PIXI.Assets.get(slot.item.asset)
 
-        const itemData = ITEM_TEMPLATES[slot.item.type]
+        sprite.texture = texture
+        sprite.scale.set(this.foodScale)
+        sprite.visible = true
 
-        let color = 0xffffff
+        bar.visible = slot.item.state === "raw"
 
-        if (slot.item.state && itemData?.states?.[slot.item.state]){
-            color = itemData.states[slot.item.state].color
-        }
+        sprite.x = FOOD_POS.x
+        sprite.y = FOOD_POS.y
 
-        if (slot.item.variant && itemData?.variants?.[slot.item.variant]){
-            color = itemData.variants[slot.item.variant].color
-        }
-
-        g.circle(0, 0, 7)
-        g.fill({ color })
-
-        g.x = FOOD_POS.x
-        g.y = FOOD_POS.y
-
-        //subo la barra al graphics original
-        bar.x = g.x
-        bar.y = g.y - 15
+        bar.x = sprite.x
+        bar.y = sprite.y - 15
     }
 }
 
@@ -243,17 +246,26 @@ class TrayStation extends WorkStation {
     constructor(position){
         super("tray", position)
 
+        const config = OBJECT_TEMPLATES.tray
+
+        this.itemSlots = config.itemSlots ?? []
+        this.itemScale = config.itemScale ?? 1
+
         this.items = []
         this.maxSlots = 3
-
+        
         this.itemsViews = []
 
         for (let i = 0; i < this.maxSlots; i++) {
-            const g = new PIXI.Graphics()
-            g.visible = false
 
-            this.view.addChild(g)
-            this.itemsViews.push(g)
+            const sprite = new PIXI.Sprite()
+
+            sprite.visible = false
+            sprite.anchor.set(0.5)
+
+            this.view.addChild(sprite)
+
+            this.itemsViews.push(sprite)
         }
     }
 
@@ -270,73 +282,104 @@ class TrayStation extends WorkStation {
     }
 
     interact(player){
+
         if (!player.heldItem && this.isEmpty()){
             console.log("No tenes nada para guardar")
             return
         }
 
+        // Agregar item a la bandeja
         if (player.heldItem){
+
             const item = player.heldItem
 
-            if(!this.canAccept(item)) {
-                console.log(`${item.type} ${item.state || item.variant} no va en la bandeja`)
+            if (!this.canAccept(item)){
+
+                console.log(`${item.type} ${item.state ?? item.variant} no va en la bandeja`)
+
                 return
             }
 
-            this.items.push(player.removeItem())
+            this.items.push(this.getServedItem(player.removeItem()))
 
             console.log("item agregado a la bandeja")
 
             this.updateView()
+
             return
         }
 
+        // Retirar bandeja
         if (this.isEmpty()){
+
             console.log("bandeja vacia")
+
+            return
         }
 
-        const tryItem = {
+        const trayItem = {
             type: "tray",
             contents: [...this.items]
         }
 
-        const success = player.receiveItem(tryItem)
-        if(!success) return
+        const success = player.receiveItem(trayItem)
+
+        if (!success) return
 
         this.items = []
-        
-        console.log("Bandeja soltada")
+
+        console.log("Bandeja levantada")
 
         this.updateView()
     }
 
     updateView(){
-        const BASE_X = 10
-        const BASE_Y = -20
 
-        const SPACING = 12
+        this.itemsViews.forEach(sprite => {
 
-        this.itemsViews.forEach(view => {
-            view.clear()
-            view.visible = false
+            sprite.visible = false
         })
 
         this.items.forEach((item, index) => {
-            const g = this.itemsViews[index]
 
-            let color = ITEM_TEMPLATES[item.type]
+            const sprite = this.itemsViews[index]
 
-            if (item.state === "cooked") color = 0x8B4513
-            if (item.type === "soda") color = 0x3399ff
+            const slot = this.itemSlots[index]
 
-            g.circle(0, 0, 5)
-            g.fill({color})
+            if (!slot) return
 
-            g.x = BASE_X + index * SPACING
-            g.y = BASE_Y
-            
-            g.visible = true
+            const texture = PIXI.Assets.get(item.asset)
+
+            sprite.texture = texture
+
+            sprite.scale.set(this.itemScale)
+            // pa probar como queda
+            if (item.type === "burger") sprite.scale.set(0.5)
+
+            sprite.x = slot.x
+            sprite.y = slot.y
+
+            sprite.visible = true
         })
+    }
+
+    getServedItem(item){
+
+        switch (item.type) {
+
+            case "burger":
+                return {
+                    ...ITEMS.SERVED_BURGER
+                }
+
+            case "fries":
+                return {
+                    ...ITEMS.SERVED_FRIES
+                }
+
+            default:
+                return item
+        }
     }
 }
 
@@ -356,6 +399,7 @@ class SodaDispenser extends ItemProvider {
 class Oven extends ItemProcessor {
     constructor(position) {
         super("oven", position);
+        this.processedItem = { ...ITEMS.COOKED_BURGER }
     }
 }
 
@@ -363,13 +407,26 @@ class ThrashCan extends ItemProcessor {
     constructor(position) {
         super("thrash", position);
     }
+
+    interact(player) {
+        if (!player.heldItem){
+            console.log("No tenes nada para tirar")
+            return
+        }
+
+        //puedo hacer directamente player.removeItem() pero lo dejo asi pa debuguear y ver mensajitos en consola.
+        const item = player.removeItem()
+        console.log(`${item.name} fue descartado`)
+    }
 }
 
 class Fryer extends ItemProcessor {
     constructor(position) {
         super("fryer", position);
+        this.processedItem = { ...ITEMS.COOKED_FRIES }
     }
 }
+
 export const WORK_STATIONS = {
     fridge: Fridge,
     fryer: Fryer,

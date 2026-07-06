@@ -47,7 +47,6 @@ export class Player extends Character{
             return `${type}_${variant}`
         }
 
-        console.log(type)
         return type
     }
 
