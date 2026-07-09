@@ -190,4 +190,21 @@ export class NPC extends Character {
         }
         
     }
+
+    updateLeaving(delta){
+
+        if (this.currentWaypoint < this.path.length){
+
+            const target = this.path[this.currentWaypoint]
+
+            const arrived = this.moveToTarget(target, delta)
+
+            if (arrived) this.currentWaypoint++
+
+            return
+        }
+
+        this.changeState(STATES.walking)
+        
+    }
 }

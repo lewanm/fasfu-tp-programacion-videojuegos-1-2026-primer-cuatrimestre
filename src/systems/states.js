@@ -1,3 +1,6 @@
+import { PATHS } from "../config/navigationPaths.js";
+
+
 class State {
     constructor(){
         this.debugColor = 0xffffff;
@@ -56,8 +59,31 @@ class QueueState extends State {
     }
 }
 
-// Exportamos las instancias únicas (Singletons)
+class LeavingState extends State {
+
+    constructor(){
+        super()
+
+        this.name = "leaving"
+        this.debugColor = 0xff0000
+    }
+
+    enter(npc){
+
+        npc.path = [...PATHS.restaurantExit]
+        npc.currentWaypoint = 0
+    }
+
+    update(npc, delta){
+
+        npc.updateLeaving(delta)
+    }
+
+    exit(npc){}
+}
+
 export const STATES = {
     walking: new WalkingState(),
-    queue: new QueueState()
+    queue: new QueueState(),
+    leaving: new LeavingState()
 };

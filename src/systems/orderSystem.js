@@ -1,4 +1,5 @@
 import { getRandomOrder } from "../utils/randomOrder.js"
+import { STATES } from "./states.js"
 
 export function createOrderSystem(queueSystem){
 
@@ -46,37 +47,46 @@ export function createOrderSystem(queueSystem){
         return JSON.stringify(orderIds) === JSON.stringify(trayIds)
     }
 
-    function deliverOrder(player){
-        const npc = queueSystem.getFirstWaiting()
+function deliverOrder(player){
 
-        if(!npc){
-            console.log("no hay clientes esperando")
-            return false
-        }
+    const npc = queueSystem.getFirstWaiting()
 
-        if (!player.heldItem){
-            console.log("No tenes nada para entregar")
-            return false
-        }
-
-        if (player.heldItem.type !== "tray"){
-            console.log("Necesitas una bandeja")
-            return false
-        }
-
-        const validOrder = validateOrder(npc.order, player.heldItem)
-
-        if (!validOrder) {
-            console.log("Pedido incorrecto")
-            return false
-        }
-
-        console.log("Pedido correcto")
-
-        player.removeItem()
-
-        return true
+    if (!npc){
+        console.log("No hay clientes esperando")
+        return false
     }
+
+    if (!player.heldItem){
+        console.log("No tenes nada para entregar")
+        return false
+    }
+
+    if (player.heldItem.type !== "bag"){
+        console.log("Necesitas una bandeja")
+        return false
+    }
+
+    const validOrder = validateOrder(npc.order, player.heldItem)
+
+    if (!validOrder){
+        console.log("Pedido incorrecto")
+        return false
+    }
+
+    npc.eat(100)
+
+    queueSystem.removeWaiting(npc)
+
+    console.log(`${npc.name} recibió el pedido y se retira`)
+
+    npc.changeState(STATES.leaving)
+
+    player.removeItem()
+
+    console.log("Pedido correcto")
+
+    return true
+}
 
     return {
         takeOrder,

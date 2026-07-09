@@ -5,7 +5,7 @@ export const NPC_CONFIG = {
     INITIAL_HUNGER_MIN : 50,
     INITIAL_HUNGER_MAX : 50,
     HUNGER_RATE: 0.02,
-    NPC_QUANTITY: 15,
+    NPC_QUANTITY: 1,
     minY: 550,
     maxY: 680
 }
