@@ -53,5 +53,6 @@ export const ASSETS = {
         cooked_fries: `${BASE_PROPS}/papas_fritas.png`,
         served_burger:`${BASE_PROPS}/orden_hamburguesa.png`,
         served_fries:`${BASE_PROPS}/orden_papas_fritas.png`,
+        bag:`${BASE_PROPS}/bolsita.png`
     }
 }

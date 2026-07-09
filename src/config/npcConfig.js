@@ -2,7 +2,7 @@ import { ASSETS } from "./assets.js"
 
 export const NPC_CONFIG = {
     SPEED: 1.5,
-    INITIAL_HUNGER_MIN : 30,
+    INITIAL_HUNGER_MIN : 50,
     INITIAL_HUNGER_MAX : 50,
     HUNGER_RATE: 0.02,
     NPC_QUANTITY: 15,

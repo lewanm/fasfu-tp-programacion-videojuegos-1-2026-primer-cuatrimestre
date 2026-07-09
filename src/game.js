@@ -11,6 +11,8 @@ import { createNPCTypes } from "./entities/createNPCTypes.js";
 import { preloadAssets } from "./assets/preloadAssets.js";
 import { createInteractionSystem } from "./systems/interactionSystem.js";
 import { createQueueSystem } from "./systems/queueSystem.js";
+import { createOrderSystem } from "./systems/orderSystem.js"
+import { ITEMS } from "./config/items.js" //esto lo dejo solo para exponer en debug
 
 export async function createGame() {
     const app = new PIXI.Application()
@@ -43,13 +45,14 @@ export async function createGame() {
 
     const keyboard = createKeyboard()
 
+    const queueSystem = createQueueSystem() 
+
+    const orderSystem  = createOrderSystem(queueSystem)
     //aca se cotnrola el player
-    const interactionSystem = createInteractionSystem(player, worldObjects, keyboard)
+    const interactionSystem = createInteractionSystem(player, worldObjects, keyboard, orderSystem)
     
     //##### NPCs #####
     
-    const queueSystem = createQueueSystem() 
-
     const npcTypes = await createNPCTypes()
     
     const npcSystem = createNPCSystem(
@@ -61,6 +64,8 @@ export async function createGame() {
     )
 
     await npcSystem.init()
+
+    
 
     //##### SCENES #####
     app.stage.addChild(map)
@@ -75,7 +80,8 @@ export async function createGame() {
         colliders, 
         worldObjects,
         queueSystem,
-    ) //aca se agrega en el stage al contenedor de debug
+    ) 
+    //aca se agrega en el stage al contenedor de debug
     // para ver en consola
     
     window.debug = {
@@ -85,7 +91,9 @@ export async function createGame() {
         colliders: colliders,
         worldObjects: worldObjects.objects,
         queueSystem: queueSystem,
-        map: map
+        map: map,
+        items: ITEMS,
+        orderSystem: orderSystem
     }
     //##### GAME LOOP #####
     function update(delta){

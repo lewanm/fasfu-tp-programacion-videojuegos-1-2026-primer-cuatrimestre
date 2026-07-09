@@ -56,7 +56,7 @@ export class Player extends Character{
 
         if (itemKey === "empty") 
             return `walking_${direction}`
-
+        console.log(itemKey)
         return `${itemKey}_${direction}`
     }
     

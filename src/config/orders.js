@@ -1,25 +1,33 @@
+import { ITEMS as items } from "./items.js"
+
 export const ORDERS = [
     {
         id: "burger",
-        items: [
-            { type: "burger", state: "cooked" }
-        ]
+        items: [{...items.SERVED_BURGER}]
     },
 
     {
         id: "burger_soda",
         items: [
-            { type: "burger", state: "cooked" },
-            { type: "soda", variant: "cola" }
+            {...items.SERVED_BURGER},
+            { id: "random_soda" }
+        ]
+    },
+
+    {
+        id: "burger_fries",
+        items: [
+            {...items.SERVED_BURGER},
+            {...items.SERVED_FRIES},
         ]
     },
 
     {
         id: "full_menu",
         items: [
-            { type: "burger", state: "cooked" },
-            { type: "fries", state: "cooked" },
-            { type: "soda", variant: "cola" }
+            { ...items.SERVED_BURGER },
+            { ...items.SERVED_FRIES },
+            { id: "random_soda"}
         ]
     }
 ]

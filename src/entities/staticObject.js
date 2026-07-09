@@ -248,6 +248,13 @@ class TrayStation extends WorkStation {
 
         const config = OBJECT_TEMPLATES.tray
 
+        const bagTexture = PIXI.Assets.get(ASSETS.PROPS.bag)
+        const bagSprite = new PIXI.Sprite(bagTexture)
+        bagSprite.x = 14 // lo probe con la devtool
+        bagSprite.y = -77
+        this.view.addChild(bagSprite)
+        this.bagSprite = bagSprite
+
         this.itemSlots = config.itemSlots ?? []
         this.itemScale = config.itemScale ?? 1
 
@@ -293,6 +300,13 @@ class TrayStation extends WorkStation {
 
             const item = player.heldItem
 
+            if (item.type === "bag" && this.isEmpty()){
+
+                this.restoreTray(item, player)
+
+                return
+            }
+
             if (!this.canAccept(item)){
 
                 console.log(`${item.type} ${item.state ?? item.variant} no va en la bandeja`)
@@ -318,7 +332,8 @@ class TrayStation extends WorkStation {
         }
 
         const trayItem = {
-            type: "tray",
+            id: "bag",
+            type: "bag",
             contents: [...this.items]
         }
 
@@ -329,6 +344,17 @@ class TrayStation extends WorkStation {
         this.items = []
 
         console.log("Bandeja levantada")
+
+        this.updateView()
+    }
+
+    restoreTray(tray, player){
+
+        this.items = [...tray.contents]
+
+        player.removeItem()
+
+        console.log("Bandeja restaurada")
 
         this.updateView()
     }

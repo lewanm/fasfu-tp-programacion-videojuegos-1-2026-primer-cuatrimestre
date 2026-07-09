@@ -1,7 +1,5 @@
 # 🍔 BurgerBoy
 
-Roadmap hecho con COPILOT donde le indique lo que ya hice y lo que quiero hacer a si puedo mostrar bien donde estoy parado.
-
 Juego de gestión de restaurante inspirado en títulos como **Overcooked**, donde el jugador debe cocinar, preparar pedidos, gestionar clientes y sobrevivir hasta el final de la jornada laboral.
 
 Actualmente el proyecto se encuentra en desarrollo y está siendo construido con una arquitectura modular basada en entidades, estaciones de trabajo, máquinas de estados para NPCs y sistemas independientes para interacción, navegación y debug.
@@ -46,7 +44,6 @@ El jugador deberá:
 - [ ] Mostrar pedidos visualmente.
 - [ ] Implementar estado `Leaving`.
 - [ ] Los clientes abandonan el local después de recibir el pedido.
-- [ ] Avance automático de filas al liberarse espacio.
 
 ---
 
@@ -100,26 +97,32 @@ El jugador deberá:
 
 ## Cocina
 
-- [ ] Implementar tacho de basura.
-- [ ] Descartar cualquier item.
 - [ ] Agregar estado `burned`.
 - [ ] Consecuencias por servir comida quemada.
-
----
-
-## Arte
-
-- [ ] Reemplazar placeholders por sprites.
-- [ ] Reemplazar ProgressBar temporal por sprites.
-- [ ] Reemplazar animaciones temporales del jugador.
-
----
-
-## Productos
-
-- [ ] Variantes de gaseosas.
+- [ ] Variantes de gaseosas mediante selector.
 - [ ] Nuevas recetas.
 - [ ] Ingredientes adicionales.
+
+---
+
+## UI y Menús
+
+- [ ] Pantalla inicial.
+- [ ] Selector radial de productos.
+- [ ] Bloqueo de movimiento durante menús.
+- [ ] Sistema genérico de navegación de menús.
+
+---
+
+## Visual
+
+- [ ] Corregir sistema de Z-Index.
+- [ ] Dividir pared izquierda.
+- [ ] Dividir pared inferior.
+- [ ] Dividir sprite de estación de bandejas.
+- [ ] Dividir sprite del tacho de basura.
+- [ ] Permitir ocultamiento parcial detrás de objetos.
+- [ ] Reemplazar ProgressBar temporal por sprites.
 
 ---
 
@@ -187,6 +190,8 @@ El jugador deberá:
 - [x] Sistema de colisiones.
 - [x] Interacción con estaciones.
 - [x] Inventario simple de un slot.
+- [x] Animaciones por dirección.
+- [x] Animaciones según item transportado.
 
 ---
 
@@ -206,10 +211,16 @@ El jugador deberá:
 - [x] Cocina.
 - [x] Dispenser de bebidas.
 - [x] Bandeja de armado de pedidos.
+- [x] Tacho de basura.
 - [x] Sistema genérico de procesamiento de items.
-- [x] Sistema de estados (`raw`, `cooked`).
+- [x] Estados `raw`.
+- [x] Estados `cooked`.
+- [x] Estados `served`.
 - [x] ProgressBar de cocción.
-- [x] Sistema basado en `ItemTemplates`.
+- [x] Sistema centralizado de ITEMS.
+- [x] Visualización de items con sprites.
+- [x] Conversión RAW → COOKED.
+- [x] Conversión COOKED → SERVED.
 
 ---
 
@@ -220,6 +231,7 @@ El jugador deberá:
 - [x] Separación entre WorkStations e Items.
 - [x] Factories para generación de objetos.
 - [x] Sistema de configuración por templates.
+- [x] Configuración centralizada de items.
 
 ---
 
@@ -236,6 +248,17 @@ El jugador deberá:
 - [x] Waypoints de navegación.
 - [x] Generación de órdenes aleatorias.
 - [x] Control de capacidad máxima de filas.
+- [x] Avance automático de la fila.
+- [x] Sistema de orientación en cola.
+
+---
+
+## Visual
+
+- [x] Sprites personalizados para comida.
+- [x] Sprites personalizados para bebidas.
+- [x] Sprites en estaciones de procesamiento.
+- [x] Sprites en bandeja de armado.
 
 ---
 
@@ -252,11 +275,13 @@ El jugador deberá:
 
 # 🔥 Próximos Objetivos
 
-1. Sistema de entrega.
-2. Validación de bandejas.
-3. Estado `Leaving`.
-4. Sistema de dinero.
-5. Sistema de estrés.
-6. Reloj del juego.
-7. Condiciones de victoria y derrota.
-8. Separation para NPCs.
+1. Trigger de entrega.
+2. Entrega de bandejas.
+3. Validación de pedidos.
+4. Estado `Leaving`.
+5. Clientes abandonan el local.
+6. Sistema de dinero.
+7. Sistema de estrés.
+8. Reloj del juego.
+
+---

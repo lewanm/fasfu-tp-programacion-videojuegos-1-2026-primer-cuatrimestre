@@ -1,53 +1,17 @@
+import { PATHS, POSITIONS } from "../config/navigationPaths.js"
+
 export function createQueueSystem(){
 
     const orderQueue = []
     const waitingQueue = []
 
-    //Esto tendria que mandarlo a otro archivo pero... no tengo ganas :(
-    const ORDER_QUEUE_Y_POSITION = 314
-    const WAITING_QUEUE_Y_POSITION = 397
-    const QUEUE_X_POSITION = 892
-    const SLOT_SPACING  = 60 //no se que palabra usar para espacio entre personas
-    const MAX_QUEUE_SIZE = 6
-    //podria reemplazar esto por un for a si dejo de repetir todo... comente esto
-    //y la ia que completa cosas me sugirio de una que lo haga, grande la IA
-    const queuePositions = []
-    for (let i = 0; i < MAX_QUEUE_SIZE; i++) {
-        queuePositions.push({x: QUEUE_X_POSITION + SLOT_SPACING * i, y: ORDER_QUEUE_Y_POSITION})
-    }
+    const queuePositions = POSITIONS.orderQueue
+    const waitingPositions = POSITIONS.waitingQueue
 
-    const waitingPositions = []
-    for (let i = 0; i < MAX_QUEUE_SIZE; i++) {
-        waitingPositions.push({x: QUEUE_X_POSITION + SLOT_SPACING * i, y: WAITING_QUEUE_Y_POSITION})
-    }
-
-    //esto es para que sigan un caimnito al entrar y no se queden trabados, tambien podria servir para salir solo que lo transitarian al reves
-    /*
-        {x: 1164, y: 570},
-        {x: 1164, y: 510},
-        {x: 1164, y: 450},
-    */
-    
-    //no creo que sirva para otras cosas tonces lo dejo aca (mentira mientras lo pensaba se que va a servir para los autos)
-    //despues lo muevo a utils
-    //TODO:
-    function generarWaypointsY(startX, startY, incrementY, count) {
-        const waypoints = [];
-        
-        for (let i = 0; i < count; i++) {
-            waypoints.push({
-                x: startX,
-                // Restamos porque en tu ejemplo Y disminuye de 60 en 60
-                y: startY - (i * incrementY) 
-            });
-        }
-        
-        return waypoints;
-    }
-    const queueEntryPath = generarWaypointsY(1164, 570, 80, 3)
+    const queueEntryPath = PATHS.restaurantEntrance
 
     function hasSpace() {
-        return orderQueue.length < MAX_QUEUE_SIZE
+        return orderQueue.length < queuePositions.length
     }
 
     function hasWaitingSpace(){
@@ -111,12 +75,28 @@ export function createQueueSystem(){
         updateWaitingPositions()
     }
 
+    function removeWaiting(npc) {
+
+        const index = waitingQueue.indexOf(npc)
+
+        if (index === -1) return
+
+        waitingQueue.splice(index, 1)
+
+        updateWaitingPositions()
+    }
+
+    function getFirstWaiting(){
+        return waitingQueue[0]
+    }
    
 
     return {
         add,
         remove,
+        removeWaiting,
         getFirst,
+        getFirstWaiting,
 
         hasSpace,
         hasWaitingSpace,

@@ -3,8 +3,6 @@ import { getRandomInBetween } from "../utils/math.js"
 import { isOutOfScreen } from "../utils/screen.js"
 import { TRIGGERS }  from "../config/triggers.js" 
 import { NPC_CONFIG } from "../config/npcConfig.js"
-import { getRandomOrder } from "../utils/randomOrder.js"
-import { getDebugInput } from "./debugInput.js"
 import { STATES } from "./states.js";
 import { isInsideTrigger } from "../utils/trigger.js";
 
@@ -16,7 +14,6 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem,keyboar
     container.label = "NPCs"
 
     const width = screen.width
-    const height = screen.height
     const typeKeys = Object.keys(npcTypes)
 
     async function init(){
@@ -38,7 +35,6 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem,keyboar
         }
     }
     
-
     function getRandomNPCType(){
         const randomKey = typeKeys[Math.floor(Math.random() * typeKeys.length)]
         return npcTypes[randomKey]
@@ -76,34 +72,30 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem,keyboar
         })
     }
 
-    function processOrders(){
+    function tryEnterQueue(npc){
 
-        const firstNpc =
-            queueSystem.getFirst()
+        const canEnterQueue =
+                !npc.hasOrdered &&
+                npc.isHungry() &&
+                queueSystem.hasSpace() &&
+                isInsideTrigger(
+                    npc,
+                    TRIGGERS.entrance
+                )
 
-        const debugPressed =
-            getDebugInput(keyboard)
+            if (!canEnterQueue) return
 
-        if (
-            firstNpc &&
-            !firstNpc.hasOrdered &&
-            firstNpc.queueIndex === 0 &&
-            firstNpc.isAtTargetPosition() &&
-            queueSystem.hasWaitingSpace() &&
-            debugPressed
-        ){
+            npc.hasEnteredDoor = true
 
-            firstNpc.order =
-                getRandomOrder()
+            npc.changeState(STATES.queue)
 
-            firstNpc.hasOrdered = true
+            queueSystem.add(npc)
+            
+    }
 
-            console.log(
-                `${firstNpc.name} pidió:`,
-                firstNpc.order
-            )
-
-            queueSystem.moveToWaiting(firstNpc)
+    function tryDeactivate(npc){
+        if (isOutOfScreen(npc, screen, 100)){
+            npc.deactivate()
         }
     }
 
@@ -115,36 +107,13 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem,keyboar
 
             npc.update(delta)
 
-            const canEnterQueue =
-                !npc.hasOrdered &&
-                npc.isHungry() &&
-                queueSystem.hasSpace() &&
-                isInsideTrigger(
-                    npc,
-                    TRIGGERS.entrance
-                )
+            tryEnterQueue(npc)
 
-            if (canEnterQueue){
+            tryDeactivate(npc)
 
-                npc.hasEnteredDoor = true
-
-                npc.changeState(STATES.queue)
-
-                queueSystem.add(npc)
-            }
-
-            if (isOutOfScreen(
-                npc,
-                screen,
-                100
-            )){
-                npc.deactivate()
-            }
         })
 
         updateQueuedNPCs()
-
-        processOrders()
 
         spawn()
     }
