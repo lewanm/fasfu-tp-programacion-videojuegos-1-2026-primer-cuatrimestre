@@ -1,5 +1,5 @@
 import { PATHS } from "../config/navigationPaths.js";
-
+import { normalize } from "../utils/math.js";
 
 class State {
     constructor(){
@@ -24,12 +24,8 @@ class WalkingState extends State {
     }
 
     update(npc, delta){
-        // El estado se encarga de llamar al movimiento del NPC
-        if(npc.dirX == 0 && npc.dirY == 0) {
-            npc.dirX = npc.lastDir.x
-            npc.dirY = npc.lastDir.y
-        }
-        npc.updateWalking(delta);
+        const { x: dx, y: dy } = normalize(npc.dirX, npc.dirY);
+        npc.moveWithCollision(dx, dy, delta);
     }
     
     exit(npc){}
@@ -50,8 +46,24 @@ class QueueState extends State {
     }
 
     update(npc, delta){
-        // Acá el estado controla al NPC mientras espera
-        npc.updateQueue(delta);
+        if (npc.currentWaypoint < npc.path.length){
+            const target = npc.path[npc.currentWaypoint]
+
+            const arrived = npc.moveToTarget(target, delta)
+
+            if (arrived) npc.currentWaypoint++
+
+            return
+        }
+
+        if (!npc.queueTargetPosition) return
+
+        const arrived = npc.moveToTarget(npc.queueTargetPosition, delta)
+
+        if (arrived){
+            npc.dirX = 0
+            npc.dirY = 0
+        }
     }
     
     exit(npc){
@@ -76,7 +88,22 @@ class LeavingState extends State {
 
     update(npc, delta){
 
-        npc.updateLeaving(delta)
+        if (npc.currentWaypoint < npc.path.length){
+
+            const target = npc.path[npc.currentWaypoint]
+
+            const arrived = npc.moveToTarget(target, delta)
+
+            if (arrived) npc.currentWaypoint++
+
+            return
+        }
+
+        npc.dirX = npc.walkingDirection
+        npc.dirY = 0
+
+        npc.changeState(STATES.walking)
+
     }
 
     exit(npc){}

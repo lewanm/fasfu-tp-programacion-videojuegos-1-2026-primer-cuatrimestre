@@ -20,8 +20,9 @@ export class NPC extends Character {
 
         this.active = false;
         this.lastDir = {x: 0, y: 0}
+        this.walkingDirection = 1
         
-        this.state = STATES.walking; 
+        this.state = null; 
         this.hasEnteredDoor = false;
 
         this.order = null
@@ -31,20 +32,29 @@ export class NPC extends Character {
         this.currentWaypoint = 0
 
         this.queueIndex = -1
-        this.queueTargutPosition = null
+        this.queueTargetPosition = null
 
         this.hunger = getRandomInBetween(NPC_CONFIG.INITIAL_HUNGER_MIN, NPC_CONFIG.INITIAL_HUNGER_MAX);
     }
 
     reset(spawnLeft, gameWidth) {
         if (spawnLeft) {
-            this.x = -NPC_OFFSET;
-            this.dirX = 1;
+            this.x = -NPC_OFFSET
+            this.dirX = 1
+            this.walkingDirection = 1
         } else {
-            this.x = gameWidth + NPC_OFFSET;
-            this.dirX = -1;
+            this.x = gameWidth + NPC_OFFSET
+            this.dirX = -1
+            this.walkingDirection = -1
         }
-        this.dirY = 0;
+
+        this.dirY = 0
+
+        this.lastDir = {
+            x: this.dirX,
+            y: this.dirY
+        }
+
         this.hasEnteredDoor = false;
 
         this.idleDirection = null
@@ -59,8 +69,8 @@ export class NPC extends Character {
         this.queueTargetPosition = null
 
         // CAMBIO 2: Usamos el método formal para inicializar el estado al resetear
-        this.changeState(STATES.walking);
-        this.activate();
+        this.changeState(STATES.walking)
+        this.activate()
     }
 
     activate() {
@@ -102,20 +112,6 @@ export class NPC extends Character {
         if (this.hunger > 100) this.hunger = 100;
     }
 
-    // CAMBIO 5: Unificado y centralizado
-    update(delta) {
-        if (!this.active) return;
-
-        this.increaseHunger(delta);
-
-        // Ejecuta el update del objeto estado actual (WalkingState o QueueState)
-        this.state.update(this, delta);
-
-        // Delegamos TODA la actualización de físicas finales, posiciones de la vista 
-        // y control reactivo de la animación nativa de PixiJS a la clase padre (Character)
-        super.update(delta); 
-    }
-
     eat(amount) {
         this.hunger -= amount;
         if (this.hunger < 0) this.hunger = 0;
@@ -145,12 +141,6 @@ export class NPC extends Character {
         return false;
     }
 
-    // Métodos internos que llaman los estados correspondientes
-    updateWalking(delta) {
-        const { x: dx, y: dy } = normalize(this.dirX, this.dirY);
-        this.moveWithCollision(dx, dy, delta);
-    }
-
     isAtTargetPosition(){
 
         if (!this.queueTargetPosition) return false;
@@ -161,50 +151,13 @@ export class NPC extends Character {
         return Math.hypot(dx, dy) < 5;
     }
 
-    updateQueue(delta) {
-        if (this.currentWaypoint < this.path.length){
-            const target = this.path[this.currentWaypoint]
+    update(delta) {
+        if (!this.active) return;
 
-            const arrived = this.moveToTarget(
-                target,
-                delta
-            )
+        this.increaseHunger(delta);
 
-            if (arrived){
-                this.currentWaypoint++
-            }
+        this.state.update(this, delta);
 
-            return
-        }
-
-        if (!this.queueTargetPosition) return
-
-        const arrived = this.moveToTarget(
-            this.queueTargetPosition,
-            delta
-        )
-
-        if (arrived){
-            this.dirX = 0
-            this.dirY = 0
-        }
-        
-    }
-
-    updateLeaving(delta){
-
-        if (this.currentWaypoint < this.path.length){
-
-            const target = this.path[this.currentWaypoint]
-
-            const arrived = this.moveToTarget(target, delta)
-
-            if (arrived) this.currentWaypoint++
-
-            return
-        }
-
-        this.changeState(STATES.walking)
-        
+        super.update(delta); 
     }
 }
