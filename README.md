@@ -10,14 +10,16 @@ Actualmente el proyecto se encuentra en desarrollo y está siendo construido con
 
 El jugador deberá:
 
-1. Obtener ingredientes.
-2. Cocinar hamburguesas y papas.
-3. Servir bebidas.
-4. Armar pedidos completos en una bandeja.
-5. Atender clientes antes de que se impacienten.
-6. Ganar dinero.
-7. Gestionar el estrés del restaurante.
-8. Sobrevivir hasta el final del día.
+1. Tomar pedidos de los clientes.
+2. Obtener ingredientes.
+3. Cocinar hamburguesas y papas.
+4. Servir bebidas.
+5. Armar pedidos completos en una bandeja.
+6. Entregar pedidos correctamente.
+7. Atender clientes antes de que se impacienten.
+8. Ganar dinero.
+9. Gestionar el estrés del restaurante.
+10. Sobrevivir hasta el final del día.
 
 ---
 
@@ -38,18 +40,21 @@ El jugador deberá:
 
 ## Pedidos y Clientes
 
-- [ ] Implementar trigger de entrega.
-- [ ] Entregar bandejas a clientes.
-- [ ] Validar pedidos.
+- [x] Implementar trigger de entrega.
+- [x] Entregar bandejas a clientes.
+- [x] Validar pedidos.
 - [ ] Mostrar pedidos visualmente.
-- [ ] Implementar estado `Leaving`.
-- [ ] Los clientes abandonan el local después de recibir el pedido.
+- [ ] Mostrar barra de paciencia sobre clientes.
+- [ ] Mostrar pedidos sobre clientes.
+- [x] Implementar estado `Leaving`.
+- [x] Los clientes abandonan el local después de recibir el pedido.
 
 ---
 
 ## Sistema de Hambre
 
-- [ ] Reducir hambre al comer.
+- [x] Hambre para NPCs.
+- [x] Reducir hambre al recibir el pedido.
 - [ ] Mantener hambre aumentando fuera de pantalla.
 - [ ] Cooldown de reaparición para cada NPC.
 - [ ] Spawn inicial escalonado.
@@ -90,16 +95,21 @@ El jugador deberá:
 
 - [ ] Implementar Steering Behaviors (Separation).
 - [ ] Evitar que los NPC se atraviesen entre sí.
-- [ ] Ajuste de radios y separación.
+- [ ] Evitar colisiones entre vehículos.
+- [ ] Evitar colisiones entre peatones y vehículos.
+- [ ] Ajuste de radios de separación.
 - [ ] Mejorar sistema de triggers.
 
 ---
 
 ## Cocina
 
+- [x] Variantes de gaseosas mediante selector radial.
+- [x] Preparación completa de pedidos.
+- [x] Cocción de ingredientes crudos.
+- [x] Entrega de pedidos completos.
 - [ ] Agregar estado `burned`.
 - [ ] Consecuencias por servir comida quemada.
-- [ ] Variantes de gaseosas mediante selector.
 - [ ] Nuevas recetas.
 - [ ] Ingredientes adicionales.
 
@@ -108,9 +118,14 @@ El jugador deberá:
 ## UI y Menús
 
 - [ ] Pantalla inicial.
-- [ ] Selector radial de productos.
-- [ ] Bloqueo de movimiento durante menús.
+- [x] Selector radial de productos.
+- [x] Navegación mediante WASD.
+- [x] Confirmación mediante tecla de acción.
+- [x] Cancelación mediante ESC.
+- [x] Visualización de items dentro del selector.
+- [x] Bloqueo de movimiento durante menús.
 - [ ] Sistema genérico de navegación de menús.
+- [ ] Mostrar pedidos visualmente.
 
 ---
 
@@ -128,13 +143,19 @@ El jugador deberá:
 
 # 🚗 Vehículos
 
-## Autos
+## Drive Thru
 
 - [ ] Crear NPC tipo vehículo.
 - [ ] Pool de vehículos.
+- [ ] Waypoints de entrada.
+- [ ] Waypoints de salida.
+- [ ] Sistema de fila para vehículos.
+- [ ] Ventanilla de pedidos.
+- [ ] Ventanilla de entrega.
 - [ ] Integrar cliente dentro del vehículo.
 - [ ] Trigger frontal para evitar colisiones.
-- [ ] Detección de vehículos y peatones delante.
+- [ ] Detección de vehículos delante.
+- [ ] Detección de peatones delante.
 - [ ] Integración con el sistema de pedidos.
 
 ---
@@ -204,6 +225,20 @@ El jugador deberá:
 
 ---
 
+## Pedidos
+
+- [x] Sistema de pedidos.
+- [x] Toma de pedidos.
+- [x] Generación aleatoria de órdenes.
+- [x] Órdenes con gaseosas aleatorias.
+- [x] Validación de pedidos.
+- [x] Entrega de pedidos.
+- [x] Trigger de entrega.
+- [x] Sistema de bandejas.
+- [x] Restauración de bandejas en estación de armado.
+
+---
+
 ## Cocina
 
 - [x] Heladera.
@@ -221,6 +256,10 @@ El jugador deberá:
 - [x] Visualización de items con sprites.
 - [x] Conversión RAW → COOKED.
 - [x] Conversión COOKED → SERVED.
+- [x] Selector radial de productos.
+- [x] Selección de hamburguesas y papas.
+- [x] Selección de variantes de gaseosas.
+- [x] Preparación completa de todos los pedidos disponibles.
 
 ---
 
@@ -232,6 +271,7 @@ El jugador deberá:
 - [x] Factories para generación de objetos.
 - [x] Sistema de configuración por templates.
 - [x] Configuración centralizada de items.
+- [x] Sistema de navegación basado en waypoints.
 
 ---
 
@@ -241,15 +281,19 @@ El jugador deberá:
 - [x] FSM (Finite State Machine).
 - [x] Estado Walking.
 - [x] Estado Queue.
+- [x] Estado Leaving.
 - [x] Sistema de hambre.
+- [x] Reducción de hambre al recibir pedidos.
 - [x] Sistema de filas.
 - [x] Fila de pedidos.
 - [x] Fila de espera.
 - [x] Waypoints de navegación.
 - [x] Generación de órdenes aleatorias.
+- [x] Movimiento por waypoints.
 - [x] Control de capacidad máxima de filas.
 - [x] Avance automático de la fila.
-- [x] Sistema de orientación en cola.
+- [x] Consumo de pedidos.
+- [x] Abandono del local tras recibir el pedido.
 
 ---
 
@@ -259,6 +303,7 @@ El jugador deberá:
 - [x] Sprites personalizados para bebidas.
 - [x] Sprites en estaciones de procesamiento.
 - [x] Sprites en bandeja de armado.
+- [x] Selector radial visual.
 
 ---
 
@@ -269,19 +314,21 @@ El jugador deberá:
 - [x] Visualización de waypoints.
 - [x] Visualización de rutas.
 - [x] Visualización de posiciones de fila.
+- [x] Toggle de debug mediante teclado.
 - [x] Herramientas de inspección desde `window.debug`.
+- [x] Toggle de debug con la letra "G"
 
 ---
 
 # 🔥 Próximos Objetivos
 
-1. Trigger de entrega.
-2. Entrega de bandejas.
-3. Validación de pedidos.
-4. Estado `Leaving`.
-5. Clientes abandonan el local.
-6. Sistema de dinero.
-7. Sistema de estrés.
-8. Reloj del juego.
+1. Mostrar pedidos visualmente.
+2. Implementar barra de paciencia para clientes.
+3. Implementar Steering Behaviors (Separation).
+4. Sistema de dinero.
+5. Cooldown de respawn para clientes.
+6. Sistema de estrés.
+7. Reloj del juego.
+8. Drive Thru.
 
 ---
