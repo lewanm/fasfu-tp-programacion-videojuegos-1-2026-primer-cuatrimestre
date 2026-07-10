@@ -4,7 +4,7 @@ export function createDebugSystem(app, enabled = false){
     const debugLayer = new PIXI.Container()
     debugLayer.label = "debugLayer"
     debugLayer.visible = enabled
-    debugLayer.zIndex = 1200 // por ahora lo dejo asi, no se como hacer para que quede adelante de todo si no jijiji
+    debugLayer.zIndex = 2000 // por ahora lo dejo asi, no se como hacer para que quede adelante de todo si no jijiji
 
     app.stage.addChild(debugLayer)
 

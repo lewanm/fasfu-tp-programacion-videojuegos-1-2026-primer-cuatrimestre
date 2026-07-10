@@ -10,7 +10,7 @@ export async function createWorldObjects(){
 
     for (const obj of WORLD_OBJECTS) {
         const ObjClass = WORK_STATIONS[obj.type];
-
+        
         if (!ObjClass) {
             console.warn(`Tipo desconocido en WORK_STATIONS: ${obj.type}`);
             continue;

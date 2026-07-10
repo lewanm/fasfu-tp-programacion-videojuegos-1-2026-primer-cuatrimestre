@@ -33,5 +33,7 @@ export const INPUT = {
     RIGHT: ["KeyD", "ArrowRight"],
 
     ACTION: ["KeyE"],
+    RETURN: ["Escape"],
+
     DEBUG: ["KeyG"],
 }

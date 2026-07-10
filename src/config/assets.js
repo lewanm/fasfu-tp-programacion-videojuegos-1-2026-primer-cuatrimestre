@@ -3,7 +3,7 @@ const BASE_WORKSTATIONS = "./assets/workStations"
 const BASE_PROPS = "./assets/props"
 const BASE_MAP = "./assets/map"
 const BASE_UI = "./assets/UI"
-const BASE_HUD = "./assets/UI"
+const BASE_HUD = "./assets/UI/HUD"
 
 
 export const ASSETS = {
@@ -57,12 +57,10 @@ export const ASSETS = {
         bag:`${BASE_PROPS}/bolsita.png`
     },
     UI:{
-        radialSelector:{
-            top: `${BASE_UI}/radialSelector/topSlot.png`,
-            right: `${BASE_UI}/radialSelector/rightSlot.png`,
-            bottom: `${BASE_UI}/radialSelector/bottomSlot.png`,
-            left: `${BASE_UI}/radialSelector/leftSlot.png`,
-        }
+        topRadial: `${BASE_UI}/radialSelector/topSlot.png`,
+        rightRadial: `${BASE_UI}/radialSelector/rightSlot.png`,
+        bottomRadial: `${BASE_UI}/radialSelector/bottomSlot.png`,
+        leftRadial: `${BASE_UI}/radialSelector/leftSlot.png`,
     },
     HUD:{
     }

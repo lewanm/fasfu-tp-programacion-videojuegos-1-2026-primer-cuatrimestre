@@ -2,16 +2,27 @@ import { ASSETS } from "../config/assets.js"
 
 export async function preloadAssets(){
 
-    const npcPaths = Object.values(ASSETS.NPCS)
-    const staticObjects = Object.values(ASSETS.STATIC_OBJECTS)
-    const mapAssets = Object.values(ASSETS.MAP)
-    const props = Object.values(ASSETS.PROPS)
+    const assets = getAssetsPaths(ASSETS)
 
-    await PIXI.Assets.load([
-        ASSETS.PLAYER,
-        ...mapAssets,
-        ...npcPaths,
-        ...staticObjects,
-        ...props,
-    ])
+    await PIXI.Assets.load(assets)
+}
+
+export function getAssetsPaths(obj){
+
+    const paths = []
+
+    Object.values(obj).forEach(value => {
+        if(typeof value === "string"){
+            paths.push(value)
+            return
+        }
+
+        if(typeof value === "object" && value !== null){
+            paths.push(...getAssetsPaths(value))
+        
+        } 
+    })
+
+    return paths
+
 }

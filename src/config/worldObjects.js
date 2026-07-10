@@ -27,7 +27,13 @@ export const OBJECT_TEMPLATES = {
             height: 26,
             offset: { x: 2, y: 0 }
         },        
-        itemFactory: () => ({...ITEMS.RAW_BURGER})
+        //itemFactory: () => ({...ITEMS.RAW_BURGER})
+        options: {
+            left: ITEMS.RAW_BURGER,
+            right: ITEMS.RAW_FRIES,
+            up: null,
+            down: null
+        }
     },
     fryer: {
         name: "fryer",
@@ -75,7 +81,13 @@ export const OBJECT_TEMPLATES = {
             height: 26,
             offset: { x: 10, y: 26 }
         },
-        itemFactory: () => ({...ITEMS.YELLOW_SODA})
+        //itemFactory: () => ({...ITEMS.YELLOW_SODA})
+        options: {
+            up: ITEMS.RED_SODA,
+            right: ITEMS.GREEN_SODA,
+            down: ITEMS.YELLOW_SODA,
+            left: ITEMS.BLUE_SODA
+        }
     },
     tray: {
         name: "tray",

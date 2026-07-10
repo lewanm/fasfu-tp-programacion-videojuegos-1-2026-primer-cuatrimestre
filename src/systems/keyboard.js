@@ -24,14 +24,26 @@ export function createKeyboard() {
         return !!keys[code]
     }
 
-    function wasPressed(code) {
+function wasPressed(code) {
 
-        const pressed = !!justPressed[code]
+    if (Array.isArray(code)) {
 
-        justPressed[code] = false
+        return code.some(key => {
 
-        return pressed
+            const pressed = !!justPressed[key]
+
+            if (pressed) justPressed[key] = false            
+
+            return pressed
+        })
     }
+
+    const pressed = !!justPressed[code]
+
+    justPressed[code] = false
+
+    return pressed
+}
 
     return {
         isPressed,

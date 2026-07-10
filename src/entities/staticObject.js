@@ -52,6 +52,7 @@ export class WorkStation extends Entity{
 
         this.isSolid = config.isSolid ?? true
         this.trigger = config.trigger ?? null
+        this.options = config.options ?? null
 
         this.itemFactory = config.itemFactory ?? null
 
@@ -83,13 +84,24 @@ export class WorkStation extends Entity{
 }
 
 class ItemProvider extends WorkStation{
+    interact(player, radialMenu){
     
-    interact(player){
-        if (!this.itemFactory) return
+        if (player.heldItem){
+            console.log("Ya tenes un item")
+            return
+        }
 
-        const item = this.itemFactory()
 
-        player.receiveItem(item)
+        if (this.options){
+            radialMenu.open(
+                this.options,
+                item => {player.receiveItem({...item})}
+            )
+            return
+        }
+        
+        if (!this.itemFactory) return // lo dejo por que si nomas pero ya lo quite
+        //player.receiveItem(item)
     }
 }
 

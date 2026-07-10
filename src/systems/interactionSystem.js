@@ -3,7 +3,7 @@ import { isInsideTrigger } from "../utils/trigger.js"
 import { TRIGGERS } from "../config/triggers.js"
 import { INPUT } from "../config/gameConfig.js"
 
-export function createInteractionSystem(player, worldObjects, keyboard, orderSystem){
+export function createInteractionSystem(player, worldObjects, keyboard, orderSystem, radialMenu ){
 
     function update() {
 
@@ -43,7 +43,7 @@ export function createInteractionSystem(player, worldObjects, keyboard, orderSys
 
         if (!target) return false
 
-        target.interact?.(player)
+        target.interact?.(player, radialMenu)
 
         return true
     }
