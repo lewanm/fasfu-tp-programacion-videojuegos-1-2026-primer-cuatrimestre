@@ -1,14 +1,13 @@
-import { isColliding } from "./collisionSystem.js";
-import { isInsideTrigger } from "../utils/trigger.js";
+import { isColliding } from "./collisionSystem.js"
+import { isInsideTrigger } from "../utils/trigger.js"
 import { TRIGGERS } from "../config/triggers.js"
-import { getInteractionInput } from "./interactionInput.js";
+import { INPUT } from "../config/gameConfig.js"
 
 export function createInteractionSystem(player, worldObjects, keyboard, orderSystem){
-    
-    function update(){
-        const interactPressed = getInteractionInput(keyboard)
-        
-        if (!interactPressed) return
+
+    function update() {
+
+        if (!keyboard.wasPressed(INPUT.ACTION)) return
 
         if (tryTakeOrder()) return
 
@@ -17,14 +16,16 @@ export function createInteractionSystem(player, worldObjects, keyboard, orderSys
         tryInteractWithWorldObject()
     }
 
-    function tryTakeOrder(){
+    function tryTakeOrder() {
+
         if (!isInsideTrigger(player, TRIGGERS.orderCounter)) return false
-        
+
         return !!orderSystem.takeOrder()
     }
 
-    function tryDeliverOrder(){
-        if(!isInsideTrigger(player, TRIGGERS.deliveryCounter)) return false
+    function tryDeliverOrder() {
+
+        if (!isInsideTrigger(player, TRIGGERS.deliveryCounter)) return false
 
         return orderSystem.deliverOrder(player)
     }

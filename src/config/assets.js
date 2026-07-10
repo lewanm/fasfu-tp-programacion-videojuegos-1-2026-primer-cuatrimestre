@@ -1,8 +1,9 @@
 const BASE_NPC_PATH = "./assets/characters/npcs"
 const BASE_WORKSTATIONS = "./assets/workStations"
-const BASE_HUD = "./assets/HUD"
 const BASE_PROPS = "./assets/props"
 const BASE_MAP = "./assets/map"
+const BASE_UI = "./assets/UI"
+const BASE_HUD = "./assets/UI"
 
 
 export const ASSETS = {
@@ -54,5 +55,15 @@ export const ASSETS = {
         served_burger:`${BASE_PROPS}/orden_hamburguesa.png`,
         served_fries:`${BASE_PROPS}/orden_papas_fritas.png`,
         bag:`${BASE_PROPS}/bolsita.png`
+    },
+    UI:{
+        radialSelector:{
+            top: `${BASE_UI}/radialSelector/topSlot.png`,
+            right: `${BASE_UI}/radialSelector/rightSlot.png`,
+            bottom: `${BASE_UI}/radialSelector/bottomSlot.png`,
+            left: `${BASE_UI}/radialSelector/leftSlot.png`,
+        }
+    },
+    HUD:{
     }
 }

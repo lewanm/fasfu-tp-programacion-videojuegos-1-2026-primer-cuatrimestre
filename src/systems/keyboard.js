@@ -1,21 +1,40 @@
-export function createKeyboard(){
-    const keys = {}
+export function createKeyboard() {
 
-    window.addEventListener("keydown", (event) => {
+    const keys = {}
+    const justPressed = {}
+
+    window.addEventListener("keydown", event => {
+
+        if (!keys[event.code]) {
+            justPressed[event.code] = true
+        }
+
         keys[event.code] = true
     })
 
-    window.addEventListener("keyup", (event) => {
+    window.addEventListener("keyup", event => {
+
         keys[event.code] = false
     })
 
+    function isPressed(code) {
+
+        if (Array.isArray(code)) return code.some(key => !!keys[key])
+
+        return !!keys[code]
+    }
+
+    function wasPressed(code) {
+
+        const pressed = !!justPressed[code]
+
+        justPressed[code] = false
+
+        return pressed
+    }
+
     return {
-        isPressed(code){
-            if (Array.isArray(code)){
-                return code.some(key => !!keys[key])
-            }
-            //esto es para forzar un booleano, por ej. en caso de que devuelva unidefined, lo convierte a falso. Seria similar a poner "keys[code] === true"
-            return !!keys[code]
-        }
+        isPressed,
+        wasPressed
     }
 }

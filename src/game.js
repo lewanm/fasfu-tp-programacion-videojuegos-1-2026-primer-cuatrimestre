@@ -1,17 +1,19 @@
 import { GAME } from "./config/gameConfig.js"
-import { createKeyboard } from "./systems/keyboard.js";
-import { getMovementInput } from "./systems/movementInput.js";
-import { createNPCSystem } from "./systems/npcSystem.js";
-import { createMap } from "./world/createMap.js";
-import { createPlayer } from "./entities/createPlayer.js";
-import { createGameDebug } from "./debug/createDebug.js";
+import { createKeyboard } from "./systems/keyboard.js"
+import { getMovementInput } from "./systems/movementInput.js"
+import { createNPCSystem } from "./systems/npcSystem.js"
+import { createMap } from "./world/createMap.js"
+import { createPlayer } from "./entities/createPlayer.js"
+import { createGameDebug } from "./debug/createDebug.js"
 import { createWorldObjects } from "./world/createWorldObjects.js"
-import { WALLS } from "./config/worldObjects.js";
-import { createNPCTypes } from "./entities/createNPCTypes.js";
-import { preloadAssets } from "./assets/preloadAssets.js";
-import { createInteractionSystem } from "./systems/interactionSystem.js";
-import { createQueueSystem } from "./systems/queueSystem.js";
+import { WALLS } from "./config/worldObjects.js"
+import { createNPCTypes } from "./entities/createNPCTypes.js"
+import { preloadAssets } from "./assets/preloadAssets.js"
+import { createInteractionSystem } from "./systems/interactionSystem.js"
+import { createQueueSystem } from "./systems/queueSystem.js"
 import { createOrderSystem } from "./systems/orderSystem.js"
+import { RadialMenu } from "./UI/radialMenu.js"
+import { INPUT } from "./config/gameConfig.js"
 import { ITEMS } from "./config/items.js" //esto lo dejo solo para exponer en debug
 
 export async function createGame() {
@@ -29,6 +31,7 @@ export async function createGame() {
     await preloadAssets()
     const map = await createMap(app.screen)
     const worldObjects = await createWorldObjects()
+    const radialMenu = new RadialMenu()
 
     //##### COLLIDERS #####
 
@@ -93,7 +96,8 @@ export async function createGame() {
         queueSystem: queueSystem,
         map: map,
         items: ITEMS,
-        orderSystem: orderSystem
+        orderSystem: orderSystem,
+        radialMenu: radialMenu
     }
     //##### GAME LOOP #####
     function update(delta){
@@ -101,6 +105,7 @@ export async function createGame() {
 
         interactionSystem.update()
 
+        //poner un player.setDirection?
         player.dirX = input.x
         player.dirY = input.y
 
@@ -110,7 +115,11 @@ export async function createGame() {
         
         worldObjects.update(delta)
 
-        debug?.update()        
+        debug?.update()     
+        
+        if(keyboard.wasPressed(INPUT.DEBUG)) debug.toggle()
+
+        radialMenu.handleInput(keyboard)
     }
 
     app.ticker.add((ticker) => {

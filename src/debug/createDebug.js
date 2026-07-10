@@ -4,9 +4,9 @@ import { TRIGGERS } from "../config/triggers.js"
 
 export function createGameDebug(app, player, npcSystem, colliders, worldObjects, queueSystem){
 
-    if (!DEBUG_OPTIONS.enabled) return null
+    //if (!DEBUG_OPTIONS.enabled) return null
 
-    const debug = createDebugSystem(app, true)
+    const debug = createDebugSystem(app, DEBUG_OPTIONS.enabled)
 
     const debugEntities = []
 
@@ -69,6 +69,10 @@ export function createGameDebug(app, player, npcSystem, colliders, worldObjects,
     })
 
     return {
+        toggle(){
+            return debug.toggle()
+        },
+
         update(){
             debugEntities.forEach(entity => entity.update())
         }

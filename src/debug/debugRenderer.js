@@ -8,12 +8,13 @@ export function createDebugSystem(app, enabled = false){
 
     app.stage.addChild(debugLayer)
 
-    if (!enabled) return { layer: debugLayer }
+    //if (!enabled) return { layer: debugLayer }
 
     app.stage.eventMode = "static"
     app.stage.hitArea = app.screen
 
     app.stage.on("pointerdown", (e) => {
+        if(!debugLayer.visible) return
         const pos = e.global
         console.log(`x:${pos.x} y:${pos.y}`);
     })
@@ -21,6 +22,11 @@ export function createDebugSystem(app, enabled = false){
     return {
         layer: debugLayer,
         debugEntities : [],
+
+        toggle(){
+            this.layer.visible = !this.layer.visible
+            return this.layer.visible
+        },
      
         drawColliders(objects){
             objects.forEach(obj => {
