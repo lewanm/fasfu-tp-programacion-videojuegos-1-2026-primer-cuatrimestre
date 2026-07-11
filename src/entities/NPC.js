@@ -19,6 +19,7 @@ export class NPC extends Character {
         this.y = initialPosition.y ?? 0;
 
         this.active = false;
+        this.respawnCooldown = 0
         this.lastDir = {x: 0, y: 0}
         this.walkingDirection = 1
         
@@ -60,6 +61,8 @@ export class NPC extends Character {
 
         this.idleDirection = null
 
+        this.respawnCooldown = 0
+
         this.order = null
         this.orderCard = null
         this.hasOrdered = false
@@ -82,9 +85,14 @@ export class NPC extends Character {
     }
 
     deactivate() {
-        this.active = false;
-        this.view.visible = false;
-        this.view.stop(); // Buenas prácticas: si se va al pool, que no gaste CPU animándose
+        this.active = false
+        this.respawnCooldown = getRandomInBetween(NPC_CONFIG.RESPAWN_MIN, NPC_CONFIG.RESPAWN_MAX)
+        this.view.visible = false
+        this.view.stop()
+        //hago que su hambre baje a la mitad con 50% a si no llega al punto que todos tienen mucha hambre, o por lo menos no tan rapido
+        if(Math.random() < 0.5){
+            this.hunger * NPC_CONFIG.HUNGER_RESET_CHANCE
+        }
     }
 
     // CAMBIO 3: Máquina de estados formal (FSM) con Enter y Exit
@@ -106,12 +114,7 @@ export class NPC extends Character {
     }
 
     isHungry() {
-        return this.hunger > 50;
-    }
-
-    increaseHunger(delta) {
-        this.hunger += NPC_CONFIG.HUNGER_RATE * delta;
-        if (this.hunger > 100) this.hunger = 100;
+        return this.hunger > NPC_CONFIG.NPC_MAX_HUNGER / 2;
     }
 
     eat(amount) {
@@ -153,10 +156,24 @@ export class NPC extends Character {
         return Math.hypot(dx, dy) < 5;
     }
 
-    update(delta) {
-        if (!this.active) return;
+    increaseHunger(delta) {
+        const mutiplier = this.active ? 1 : 0.5
+        this.hunger += NPC_CONFIG.HUNGER_RATE * delta * mutiplier
+        if (this.hunger > NPC_CONFIG.NPC_MAX_HUNGER) this.hunger = NPC_CONFIG.NPC_MAX_HUNGER
+    }
 
+    updateCooldown(delta){
+        if(this.active) return false
+
+        this.respawnCooldown -= delta / 15
+
+        return this.respawnCooldown <= 0
+    }
+
+    update(delta) {
         this.increaseHunger(delta);
+        
+        if (!this.active) return;
 
         this.state.update(this, delta);
 

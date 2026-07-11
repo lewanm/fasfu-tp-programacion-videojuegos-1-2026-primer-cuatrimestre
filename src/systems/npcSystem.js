@@ -28,6 +28,8 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem,keyboar
             npc.colliders = colliders
             npc.view.label = `${npc.name}`
 
+            npc.respawnCooldown = getRandomInBetween(NPC_CONFIG.INITIAL_RESPAWN_MIN, NPC_CONFIG.INITIAL_RESPAWN_MAX)
+
             npc.view.visible = false
 
             container.addChild(npc.view)
@@ -40,17 +42,12 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem,keyboar
         return npcTypes[randomKey]
     }
 
-    function getInactive(){
-        return NPCpool.find(npc => !npc.active)
-    }
+    function updateInactiveNPC(npc, delta){
+        if (!npc.updateCooldown(delta)) return
 
-    function spawn(){
-        const npc = getInactive()
-        if (!npc) return
+        const spawnLeft = Math.random() < 0.5
 
-        const spanwLeft = Math.random() < 0.5
-
-        npc.reset(spanwLeft, width)
+        npc.reset(spawnLeft, width)
     }
 
     function updateQueuedNPCs(){
@@ -94,18 +91,25 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem,keyboar
     }
 
     function tryDeactivate(npc){
-        if (isOutOfScreen(npc, screen, 100)){
-            npc.deactivate()
-        }
+
+        const out = isOutOfScreen(npc, screen, 100)
+
+        if (!out) return
+
+        npc.deactivate()
     }
 
     function update(delta){
 
         NPCpool.forEach(npc => {
 
-            if (!npc.active) return
-
             npc.update(delta)
+            
+
+            if (!npc.active) {
+                updateInactiveNPC(npc, delta)
+                return
+            }
 
             tryEnterQueue(npc)
 
@@ -114,8 +118,6 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem,keyboar
         })
 
         updateQueuedNPCs()
-
-        spawn()
     }
 
     return {

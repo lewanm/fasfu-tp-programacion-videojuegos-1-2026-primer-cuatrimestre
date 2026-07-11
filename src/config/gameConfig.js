@@ -7,7 +7,7 @@ export const GAME = {
 }
 
 export const PLAYER = {
-    SPEED: 2.5,
+    SPEED: 3,
     SIZE: 32,
     COLOR: 0x0000AA,
     ASSET:ASSETS.PLAYER,

@@ -134,9 +134,9 @@ const bottom = 270
 //pa hacerlo facil esto, lo mejor es usar la herramienda de debug que te da el click, pero despues revisar con las pixidevtolls y moverlo ahi
 export const WORLD_OBJECTS = [
     { type: "soda", position: { x: 180, y: 243 } },
-    { type: "fridge", position: { x: 320, y: bottom } },
+    { type: "fridge", position: { x: 475, y: bottom } }, //valor anterior 320
     { type: "oven", position: { x: 400, y: bottom } },
-    { type: "oven", position: { x: 475 , y: bottom } },
+    { type: "oven", position: { x: 320 , y: bottom } }, //valor anterior 475
     { type: "fryer", position: { x: 549, y: bottom } },
     { type: "fryer", position: { x: 625, y: bottom } },
     { type: "tray", position: { x: 456, y: 394 } },

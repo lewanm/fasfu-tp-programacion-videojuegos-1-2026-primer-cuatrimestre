@@ -19,9 +19,7 @@ class WalkingState extends State {
         this.debugColor = 0xffffff;
     }
 
-    enter(npc){
-        console.log(`NPC ${npc.name} empezó a caminar.`);
-    }
+    enter(npc){}
 
     update(npc, delta){
         const { x: dx, y: dy } = normalize(npc.dirX, npc.dirY);
