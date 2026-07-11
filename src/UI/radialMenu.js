@@ -65,7 +65,6 @@ export class RadialMenu {
     }
 
     updateVisuals(){
-
         Object.entries(this.options).forEach(([direction, item]) => {
 
             const slot = this.slots[direction]
@@ -77,8 +76,7 @@ export class RadialMenu {
                 return
             }
 
-            slot.item.texture =
-                PIXI.Assets.get(item.asset)
+            slot.item.texture = PIXI.Assets.get(item.asset)
 
             slot.item.visible = true
         })
@@ -117,7 +115,19 @@ export class RadialMenu {
         })
     }
 
+    resetVisuals(){
+        Object.values(this.slots).forEach(slot => {
+            slot.container.tint = 0xffffff
+            slot.container.alpha = 1
+            slot.item.tint = 0xffffff
+            slot.item.alpha = 1
+            slot.background.tint = 0xffffff
+            slot.background.alpha = 1
+        })
+    }
+
     open(options, onConfirm = null){
+        this.resetVisuals()
         this.options = options
         this.onConfirm = onConfirm
         this.selectedDirection = null

@@ -1,4 +1,4 @@
-const START_X = 20
+const START_X = 160
 const START_Y = 20
 const CARD_SPACING = 150
 
