@@ -63,5 +63,7 @@ export const ASSETS = {
         leftRadial: `${BASE_UI}/radialSelector/leftSlot.png`,
     },
     HUD:{
+        orderDriveThru: `${BASE_HUD}/orden_drive_thru.png`,
+        orderCounter: `${BASE_HUD}/orden_counter.png`,
     }
 }

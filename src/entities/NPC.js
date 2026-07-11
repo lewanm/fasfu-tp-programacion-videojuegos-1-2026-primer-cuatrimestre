@@ -26,6 +26,7 @@ export class NPC extends Character {
         this.hasEnteredDoor = false;
 
         this.order = null
+        this.orderCard = null
         this.hasOrdered = false
 
         this.path = []
@@ -60,6 +61,7 @@ export class NPC extends Character {
         this.idleDirection = null
 
         this.order = null
+        this.orderCard = null
         this.hasOrdered = false
 
         this.path = []

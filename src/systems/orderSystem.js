@@ -1,7 +1,8 @@
 import { getRandomOrder } from "../utils/randomOrder.js"
 import { STATES } from "./states.js"
+import { OrderCard } from "../UI/orderCard.js"
 
-export function createOrderSystem(queueSystem){
+export function createOrderSystem(queueSystem, player, orderBoard){
 
     function getCurrentCustomer(){
         return queueSystem.getFirst()
@@ -24,17 +25,22 @@ export function createOrderSystem(queueSystem){
     function takeOrder(){
 
         if (!canTakeOrder()) return null
-
+        
         const npc = getCurrentCustomer()
+        
+        const order = getRandomOrder()
 
-        npc.order = getRandomOrder()
+        npc.order = order
+        
+        const card = new OrderCard(order, "counter")
+
+        npc.orderCard = card
+
+        orderBoard.add(card)
 
         npc.hasOrdered = true
 
         queueSystem.moveToWaiting(npc)
-
-        console.log(`${npc.name} pidió: `, npc.order)
-        console.log(npc.order.items)    
 
         return npc.order
     }
@@ -78,6 +84,12 @@ function deliverOrder(player){
     queueSystem.removeWaiting(npc)
 
     console.log(`${npc.name} recibió el pedido y se retira`)
+
+    if (npc.orderCard){
+        orderBoard.remove(npc.orderCard)
+
+        npc.orderCard = null
+    }
 
     npc.changeState(STATES.leaving)
 

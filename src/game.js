@@ -17,6 +17,8 @@ import { INPUT } from "./config/gameConfig.js"
 import { ITEMS } from "./config/items.js" //esto lo dejo solo para exponer en debug
 import { getAssetsPaths } from "./assets/preloadAssets.js"
 import { ASSETS } from "./config/assets.js"
+import { OrderCard } from "./UI/orderCard.js"
+import { OrderBoard } from "./UI/orderBoard.js"
 
 
 export async function createGame() {
@@ -39,6 +41,8 @@ export async function createGame() {
     const worldObjects = await createWorldObjects()
     const radialMenu = new RadialMenu()
 
+    const orderBoard = new OrderBoard()
+
     //##### COLLIDERS #####
 
     const colliders = [
@@ -56,7 +60,12 @@ export async function createGame() {
 
     const queueSystem = createQueueSystem() 
 
-    const orderSystem  = createOrderSystem(queueSystem)
+    const orderSystem  = createOrderSystem(
+        queueSystem,
+        player,
+        orderBoard
+    )
+
     //aca se cotnrola el player
     const interactionSystem = createInteractionSystem(
             player, 
@@ -80,15 +89,14 @@ export async function createGame() {
 
     await npcSystem.init()
 
-    
-
     //##### SCENES #####
     app.stage.addChild(map)
     app.stage.addChild(worldObjects.container)
     app.stage.addChild(npcSystem.container)
     app.stage.addChild(player.view)
     app.stage.addChild(radialMenu.container)
-    
+    app.stage.addChild(orderBoard.container)
+
     const debug = createGameDebug(
         app, 
         player, 
