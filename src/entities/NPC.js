@@ -4,6 +4,7 @@ import { getRandomInBetween } from "../utils/math.js";
 import { NPC_CONFIG } from "../config/npcConfig.js";
 import { STATES } from "../systems/states.js";
 import { ProgressBar } from "../UI/progressBar.js";
+import { ASSETS } from "../config/assets.js";
 
 const NPC_OFFSET = 0;
 
@@ -41,9 +42,11 @@ export class NPC extends Character {
         this.hunger = getRandomInBetween(NPC_CONFIG.INITIAL_HUNGER_MIN, NPC_CONFIG.INITIAL_HUNGER_MAX);
     
         this.patienceBar = new ProgressBar({
-            width: 30,
-            height: 4,
-            color: 0xffffff
+            backgroundTexture:
+                ASSETS.HUD.clientPatienceBarFrame,
+
+            fillTexture:
+                ASSETS.HUD.clientPatienceBarFill
         })
         this.patienceBar.setProgress(1)
         this.patienceBar.view.visible = false
@@ -215,7 +218,9 @@ export class NPC extends Character {
 
         this.patienceBar.setProgress(ratio)
 
-        this.patienceBar.view.visible = this.patience < NPC_CONFIG.MAX_PATIENCE
+        //this.patienceBar.setProgress(ratio)
+
+        //this.patienceBar.view.visible = this.patience < NPC_CONFIG.MAX_PATIENCE
     
     }
 

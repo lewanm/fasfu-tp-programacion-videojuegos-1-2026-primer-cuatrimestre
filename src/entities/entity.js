@@ -18,7 +18,7 @@ export class Entity{
     updateTransform(){
         this.container.x = this.x
         this.container.y = this.y
-        this.container.zIndex = this.view.y
+        this.container.zIndex = this.container.y
     }
 
     getBounds(x = this.x, y = this.y) {

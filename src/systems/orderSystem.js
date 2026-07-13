@@ -94,6 +94,8 @@ function deliverOrder(player){
         npc.orderCard = null
     }
 
+    npc.patienceBar.view.visible = false
+
     npc.changeState(STATES.leaving)
 
     player.removeItem()

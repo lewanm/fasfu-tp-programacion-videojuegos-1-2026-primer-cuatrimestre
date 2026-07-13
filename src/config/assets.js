@@ -65,5 +65,7 @@ export const ASSETS = {
     HUD:{
         orderDriveThru: `${BASE_HUD}/orden_drive_thru.png`,
         orderCounter: `${BASE_HUD}/orden_counter.png`,
+        clientPatienceBarFrame: `${BASE_HUD}/barra_paciencia_cliente_1.png`,
+        clientPatienceBarFill: `${BASE_HUD}/barra_paciencia_cliente_2.png`
     }
 }

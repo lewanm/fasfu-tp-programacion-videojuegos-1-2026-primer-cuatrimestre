@@ -108,6 +108,8 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem, keyboa
 
         const isOrderingCustomer = queueSystem.orderQueue.includes(npc)
 
+        npc.patienceBar.view.visible = isWaitingCustomer || isOrderingCustomer
+
         if (!isWaitingCustomer && !isOrderingCustomer) return
 
         if (!npc.isAtTargetPosition()) return
@@ -132,7 +134,7 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem, keyboa
 
         npc.hasEnteredDoor = true
 
-        npc.setPatience(NPC_CONFIG.MAX_PATIENCE)
+        npc.patienceBar.view.visible = false
 
         npc.eat(NPC_CONFIG.NPC_MAX_HUNGER) //esto como para decir que se fue a otro local porque no lo atendienron y comio fuera
 
