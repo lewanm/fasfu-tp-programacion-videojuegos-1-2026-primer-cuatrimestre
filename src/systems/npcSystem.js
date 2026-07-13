@@ -106,11 +106,11 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem, keyboa
 
         const isWaitingCustomer = queueSystem.waitingQueue.includes(npc)
 
-        const isOrderingCustomer = queueSystem.orderQueue.includes(npc)
+        const isFirstOrderingCustomer = queueSystem.getFirst() === npc
 
-        npc.patienceBar.view.visible = isWaitingCustomer || isOrderingCustomer
+        npc.patienceBar.view.visible = isWaitingCustomer || isFirstOrderingCustomer
 
-        if (!isWaitingCustomer && !isOrderingCustomer) return
+        if (!isWaitingCustomer && !isFirstOrderingCustomer) return
 
         if (!npc.isAtTargetPosition()) return
 
