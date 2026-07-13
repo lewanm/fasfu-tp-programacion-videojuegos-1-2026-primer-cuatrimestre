@@ -6,7 +6,7 @@ import { NPC_CONFIG } from "../config/npcConfig.js"
 import { STATES } from "./states.js";
 import { isInsideTrigger } from "../utils/trigger.js";
 
-export function createNPCSystem(colliders, screen, npcTypes, queueSystem,keyboard){
+export function createNPCSystem(colliders, screen, npcTypes, queueSystem, keyboard, orderBoard){
 
     const NPCpool = []
 
@@ -26,13 +26,13 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem,keyboar
             const npc = new NPC(randomType, initialPosition)
     
             npc.colliders = colliders
-            npc.view.label = `${npc.name}`
+            npc.container.label = `${npc.name}`
 
             npc.respawnCooldown = getRandomInBetween(NPC_CONFIG.INITIAL_RESPAWN_MIN, NPC_CONFIG.INITIAL_RESPAWN_MAX)
 
             npc.view.visible = false
 
-            container.addChild(npc.view)
+            container.addChild(npc.container)
             NPCpool.push(npc)
         }
     }
@@ -75,6 +75,7 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem,keyboar
                 !npc.hasOrdered &&
                 npc.isHungry() &&
                 queueSystem.hasSpace() &&
+                !npc.hasEnteredDoor &&
                 isInsideTrigger(
                     npc,
                     TRIGGERS.entrance
@@ -83,6 +84,8 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem,keyboar
             if (!canEnterQueue) return
 
             npc.hasEnteredDoor = true
+
+            npc.setPatience(NPC_CONFIG.MAX_PATIENCE)
 
             npc.changeState(STATES.queue)
 
@@ -99,17 +102,59 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem,keyboar
         npc.deactivate()
     }
 
+    function updatePatience(npc, delta){
+
+        const isWaitingCustomer = queueSystem.waitingQueue.includes(npc)
+
+        const isOrderingCustomer = queueSystem.orderQueue.includes(npc)
+
+        if (!isWaitingCustomer && !isOrderingCustomer) return
+
+        if (!npc.isAtTargetPosition()) return
+
+        npc.decreasePatience(delta)
+    }
+
+    function handleImpatientNPC(npc){
+
+        if (npc.state !== STATES.queue) return
+
+        if (!npc.hasLostPatience()) return
+
+        queueSystem.remove(npc)
+        queueSystem.removeWaiting(npc)
+
+        if (npc.orderCard){
+            
+            orderBoard.remove(npc.orderCard)
+            npc.orderCard = null
+        }
+
+        npc.hasEnteredDoor = true
+
+        npc.setPatience(NPC_CONFIG.MAX_PATIENCE)
+
+        npc.eat(NPC_CONFIG.NPC_MAX_HUNGER) //esto como para decir que se fue a otro local porque no lo atendienron y comio fuera
+
+        console.log(`${npc.name} salió de la fila.`)
+
+        npc.changeState(STATES.leaving)
+    }
+
     function update(delta){
 
         NPCpool.forEach(npc => {
 
             npc.update(delta)
             
-
             if (!npc.active) {
                 updateInactiveNPC(npc, delta)
                 return
             }
+
+            updatePatience(npc, delta)
+
+            handleImpatientNPC(npc)
 
             tryEnterQueue(npc)
 

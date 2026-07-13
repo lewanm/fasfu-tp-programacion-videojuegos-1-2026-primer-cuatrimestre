@@ -84,7 +84,8 @@ export async function createGame() {
         app.screen,
         npcTypes,
         queueSystem,
-        keyboard // esto solo lo estoy pasando a modo de debug para probar algunas cosas.
+        keyboard, // esto solo lo estoy pasando a modo de debug para probar algunas cosas.
+        orderBoard
     )
 
     await npcSystem.init()
@@ -93,7 +94,7 @@ export async function createGame() {
     app.stage.addChild(map)
     app.stage.addChild(worldObjects.container)
     app.stage.addChild(npcSystem.container)
-    app.stage.addChild(player.view)
+    app.stage.addChild(player.container)
     app.stage.addChild(radialMenu.container)
     app.stage.addChild(orderBoard.container)
 

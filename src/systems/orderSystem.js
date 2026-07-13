@@ -1,6 +1,7 @@
 import { getRandomOrder } from "../utils/randomOrder.js"
 import { STATES } from "./states.js"
 import { OrderCard } from "../UI/orderCard.js"
+import { NPC_CONFIG } from "../config/npcConfig.js"
 
 export function createOrderSystem(queueSystem, player, orderBoard){
 
@@ -39,6 +40,8 @@ export function createOrderSystem(queueSystem, player, orderBoard){
         orderBoard.add(card)
 
         npc.hasOrdered = true
+
+        npc.increasePatience(NPC_CONFIG.MAX_PATIENCE * 0.3)
 
         queueSystem.moveToWaiting(npc)
 

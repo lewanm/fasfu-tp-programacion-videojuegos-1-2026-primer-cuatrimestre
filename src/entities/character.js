@@ -21,7 +21,9 @@ export class Character extends Entity {
 
         this.dirX = 0
         this.dirY = 0
+
         this.speed = 0
+        
         this.lastDirection = "down"
 
         this.colliders = []

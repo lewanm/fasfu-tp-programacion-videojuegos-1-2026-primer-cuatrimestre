@@ -42,6 +42,7 @@ export class OrderCard {
                 sprite.y = position.y
             }
 
+            //revisar que no anda bien
             this.configureItemSprite(sprite, item, index, order)
 
             this.container.addChild(sprite)
@@ -69,6 +70,3 @@ export class OrderCard {
         }
     }
 }
-
-
-

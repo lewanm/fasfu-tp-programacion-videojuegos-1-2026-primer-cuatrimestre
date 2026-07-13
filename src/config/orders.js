@@ -29,5 +29,13 @@ export const ORDERS = [
             { ...items.SERVED_FRIES },
             { id: "random_soda"}
         ]
+    },
+
+    {
+        id: "gaseosa_papas",
+        items: [
+            { id: "random_soda"},
+            { ...items.SERVED_FRIES},
+        ]
     }
 ]

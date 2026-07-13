@@ -90,16 +90,13 @@ export class RadialMenu {
 
             if (!item){
 
-                slot.container.tint = 0x555555
+                slot.container.tint = 0x222222
                 slot.container.alpha = 1
                 return
             }
 
             // Slot seleccionado
             if (direction === this.selectedDirection){
-                //quise ponerle que quede un poco mas grande para resaltar, pero no se si me llama
-                //slot.background.scale.set(1.1)
-                //slot.container.tint = 0xffffff
                 slot.item.alpha = 1
                 slot.background.alpha = 1
                 slot.background.tint = 0xffffff
@@ -107,8 +104,6 @@ export class RadialMenu {
             }
 
             // Slot disponible
-            //slot.background.scale.set(1)
-            //slot.container.tint = 0x999999
             slot.background.tint = 0x777777
             slot.item.alpha = 0.75
 

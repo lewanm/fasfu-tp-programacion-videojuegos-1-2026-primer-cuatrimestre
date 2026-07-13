@@ -18,7 +18,7 @@ function getRandomSoda() {
 export function getRandomOrder() {
 
     const index = Math.floor(Math.random() * ORDERS.length)
-
+ 
     const order = structuredClone(ORDERS[index])
 
     order.items = order.items.map(item => {

@@ -4,7 +4,7 @@ import { WorkStation, WORK_STATIONS } from "../entities/staticObject.js"
 export async function createWorldObjects(){
     const objects = []
     const container = new PIXI.Container()
-    container.label = "work_stations"
+    container.label = "workstations"
 
     await WorkStation.loadTextures()
 
@@ -18,8 +18,8 @@ export async function createWorldObjects(){
 
         // Instanciamos pasándole solo la posición, la subclase sabe qué tipo es internamente
         const instance = new ObjClass(obj.position);
-        instance.view.label = obj.type
-        container.addChild(instance.view);
+        instance.container.label = obj.type
+        container.addChild(instance.container);
         objects.push(instance);
     }
 

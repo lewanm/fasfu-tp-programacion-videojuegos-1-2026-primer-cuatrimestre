@@ -3,6 +3,7 @@ import { normalize } from "../utils/math.js";
 import { getRandomInBetween } from "../utils/math.js";
 import { NPC_CONFIG } from "../config/npcConfig.js";
 import { STATES } from "../systems/states.js";
+import { ProgressBar } from "../UI/progressBar.js";
 
 const NPC_OFFSET = 0;
 
@@ -11,21 +12,22 @@ export class NPC extends Character {
         super(type.animations,type.options);
 
         this.type = type
-
+        
         this.name = `NPC_${Math.floor(Math.random() * 1000)}`;
         this.speed = NPC_CONFIG.SPEED;
-
+        
         this.x = initialPosition.x ?? 0;
         this.y = initialPosition.y ?? 0;
-
-        this.active = false;
+        
+        this.active = false
+        this.patience = NPC_CONFIG.MAX_PATIENCE
         this.respawnCooldown = 0
         this.lastDir = {x: 0, y: 0}
         this.walkingDirection = 1
         
-        this.state = null; 
-        this.hasEnteredDoor = false;
-
+        this.state = null;
+        this.hasEnteredDoor = false
+        
         this.order = null
         this.orderCard = null
         this.hasOrdered = false
@@ -37,6 +39,16 @@ export class NPC extends Character {
         this.queueTargetPosition = null
 
         this.hunger = getRandomInBetween(NPC_CONFIG.INITIAL_HUNGER_MIN, NPC_CONFIG.INITIAL_HUNGER_MAX);
+    
+        this.patienceBar = new ProgressBar({
+            width: 30,
+            height: 4,
+            color: 0xffffff
+        })
+        this.patienceBar.setProgress(1)
+        this.patienceBar.view.visible = false
+        this.patienceBar.view.y = -50
+        this.container.addChild(this.patienceBar.view)
     }
 
     reset(spawnLeft, gameWidth) {
@@ -58,7 +70,6 @@ export class NPC extends Character {
         }
 
         this.hasEnteredDoor = false;
-
         this.idleDirection = null
 
         this.respawnCooldown = 0
@@ -73,7 +84,6 @@ export class NPC extends Character {
         this.queueIndex = -1
         this.queueTargetPosition = null
 
-        // CAMBIO 2: Usamos el método formal para inicializar el estado al resetear
         this.changeState(STATES.walking)
         this.activate()
     }
@@ -90,8 +100,8 @@ export class NPC extends Character {
         this.view.visible = false
         this.view.stop()
         //hago que su hambre baje a la mitad con 50% a si no llega al punto que todos tienen mucha hambre, o por lo menos no tan rapido
-        if(Math.random() < 0.5){
-            this.hunger * NPC_CONFIG.HUNGER_RESET_CHANCE
+        if(Math.random() > NPC_CONFIG.HUNGER_RESET_CHANCE){
+            this.hunger *= NPC_CONFIG.REDUCE_HUNGER
         }
     }
 
@@ -162,12 +172,51 @@ export class NPC extends Character {
         if (this.hunger > NPC_CONFIG.NPC_MAX_HUNGER) this.hunger = NPC_CONFIG.NPC_MAX_HUNGER
     }
 
+    setPatience(amount){
+        this.patience = Math.max(0,Math.min(amount, NPC_CONFIG.MAX_PATIENCE))
+        this.updatePatienceBar()
+    }
+
+    increasePatience(amount){
+        
+        this.patience += amount
+
+        if (this.patience > NPC_CONFIG.MAX_PATIENCE){
+            this.patience = NPC_CONFIG.MAX_PATIENCE
+        }
+
+        this.updatePatienceBar()
+    }
+
+    decreasePatience(delta){
+        this.patience -= delta * NPC_CONFIG.PATIENCE_RATE
+
+        if (this.patience < 0){
+            this.patience = 0
+        }
+
+        this.updatePatienceBar()
+    }
+
+    hasLostPatience(){
+        return this.patience <= 0
+    }
+
     updateCooldown(delta){
         if(this.active) return false
 
         this.respawnCooldown -= delta / 15
 
         return this.respawnCooldown <= 0
+    }
+
+    updatePatienceBar(){
+        const ratio = this.patience / NPC_CONFIG.MAX_PATIENCE
+
+        this.patienceBar.setProgress(ratio)
+
+        this.patienceBar.view.visible = this.patience < NPC_CONFIG.MAX_PATIENCE
+    
     }
 
     update(delta) {

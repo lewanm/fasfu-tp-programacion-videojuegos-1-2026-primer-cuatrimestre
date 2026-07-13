@@ -2,18 +2,23 @@ export class Entity{
 
     constructor(view, options = {}){
         
+        this.container = new PIXI.Container()
         this.view = view
+        this.container.addChild(this.view)
+
         this.x = 0
         this.y = 0
+
         this.width = options.width ?? 12;
         this.height = options.height ?? 18;
+
         this.hitboxOffset = options.hitboxOffset ?? {x: 0, y: 0};
     }
 
     updateTransform(){
-        this.view.x = this.x
-        this.view.y = this.y
-        this.view.zIndex = this.view.y
+        this.container.x = this.x
+        this.container.y = this.y
+        this.container.zIndex = this.view.y
     }
 
     getBounds(x = this.x, y = this.y) {
@@ -34,5 +39,4 @@ export class Entity{
             height
         };
     }
-
 }

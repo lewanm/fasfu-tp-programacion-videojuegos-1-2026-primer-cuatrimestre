@@ -1,6 +1,7 @@
 import { ASSETS } from "./assets.js"
 
 export const NPC_CONFIG = {
+    NPC_QUANTITY: 1,
     SPEED: 2.5,
     INITIAL_HUNGER_MIN : 10,
     INITIAL_HUNGER_MAX : 60,
@@ -9,11 +10,13 @@ export const NPC_CONFIG = {
     INITIAL_RESPAWN_MIN : 4,
     INITIAL_RESPAWN_MAX : 48,
     HUNGER_RATE: 0.03,
+    HUNGER_RESET_CHANCE: 0.55,
+    REDUCE_HUNGER: 0.7,
     NPC_MAX_HUNGER: 150,
+    MAX_PATIENCE: 100,
+    PATIENCE_RATE: 0.05,
     minY: 550,
     maxY: 680,
-    NPC_QUANTITY: 20,
-    HUNGER_RESET_CHANCE: 0.5
 }
 
 const DEFAULT_OPTIONS = {

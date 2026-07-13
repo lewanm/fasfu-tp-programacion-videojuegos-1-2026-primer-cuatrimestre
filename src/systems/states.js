@@ -82,6 +82,12 @@ class LeavingState extends State {
 
         npc.path = [...PATHS.restaurantExit]
         npc.currentWaypoint = 0
+
+        console.log(
+            "ENTER LEAVING",
+            npc.name,
+            npc.path
+        )
     }
 
     update(npc, delta){
@@ -96,6 +102,7 @@ class LeavingState extends State {
 
             return
         }
+        console.log("PASA A WALKING")
 
         npc.dirX = npc.walkingDirection
         npc.dirY = 0

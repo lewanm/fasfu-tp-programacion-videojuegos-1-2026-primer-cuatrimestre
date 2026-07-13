@@ -54,6 +54,7 @@ export class WorkStation extends Entity{
         this.trigger = config.trigger ?? null
         this.options = config.options ?? null
 
+        //no hace nada esto
         this.itemFactory = config.itemFactory ?? null
 
         this.updateTransform()
@@ -178,6 +179,15 @@ class ItemProcessor extends WorkStation {
         this.clearSlot()
     }
 
+    updateProgressBar(){
+        const slot = this.slot
+
+        const ratio = slot.progress / slot.item.cookTime
+
+        slot.bar.setProgress(ratio)
+
+    }
+
     update(delta) {
 
         const slot = this.slot
@@ -192,9 +202,7 @@ class ItemProcessor extends WorkStation {
 
         slot.progress += delta
 
-        const ratio = slot.progress / slot.item.cookTime
-
-        slot.bar.setProgress(ratio)
+        this.updateProgressBar()
 
         if (slot.progress < slot.item.cookTime) return
 
