@@ -3,8 +3,8 @@ import { ASSETS } from "./assets.js"
 export const NPC_CONFIG = {
     NPC_QUANTITY: 20,
     SPEED: 2.5,
-    INITIAL_HUNGER_MIN : 10,
-    INITIAL_HUNGER_MAX : 60,
+    INITIAL_HUNGER_MIN : 0,
+    INITIAL_HUNGER_MAX : 70,
     RESPAWN_MIN : 12,
     RESPAWN_MAX : 60,
     INITIAL_RESPAWN_MIN : 4,
@@ -17,12 +17,18 @@ export const NPC_CONFIG = {
     PATIENCE_RATE: 0.05,
     minY: 550,
     maxY: 680,
+    RADIUS: 7,
+    RADIUS_OFFSET: 28,
+    STUCK_TIME: 5,
+    STUCK_FORCE: 20
+    
 }
 
+//si quisiera modificar algun NPC porque es mas grande o mas chico, podria cambiar options en el creado de NPCs, pero meh
 const DEFAULT_OPTIONS = {
-        hitboxOffset: {x: 1, y: 20},
-        width: 28,
-        height: 32
+        hitboxOffset: {x: 1, y: 8},
+        width: 16,
+        height: 18
 }
     
 export const NPC_TYPES = {

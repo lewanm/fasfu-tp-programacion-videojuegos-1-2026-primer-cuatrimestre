@@ -10,8 +10,9 @@ export const DEBUG_OPTIONS = {
     colliders: true,
     triggers: true,
     playerHitbox: true,
-    npcHitboxes: true,
     npcState: true,
     queueWaypoints: true,
-    queuePositions: true
+    queuePositions: true,
+    npcHitboxes: true,
+    npcRadius: true
 }

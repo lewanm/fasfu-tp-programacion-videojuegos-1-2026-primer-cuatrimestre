@@ -44,8 +44,14 @@ export function createGameDebug(app, player, npcSystem, colliders, worldObjects,
         debug.drawPath(queueSystem.queueEntryPath)
 
         queueSystem.queueEntryPath.forEach(point => {
-            debug.drawWaypoint(point)
+            debug.drawWaypoint(point, 0xffff00)
         });
+
+        debug.drawPath(queueSystem.exitPath)
+
+        queueSystem.exitPath.forEach(point => {
+            debug.drawWaypoint(point, 0xff0000)
+        })
     }
 
     if (DEBUG_OPTIONS.queuePositions){
@@ -65,6 +71,10 @@ export function createGameDebug(app, player, npcSystem, colliders, worldObjects,
 
         if (DEBUG_OPTIONS.npcState) {
             debugEntities.push(debug.drawEntityState(npc))
+        }
+
+        if (DEBUG_OPTIONS.npcRadius) {
+            debugEntities.push(debug.drawRadius(npc))
         }
     })
 

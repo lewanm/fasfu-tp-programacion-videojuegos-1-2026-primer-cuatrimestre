@@ -57,6 +57,19 @@ export class Character extends Entity {
         }
     }
 
+    pushWithCollision(dx, dy, amount){
+
+        const nextX = this.x + dx * amount
+        const nextY = this.y + dy * amount
+
+        const boundsX = this.getBounds(nextX, this.y)
+
+        if (!this.collides(boundsX)) this.x = nextX
+
+        const boundsY = this.getBounds(this.x, nextY)
+
+        if (!this.collides(boundsY)) this.y = nextY
+    }
 
     getCurrentAnimationKey(direction) {
         return direction

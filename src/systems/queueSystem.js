@@ -107,6 +107,8 @@ export function createQueueSystem(){
         waitingQueue,
 
         queueEntryPath,
+        exitPath: PATHS.restaurantExit,
+        
         waitingPositions,
         queuePositions
     }

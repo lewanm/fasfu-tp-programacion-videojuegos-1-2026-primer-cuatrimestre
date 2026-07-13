@@ -1,4 +1,4 @@
-const RESTAURANT_ENTRANCE_START_X = 1164
+const RESTAURANT_ENTRANCE_START_X = 1200
 const RESTAURANT_ENTRANCE_START_Y = 570 //era 570
 const RESTAURANT_ENTRANCE_STEP_X = 0
 const RESTAURANT_ENTRANCE_STEP_Y = 80
@@ -16,19 +16,25 @@ const WAITING_QUEUE_STEP_X = 60
 const WAITING_QUEUE_STEP_Y = 0
 const WAITING_QUEUE_SIZE = 6
 
-const restaurantEntrance = generatePositions(
-        RESTAURANT_ENTRANCE_START_X,
-        RESTAURANT_ENTRANCE_START_Y,
-        RESTAURANT_ENTRANCE_STEP_X,
-        RESTAURANT_ENTRANCE_STEP_Y,
-        RESTAURANT_ENTRANCE_WAYPOINT_COUNT
-    )
-
 export const PATHS = {
 
-    restaurantEntrance,        
-
-    restaurantExit: [...restaurantEntrance].reverse()
+    restaurantEntrance: 
+        generatePositions(
+            RESTAURANT_ENTRANCE_START_X,
+            RESTAURANT_ENTRANCE_START_Y,
+            RESTAURANT_ENTRANCE_STEP_X,
+            RESTAURANT_ENTRANCE_STEP_Y,
+            RESTAURANT_ENTRANCE_WAYPOINT_COUNT
+        ),
+        // pa hacer mas rapido copie el otro, lo hice horrible, lo se :(
+    restaurantExit: 
+        generatePositions(
+            RESTAURANT_ENTRANCE_START_X - 60,
+            570 - 160,
+            RESTAURANT_ENTRANCE_STEP_X,
+            RESTAURANT_ENTRANCE_STEP_Y * -1,
+            RESTAURANT_ENTRANCE_WAYPOINT_COUNT
+        )
 }
 
 export const POSITIONS = {

@@ -28,6 +28,8 @@ export class NPC extends Character {
         
         this.state = null;
         this.hasEnteredDoor = false
+
+        this.radius = NPC_CONFIG.RADIUS // pa las colisiones entre NPC
         
         this.order = null
         this.orderCard = null
@@ -38,6 +40,9 @@ export class NPC extends Character {
 
         this.queueIndex = -1
         this.queueTargetPosition = null
+
+        this.stuckTime = 0
+        this.lastPosition = {x: 0, y: 0}
 
         this.hunger = getRandomInBetween(NPC_CONFIG.INITIAL_HUNGER_MIN, NPC_CONFIG.INITIAL_HUNGER_MAX);
     
@@ -52,6 +57,8 @@ export class NPC extends Character {
         this.patienceBar.view.visible = false
         this.patienceBar.view.y = -50
         this.container.addChild(this.patienceBar.view)
+
+    
     }
 
     reset(spawnLeft, gameWidth) {
@@ -80,6 +87,9 @@ export class NPC extends Character {
         this.order = null
         this.orderCard = null
         this.hasOrdered = false
+
+        this.stuckTime = 0
+        this.lastPosition = {x: 0, y: 0}
 
         this.path = []
         this.currentWaypoint = 0
@@ -133,6 +143,13 @@ export class NPC extends Character {
     eat(amount) {
         this.hunger -= amount;
         if (this.hunger < 0) this.hunger = 0;
+    }
+
+    getFeetPosition(){
+        return {
+            x: this.x,
+            y: this.y + NPC_CONFIG.RADIUS_OFFSET
+        }
     }
 
     moveToTarget(target, delta){
@@ -224,13 +241,37 @@ export class NPC extends Character {
     
     }
 
+    updateStuck(delta){
+
+        const movedDistance = Math.hypot(
+            this.x - this.lastPosition.x,
+            this.y - this.lastPosition.y
+        )
+
+        if (movedDistance < 2) this.stuckTime += delta
+
+        else {
+
+            this.stuckTime = 0
+
+            this.lastPosition.x = this.x
+            this.lastPosition.y = this.y
+        }
+    }
+
+    isStuck(){
+        return this.stuckTime > NPC_CONFIG.STUCK_TIME
+    }
+
     update(delta) {
-        this.increaseHunger(delta);
+        this.increaseHunger(delta)
+
+        this.updateStuck(delta)
         
-        if (!this.active) return;
+        if (!this.active) return
 
-        this.state.update(this, delta);
+        this.state.update(this, delta)
 
-        super.update(delta); 
+        super.update(delta)
     }
 }

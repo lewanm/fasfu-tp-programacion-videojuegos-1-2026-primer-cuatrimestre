@@ -29,6 +29,10 @@ export function createDebugSystem(app, enabled = false){
         },
      
         drawColliders(objects){
+            const container = new PIXI.Container()
+            container.label = "colliders"
+            this.layer.addChild(container)
+
             objects.forEach(obj => {
                 const g = new PIXI.Graphics();
 
@@ -36,13 +40,14 @@ export function createDebugSystem(app, enabled = false){
                 .fill({ color: 0xff0000, alpha: 0.2 })
                 .stroke({ color: 0xff0000 });
 
-                this.layer.addChild(g);
+                container.addChild(g);
             });
         },
 
         drawHitbox(entity){
             const g = new PIXI.Graphics();
-            debugLayer.addChild(g);
+            g.label = "npcHitbox"
+            this.layer.addChild(g);
 
             return {
                 update(){
@@ -57,7 +62,8 @@ export function createDebugSystem(app, enabled = false){
 
         drawTrigger(trigger){
             const g = new PIXI.Graphics();
-
+            g.label = "trigger"
+            
             g.rect(trigger.x, trigger.y, trigger.width, trigger.height)
             .stroke({ color: 0xFFFF00 });
 
@@ -80,6 +86,7 @@ export function createDebugSystem(app, enabled = false){
 
         drawWaypoint(position){
             const g = new PIXI.Graphics();
+            g.label = "waypoint"
 
             g.circle(position.x, position.y, 6)
             .fill({ color: 0xffff00 });
@@ -108,6 +115,24 @@ export function createDebugSystem(app, enabled = false){
             }
 
             this.layer.addChild(g);
+        },
+
+        drawRadius(entity){
+            const g = new PIXI.Graphics()
+            debugLayer.addChild(g)
+
+            return {
+
+                update(){
+                    const feet = entity.getFeetPosition()
+                    g.clear()
+                    g.circle(feet.x, feet.y, entity.radius)
+                        .stroke({
+                            color: 0x00ffff,
+                            width: 1
+                    })
+                }
+            }
         }
     }
 }

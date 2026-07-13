@@ -143,11 +143,93 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem, keyboa
         npc.changeState(STATES.leaving)
     }
 
+    function separateNPC(a, b){
+
+        const aFeet = a.getFeetPosition()
+        const bFeet = b.getFeetPosition()
+
+        const dx = bFeet.x - aFeet.x
+        const dy = bFeet.y - aFeet.y
+
+        const distance = Math.hypot(dx, dy)
+
+        const minDistance = a.radius + b.radius
+
+        const predictionDistance = minDistance * 2
+
+        if (distance === 0 || distance >= predictionDistance) return
+
+        if (Math.abs(dx) < 2){
+
+            const sideForce = 0.5
+
+            if (Math.abs(dx) < 2){
+
+                const sideForce = 0.5
+
+                a.x -= sideForce
+                b.x += sideForce
+            }
+            else if (Math.abs(dy) < 2){
+
+                const sideForce = 0.5
+
+                a.y -= sideForce
+                b.y += sideForce
+            }
+        }
+
+        const overlap = predictionDistance - distance
+
+        const strength = overlap / predictionDistance
+
+        const nx = dx / distance
+        const ny = dy / distance
+
+        a.pushWithCollision(-nx, -ny, strength)
+
+        b.pushWithCollision(nx, ny, strength)
+    }
+
+    function updateSeparation(){
+
+        for(let i = 0; i < NPCpool.length; i++){
+
+            const a = NPCpool[i]
+
+            if (!a.active) continue
+
+            for(let j = i + 1; j < NPCpool.length; j++){
+
+                const b = NPCpool[j]
+
+                if (!b.active) continue
+
+                separateNPC(a, b)
+            }
+        }
+    }
+
+    function handleStuckNPC(npc){
+
+        if (npc.state !== STATES.walking) return
+
+        if (!npc.isStuck()) return
+
+        console.log(`${npc.name} estaba trabado`)
+
+        npc.stuckTime = 0
+
+        npc.pushWithCollision(0, 1, NPC_CONFIG.STUCK_FORCE)
+    }
+
     function update(delta){
 
         NPCpool.forEach(npc => {
 
             npc.update(delta)
+
+            
             
             if (!npc.active) {
                 updateInactiveNPC(npc, delta)
@@ -158,12 +240,15 @@ export function createNPCSystem(colliders, screen, npcTypes, queueSystem, keyboa
 
             handleImpatientNPC(npc)
 
+            handleStuckNPC(npc)
+
             tryEnterQueue(npc)
 
             tryDeactivate(npc)
 
         })
-
+        updateSeparation()
+        
         updateQueuedNPCs()
     }
 
