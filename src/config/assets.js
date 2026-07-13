@@ -5,6 +5,7 @@ const BASE_MAP = "./assets/map"
 const BASE_UI = "./assets/UI"
 const BASE_HUD = "./assets/UI/HUD"
 const BASE_TUTORIAL = "./assets/UI/tutorial"
+const BASE_SPLASHSCREEN = "./assets/UI/splashScreen"
 
 
 export const ASSETS = {
@@ -88,5 +89,11 @@ export const ASSETS = {
         tutorial_16: `${BASE_TUTORIAL}/16.png`,    
         tutorial_17: `${BASE_TUTORIAL}/17.png`,
         tutorial_18: `${BASE_TUTORIAL}/18.png`,
+    },
+    SPLASHSCREEN:{
+        splashScreen: `${BASE_SPLASHSCREEN}/pantalla_sola.png`,
+        pressEnter: `${BASE_SPLASHSCREEN}/press_enter.png`,
+        logo: `${BASE_SPLASHSCREEN}/logo.png`
     }
+
 }

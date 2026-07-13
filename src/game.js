@@ -15,11 +15,10 @@ import { createOrderSystem } from "./systems/orderSystem.js"
 import { RadialMenu } from "./UI/radialMenu.js"
 import { INPUT } from "./config/gameConfig.js"
 import { ITEMS } from "./config/items.js" //esto lo dejo solo para exponer en debug
-import { getAssetsPaths } from "./assets/preloadAssets.js"
 import { ASSETS } from "./config/assets.js"
-import { OrderCard } from "./UI/orderCard.js"
 import { OrderBoard } from "./UI/orderBoard.js"
 import { TutorialOverlay } from "./UI/tutorialOverlay.js"
+import { SplashScreen } from "./UI/splashScreen.js"
 
 
 export async function createGame() {
@@ -93,9 +92,12 @@ export async function createGame() {
 
     const tutorialTextures = Object.values(ASSETS.TUTORIAL).map(path => PIXI.Assets.get(path))
     const tutorialOverlay = new TutorialOverlay(tutorialTextures)
-
+    const startScreen = new SplashScreen(
+        PIXI.Assets.get(ASSETS.SPLASHSCREEN.splashScreen),
+        PIXI.Assets.get(ASSETS.SPLASHSCREEN.pressEnter),
+        PIXI.Assets.get(ASSETS.SPLASHSCREEN.logo)
+    )
     
-
     //##### SCENES #####
     app.stage.addChild(map)
     app.stage.addChild(worldObjects.container)
@@ -105,6 +107,7 @@ export async function createGame() {
     app.stage.addChild(radialMenu.container)
     app.stage.addChild(orderBoard.container)
     app.stage.addChild(tutorialOverlay.container)
+    app.stage.addChild(startScreen.container)
 
     const debug = createGameDebug(
         app, 
@@ -132,12 +135,36 @@ export async function createGame() {
     }
     
     //##### GAME LOOP #####
+
     function update(delta){
 
-        if (tutorialOverlay.isOpen){
-            tutorialOverlay.handleInput(keyboard)
+        // SPLASH SCREEN
+
+        if (startScreen.isOpen){
+
+            startScreen.update(delta)
+
+            const finished = startScreen.handleInput(keyboard)
+
+            if (finished){
+
+                startScreen.close()
+                tutorialOverlay.container.visible = true
+            }
+
             return
         }
+
+        // TUTORIAL
+
+        if (tutorialOverlay.isOpen){
+
+            tutorialOverlay.handleInput(keyboard)
+
+            return
+        }
+
+        // GAMEPLAY
 
         const input = radialMenu.isOpen
             ? { x: 0, y: 0 }
