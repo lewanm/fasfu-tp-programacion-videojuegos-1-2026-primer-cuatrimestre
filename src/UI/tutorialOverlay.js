@@ -1,5 +1,6 @@
 import { GAME, INPUT } from "../config/gameConfig.js"
 
+const FONT_SIZE = 30
 
 export class TutorialOverlay {
 
@@ -27,7 +28,7 @@ export class TutorialOverlay {
             text: "ESC - Saltear tutorial",
             style: {
                 fill: 0xffffff,
-                fontSize: 20,
+                fontSize: FONT_SIZE,
                 stroke: {
                     color: 0x000000,
                     width: 4
@@ -39,7 +40,7 @@ export class TutorialOverlay {
             text: "← Página anterior    |    Página siguiente →",
             style: {
                 fill: 0xffffff,
-                fontSize: 20,
+                fontSize: FONT_SIZE,
                 stroke: {
                     color: 0x000000,
                     width: 4
