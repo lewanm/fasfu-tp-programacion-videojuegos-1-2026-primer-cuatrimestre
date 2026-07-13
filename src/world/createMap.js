@@ -1,7 +1,7 @@
 import { GAME } from "../config/gameConfig.js"
 import { ASSETS } from "../config/assets.js"
 
-export async function createMap(screen){
+export async function createMap(){
 
     const container = new PIXI.Container()
     container.label = "mapContainer"

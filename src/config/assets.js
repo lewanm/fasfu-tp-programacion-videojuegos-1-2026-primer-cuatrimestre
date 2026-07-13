@@ -4,6 +4,7 @@ const BASE_PROPS = "./assets/props"
 const BASE_MAP = "./assets/map"
 const BASE_UI = "./assets/UI"
 const BASE_HUD = "./assets/UI/HUD"
+const BASE_TUTORIAL = "./assets/UI/tutorial"
 
 
 export const ASSETS = {
@@ -67,5 +68,25 @@ export const ASSETS = {
         orderCounter: `${BASE_HUD}/orden_counter.png`,
         clientPatienceBarFrame: `${BASE_HUD}/barra_paciencia_cliente_1.png`,
         clientPatienceBarFill: `${BASE_HUD}/barra_paciencia_cliente_2.png`
+    },
+    TUTORIAL:{
+        tutorial_01: `${BASE_TUTORIAL}/01.png`,
+        tutorial_02: `${BASE_TUTORIAL}/02.png`,
+        tutorial_03: `${BASE_TUTORIAL}/03.png`, 
+        tutorial_04: `${BASE_TUTORIAL}/04.png`,
+        tutorial_05: `${BASE_TUTORIAL}/05.png`,
+        tutorial_06: `${BASE_TUTORIAL}/06.png`,
+        tutorial_07: `${BASE_TUTORIAL}/07.png`, 
+        tutorial_08: `${BASE_TUTORIAL}/08.png`,
+        tutorial_09: `${BASE_TUTORIAL}/09.png`,
+        tutorial_10: `${BASE_TUTORIAL}/10.png`,
+        tutorial_11: `${BASE_TUTORIAL}/11.png`,
+        tutorial_12: `${BASE_TUTORIAL}/12.png`,
+        tutorial_13: `${BASE_TUTORIAL}/13.png`,
+        tutorial_14: `${BASE_TUTORIAL}/14.png`,
+        tutorial_15: `${BASE_TUTORIAL}/15.png`,
+        tutorial_16: `${BASE_TUTORIAL}/16.png`,    
+        tutorial_17: `${BASE_TUTORIAL}/17.png`,
+        tutorial_18: `${BASE_TUTORIAL}/18.png`,
     }
 }

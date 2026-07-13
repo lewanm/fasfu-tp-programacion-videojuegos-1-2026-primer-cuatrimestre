@@ -19,6 +19,7 @@ import { getAssetsPaths } from "./assets/preloadAssets.js"
 import { ASSETS } from "./config/assets.js"
 import { OrderCard } from "./UI/orderCard.js"
 import { OrderBoard } from "./UI/orderBoard.js"
+import { TutorialOverlay } from "./UI/tutorialOverlay.js"
 
 
 export async function createGame() {
@@ -37,7 +38,7 @@ export async function createGame() {
     
     await preloadAssets()
 
-    const map = await createMap(app.screen)
+    const map = await createMap()
     const worldObjects = await createWorldObjects()
     const radialMenu = new RadialMenu()
 
@@ -90,13 +91,20 @@ export async function createGame() {
 
     await npcSystem.init()
 
+    const tutorialTextures = Object.values(ASSETS.TUTORIAL).map(path => PIXI.Assets.get(path))
+    const tutorialOverlay = new TutorialOverlay(tutorialTextures)
+
+    
+
     //##### SCENES #####
     app.stage.addChild(map)
     app.stage.addChild(worldObjects.container)
     app.stage.addChild(npcSystem.container)
     app.stage.addChild(player.container)
+    //estos de aca tendrian que estar en uno UI pero por ahora nou
     app.stage.addChild(radialMenu.container)
     app.stage.addChild(orderBoard.container)
+    app.stage.addChild(tutorialOverlay.container)
 
     const debug = createGameDebug(
         app, 
@@ -119,22 +127,26 @@ export async function createGame() {
         map: map,
         items: ITEMS,
         orderSystem: orderSystem,
-        radialMenu: radialMenu
+        radialMenu: radialMenu,
+        fps: 0
     }
+    
     //##### GAME LOOP #####
     function update(delta){
-        // pasar esto al player directamente o ver que ondeu
-        //esta fue la implementacion mas rapida para "sie esta el menu abierto no te muevas"
-        //si tira algun error, podria ver de hacer algo como si esta abierto que tome el handleInput del radial
-        //y si no que obtenga el input para el movimiento
+
+        if (tutorialOverlay.isOpen){
+            tutorialOverlay.handleInput(keyboard)
+            return
+        }
+
         const input = radialMenu.isOpen
             ? { x: 0, y: 0 }
             : getMovementInput(keyboard)
 
         radialMenu.handleInput(keyboard)
+
         interactionSystem.update()
 
-        //poner un player.setDirection?
         player.dirX = input.x
         player.dirY = input.y
 
@@ -143,16 +155,17 @@ export async function createGame() {
         radialMenu.update(player)
 
         npcSystem.update(delta)
-        
+
         worldObjects.update(delta)
 
-        debug?.update()     
-        
-        if(keyboard.wasPressed(INPUT.DEBUG)) debug.toggle()
+        debug?.update()
+
+        if (keyboard.wasPressed(INPUT.DEBUG)) debug.toggle()
     }
 
     app.ticker.add((ticker) => {
         update(ticker.deltaTime)
+        window.debug.fps = Math.round(ticker.FPS)
     })
 
     return app
